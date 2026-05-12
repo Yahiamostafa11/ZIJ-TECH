@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-primary: #0f1014;
+  --bg-secondary: #16171b;
+  --bg-card: #18191e;
+  --gold-primary: #d4af37;
+  --gold-light: #f3e5ab;
+  --gold-dark: #996515;
+  --gold-gradient: linear-gradient(135deg, #d4af37, #f3e5ab, #d4af37);
+  --text-primary: #f2f2f2;
+  --text-secondary: #a3a3a3;
+  --border-subtle: rgba(212, 175, 55, 0.15);
+  --glow-gold: 0 0 20px rgba(212, 175, 55, 0.2);
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  position: relative;
+  overflow-x: hidden;
+}
+
+.gold-gradient-text {
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.glass-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  transition: all 0.3s ease;
+  border-radius: 8px;
+}
+
+.glass-card:hover {
+  border-color: rgba(212, 175, 55, 0.4);
+  box-shadow: var(--glow-gold);
+}
+
+.dir-rtl {
+  direction: rtl;
+}
+
+.icon-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--gold-primary);
+  border-radius: 50%;
+  color: var(--gold-primary);
+}
