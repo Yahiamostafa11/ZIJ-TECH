@@ -1,69 +1,68 @@
 "use client";
 
 import React from "react";
-import { ProjectCard } from "./ui/ProjectCard";
-import { GoldButton } from "./ui/GoldButton";
+import Image from "next/image";
 import { motion } from "framer-motion";
+import { GoldButton } from "./ui/GoldButton";
+import { ProjectCard } from "./ui/ProjectCard";
+import { Reveal } from "./ui/Reveal";
+
+const projects = [
+  {
+    title: "Enterprise SaaS Platform",
+    description: "منصة متكاملة لإدارة الأعمال والعملاء",
+    type: "dashboard" as const,
+  },
+  {
+    title: "Smart Automation System",
+    description: "أتمتة سير العمل وتقليل التكاليف التشغيلية",
+    type: "automation" as const,
+  },
+  {
+    title: "Data Analytics Dashboard",
+    description: "لوحات تحكم ذكية لتحليل البيانات واتخاذ القرار",
+    type: "analytics" as const,
+  },
+];
 
 export function Projects() {
-  const projects = [
-    {
-      title: "Enterprise SaaS Platform",
-      description: "منصة متكاملة لإدارة الأعمال والعملاء",
-      imageUrl: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop",
-    },
-    {
-      title: "Smart Automation System",
-      description: "أتمتة سير العمل وتقليل التكاليف التشغيلية",
-      imageUrl: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1000&auto=format&fit=crop",
-    },
-    {
-      title: "Data Analytics Dashboard",
-      description: "لوحات تحكم ذكية لتحليل البيانات واتخاذ القرار",
-      imageUrl: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop",
-    },
-  ];
-
   return (
-    <section id="projects" className="py-24 relative z-10 bg-bg-card border-t border-bg-card">
-      <div className="container mx-auto px-6 md:px-12">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-12"
-        >
-          <h2 className="font-dmsans text-3xl md:text-4xl text-gold-primary mb-4">
-            Featured Projects
-          </h2>
-          <p className="font-cairo text-text-secondary dir-rtl text-lg text-right">
+    <section id="projects" className="relative z-10 px-4 py-14 md:py-20">
+      <Reveal className="premium-panel relative mx-auto max-w-[1280px] overflow-hidden rounded-xl p-6 md:p-9">
+        <Image
+          src="/svg/stars.svg"
+          alt=""
+          aria-hidden="true"
+          fill
+          sizes="100vw"
+          className="asset-gold-screen pointer-events-none object-cover opacity-15"
+        />
+
+        <div className="relative z-10 mb-8">
+          <h2 className="text-3xl font-semibold text-gold-light md:text-4xl">Featured Projects</h2>
+          <p className="dir-rtl mt-3 text-right font-cairo text-lg text-text-secondary">
             نماذج من أعمالنا
           </p>
-        </motion.div>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {projects.map((proj, i) => (
-            <ProjectCard
-              key={proj.title}
-              title={proj.title}
-              description={proj.description}
-              imageUrl={proj.imageUrl}
-              delay={i * 0.15}
-            />
+        <div className="relative z-10 grid grid-cols-1 gap-5 md:grid-cols-3">
+          {projects.map((project, index) => (
+            <Reveal key={project.title} delay={index * 0.1}>
+              <ProjectCard {...project} delay={0} />
+            </Reveal>
           ))}
         </div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-16 flex justify-center"
+          transition={{ duration: 0.55, delay: 0.25 }}
+          className="relative z-10 mt-9 flex justify-center"
         >
-          <GoldButton variant="outline">View All Projects</GoldButton>
+          <GoldButton href="#contact" variant="outline">View All Projects</GoldButton>
         </motion.div>
-      </div>
+      </Reveal>
     </section>
   );
 }

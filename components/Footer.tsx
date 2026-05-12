@@ -1,48 +1,35 @@
 "use client";
 
 import React from "react";
+import { GlyphStrip } from "./visuals/GlyphStrip";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative mt-24 border-t border-border-subtle bg-bg-secondary pt-12 pb-8 overflow-hidden">
-      {/* Decorative Hieroglyphs Line */}
-      <div className="absolute top-0 left-0 w-full h-12 opacity-30 pointer-events-none flex overflow-hidden">
-        <img
-          src="/svgs/hieroglyphs-line.svg"
-          alt="Hieroglyphs Pattern"
-          className="h-full w-auto object-cover repeat-x min-w-full"
-        />
-      </div>
+    <footer className="relative z-10 mt-10 overflow-hidden border-t border-border-subtle bg-bg-secondary pb-24 pt-10">
+      <GlyphStrip />
 
-      <div className="container mx-auto px-6 md:px-12 relative z-10 flex flex-col md:flex-row items-center justify-between mt-8">
-        {/* Logo */}
-        <div className="flex flex-col items-center md:items-start mb-6 md:mb-0">
-          <span className="font-cinzel font-bold text-2xl text-gold-primary leading-none">
-            ZIJ.
-          </span>
-          <span className="font-dmsans text-[8px] tracking-[0.2em] text-text-secondary mt-1">
-            TECHNOLOGIES
-          </span>
+      <div className="mx-auto flex max-w-[1280px] flex-col items-center justify-between gap-7 px-6 md:flex-row md:px-4">
+        <div className="flex flex-col items-center md:items-start">
+          <span className="font-cinzel text-3xl font-bold leading-none text-gold-primary">ZIJ.</span>
+          <span className="mt-1 text-[9px] font-bold tracking-[0.34em] text-gold-light/70">TECHNOLOGIES</span>
         </div>
 
-        {/* Links */}
-        <div className="flex gap-6 mb-6 md:mb-0">
+        <div className="flex flex-wrap justify-center gap-5">
           {["Home", "Solutions", "About", "Projects", "Contact"].map((link) => (
             <a
               key={link}
-              href={`#${link.toLowerCase()}`}
-              className="font-dmsans text-sm text-text-secondary hover:text-gold-light transition-colors"
+              href={link === "Home" ? "#home" : `#${link.toLowerCase()}`}
+              className="text-sm text-text-secondary transition-colors hover:text-gold-light"
             >
               {link}
             </a>
           ))}
         </div>
 
-        {/* Copyright */}
-        <div className="font-dmsans text-xs text-text-secondary">
-          &copy; {currentYear} ZIJ Technologies. All rights reserved.
+        <div className="text-center text-xs text-text-secondary md:text-right">
+          &copy; {currentYear} ZIJ Technologies. Automate. Scale. Elevate.
         </div>
       </div>
     </footer>

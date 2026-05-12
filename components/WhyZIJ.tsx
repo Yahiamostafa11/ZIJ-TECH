@@ -1,80 +1,67 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
-import { Compass, Building, TrendingUp, ShieldCheck } from "lucide-react";
+import { Building2, Compass, ShieldCheck, TrendingUp } from "lucide-react";
+import { Reveal } from "./ui/Reveal";
+
+const bullets = [
+  { text: "Inspired by ancient astronomy", icon: Compass },
+  { text: "Built for modern businesses", icon: Building2 },
+  { text: "Secure & reliable", icon: ShieldCheck },
+  { text: "Scalable & future-ready", icon: TrendingUp },
+];
 
 export function WhyZIJ() {
-  const bullets = [
-    { text: "Inspired by ancient astronomy", icon: Compass },
-    { text: "Built for modern businesses", icon: Building },
-    { text: "Scalable & future-ready", icon: TrendingUp },
-    { text: "Secure & reliable", icon: ShieldCheck },
-  ];
-
   return (
-    <section id="about-more" className="py-24 relative z-10 overflow-hidden bg-bg-primary">
-      <div className="container mx-auto px-6 md:px-12 relative z-10 flex flex-col lg:flex-row items-center gap-16">
-        
-        {/* Left Content */}
-        <div className="w-full lg:w-3/5">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="font-dmsans text-3xl md:text-4xl text-text-primary mb-8"
-          >
-            Why ZIJ?
-          </motion.h2>
+    <section className="relative z-10 px-4 py-14 md:py-20">
+      <Reveal className="premium-panel relative mx-auto grid max-w-[1280px] overflow-hidden rounded-xl p-6 md:grid-cols-[1.1fr_0.9fr] md:p-9">
+        <Image
+          src="/svg/stars.svg"
+          alt=""
+          aria-hidden="true"
+          fill
+          sizes="100vw"
+          className="asset-gold-screen pointer-events-none absolute inset-0 h-full w-full select-none object-cover opacity-16"
+        />
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="font-cairo text-text-secondary text-lg dir-rtl leading-relaxed mb-12 text-right"
-          >
-            نمزج بين الإرث والحضارة والتكنولوجيا لتحقق قيمة حقيقية
-          </motion.p>
+        <div className="relative z-10 flex flex-col justify-center py-6">
+          <h2 className="text-3xl font-semibold text-gold-light md:text-4xl">Why ZIJ?</h2>
+          <p className="dir-rtl mt-5 max-w-2xl text-right font-cairo text-lg leading-8 text-text-secondary">
+            نمزج بين الإرث والحضارة والتكنولوجيا لنخلق قيمة حقيقية.
+          </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-8 gap-x-12">
-            {bullets.map((bullet, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.3 + i * 0.1 }}
-                className="flex items-center gap-4"
-              >
-                <div className="w-10 h-10 border border-gold-primary rounded-md flex justify-center items-center flex-shrink-0">
-                  <bullet.icon className="text-gold-primary" size={18} />
+          <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2">
+            {bullets.map(({ text, icon: Icon }, index) => (
+              <Reveal key={text} delay={index * 0.08}>
+                <div className="flex items-center gap-4 text-sm text-text-secondary">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-md border border-border-subtle bg-bg-card/80 text-gold-primary">
+                    <Icon size={18} strokeWidth={1.55} />
+                  </span>
+                  {text}
                 </div>
-                <span className="font-dmsans text-text-secondary text-sm md:text-base">{bullet.text}</span>
-              </motion.div>
+              </Reveal>
             ))}
           </div>
         </div>
 
-        {/* Right Content - Pharaoh Image */}
-        <div className="w-full lg:w-2/5 flex justify-center lg:justify-end">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="relative"
-          >
-            <div className="absolute inset-0 bg-gold-primary blur-[120px] opacity-10 rounded-full" />
-            <img
-              src="/svgs/pharaoh-figure.svg"
-              alt="Pharaoh Figure"
-              className="relative z-10 max-h-[450px] object-contain opacity-80"
-            />
-          </motion.div>
-        </div>
-      </div>
+        <motion.div
+          className="relative z-10 mt-8 flex min-h-[360px] justify-center md:mt-0 md:min-h-[480px] md:justify-end"
+          animate={{ y: [0, -10, 0] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <div className="absolute bottom-10 right-8 h-64 w-64 rounded-full bg-gold-primary/10 blur-[80px]" />
+          <Image
+            src="/svg/Pharaoh.svg"
+            alt=""
+            aria-hidden="true"
+            width={420}
+            height={520}
+            className="asset-gold-screen pointer-events-none relative h-[360px] w-auto select-none object-contain opacity-90 md:h-[500px]"
+          />
+        </motion.div>
+      </Reveal>
     </section>
   );
 }

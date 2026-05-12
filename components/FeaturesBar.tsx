@@ -8,8 +8,8 @@ export function FeaturesBar() {
   const features = [
     { name: "SaaS Systems", icon: Cloud },
     { name: "Automation", icon: Cpu },
-    { name: "Smartautomation", icon: Zap },
-    { name: "Secucle", icon: Shield },
+    { name: "Smart Automation", icon: Zap },
+    { name: "Secure", icon: Shield },
     { name: "Scalable", icon: Expand },
     { name: "Insight Driven", icon: LineChart },
   ];

@@ -1,96 +1,72 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
-import { Cloud, Zap, Expand, Cpu, Shield, LineChart } from "lucide-react";
+import Image from "next/image";
+import { CloudCog, Compass, Network, ShieldCheck, Sparkles, Waypoints } from "lucide-react";
+import { Reveal } from "./ui/Reveal";
+
+const chips = [
+  { name: "SaaS Systems", icon: CloudCog },
+  { name: "Automation", icon: Sparkles },
+  { name: "System Mapping", icon: Waypoints },
+  { name: "Secure", icon: ShieldCheck },
+  { name: "Operational Clarity", icon: Compass },
+  { name: "Connected Data", icon: Network },
+];
 
 export function AboutFeatures() {
-  const features = [
-    { name: "SaaS Systems", icon: Cloud },
-    { name: "Automation", icon: Cpu },
-    { name: "Smartautomation", icon: Zap },
-    { name: "Secucle", icon: Shield },
-    { name: "Scalable", icon: Expand },
-    { name: "Insight Driven", icon: LineChart },
-  ];
-
   return (
-    <section id="about" className="py-24 relative z-10 bg-bg-primary border-t border-bg-card">
-      <div className="container mx-auto px-6 md:px-12 flex flex-col lg:flex-row justify-between items-start gap-16">
-        
-        {/* Left Side: Branding & Text */}
-        <div className="w-full lg:w-1/2 flex flex-col items-start">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="flex flex-col mb-6"
-          >
-            <span className="font-cinzel font-bold text-6xl md:text-8xl text-gold-primary leading-none">
-              ZIJ.
-            </span>
-            <span className="font-dmsans text-sm md:text-base tracking-[0.3em] text-gold-primary mt-2">
-              TECHNOLOGIES
-            </span>
-          </motion.div>
+    <section id="about" className="relative z-10 px-4 py-14 md:py-20">
+      <Reveal className="premium-panel relative mx-auto grid max-w-[1280px] gap-8 overflow-hidden rounded-xl p-6 md:grid-cols-[0.82fr_1.18fr] md:p-9">
+        <Image
+          src="/svg/stars.svg"
+          alt=""
+          aria-hidden="true"
+          fill
+          sizes="100vw"
+          className="asset-gold-screen pointer-events-none object-cover opacity-15"
+        />
 
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="font-cairo text-5xl md:text-7xl font-bold text-gold-primary dir-rtl mb-8"
-          >
+        <div className="gold-line-card relative overflow-hidden rounded-lg p-8">
+          <div className="absolute -right-20 -top-20 h-56 w-56 rounded-full bg-gold-primary/10 blur-3xl" />
+          <span className="relative block font-cinzel text-7xl font-bold leading-none text-gold-primary md:text-8xl">
+            ZIJ.
+          </span>
+          <span className="relative mt-3 block text-xs font-bold tracking-[0.42em] text-gold-light/75">
+            TECHNOLOGIES
+          </span>
+          <span className="dir-rtl relative mt-10 block font-cairo text-6xl font-bold text-gold-light">
             زيج
-          </motion.h2>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="font-cairo text-text-secondary text-lg md:text-xl dir-rtl leading-relaxed text-right max-w-lg"
-          >
-            منهج مستوحى من علم الفلك المصري القديم لتنظيم النجوم واستدلالاتها. نترجم هذا الإرث إلى أنظمة ذكية وأتمتة متقدمة.
-          </motion.p>
+          </span>
+          <p className="dir-rtl relative mt-5 max-w-sm text-right font-cairo text-sm leading-7 text-text-secondary">
+            من الفلك القديم إلى أنظمة حديثة تنظّم العمل وتوضح الاتجاه.
+          </p>
+          <div className="egyptian-rule relative mt-8 h-px w-full" />
         </div>
 
-        {/* Right Side: Features Grid */}
-        <div className="w-full lg:w-1/2 mt-8 lg:mt-0">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="grid grid-cols-1 sm:grid-cols-2 gap-y-10 gap-x-12"
-          >
-            {/* Column 1 */}
-            <div className="flex flex-col gap-8">
-              {[features[0], features[2], features[4]].map((feature, idx) => (
-                <div key={idx} className="flex items-center gap-4 group">
-                  <div className="p-2 border border-gold-primary rounded-md flex items-center justify-center">
-                    <feature.icon className="text-gold-primary group-hover:text-gold-light transition-colors" size={20} />
-                  </div>
-                  <span className="font-dmsans text-text-secondary text-base md:text-lg group-hover:text-text-primary transition-colors">{feature.name}</span>
-                </div>
-              ))}
-            </div>
-            {/* Column 2 */}
-            <div className="flex flex-col gap-8">
-              {[features[1], features[3], features[5]].map((feature, idx) => (
-                <div key={idx} className="flex items-center gap-4 group">
-                  <div className="p-2 border border-gold-primary rounded-md flex items-center justify-center">
-                    <feature.icon className="text-gold-primary group-hover:text-gold-light transition-colors" size={20} />
-                  </div>
-                  <span className="font-dmsans text-text-secondary text-base md:text-lg group-hover:text-text-primary transition-colors">{feature.name}</span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
+        <div className="relative z-10 flex flex-col justify-center">
+          <p className="mb-4 text-xs font-bold uppercase tracking-[0.32em] text-gold-light/70">
+            ORIGIN
+          </p>
+          <h2 className="mb-6 max-w-3xl text-3xl font-semibold text-text-primary md:text-5xl">
+            Ancient navigation, engineered for modern teams.
+          </h2>
+          <p className="dir-rtl max-w-3xl text-right font-cairo text-lg leading-9 text-text-secondary md:text-xl">
+            زيج مستوحى من علم الفلك القديم لتنظيم النجوم والاستدلال بها، ونترجم هذا الإرث إلى أنظمة برمجية ذكية ومنظمة تساعد الشركات على العمل بكفاءة ووضوح.
+          </p>
 
-      </div>
+          <div className="mt-9 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {chips.map(({ name, icon: Icon }, index) => (
+              <Reveal key={name} delay={index * 0.04}>
+                <div className="flex items-center gap-3 rounded-lg border border-border-subtle bg-bg-card/70 px-4 py-3 text-sm text-text-secondary transition hover:border-gold-light/50 hover:text-text-primary hover:shadow-[0_0_24px_rgba(242,193,102,0.13)]">
+                  <Icon className="text-gold-primary" size={18} strokeWidth={1.6} />
+                  {name}
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </Reveal>
     </section>
   );
 }

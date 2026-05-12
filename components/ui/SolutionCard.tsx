@@ -14,19 +14,19 @@ interface SolutionCardProps {
 export function SolutionCard({ icon: Icon, title, description, delay }: SolutionCardProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 28 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5, delay }}
-      className="glass-card p-8 flex flex-col items-center text-center group cursor-pointer"
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.55, delay }}
+      className="group flex min-h-[230px] flex-col rounded-lg border border-border-subtle bg-bg-card/78 p-5 shadow-[0_20px_60px_rgba(0,0,0,0.22)] transition duration-300 hover:-translate-y-1 hover:border-gold-light/60 hover:shadow-[0_0_32px_rgba(242,193,102,0.14)]"
     >
-      <div className="mb-8 p-3 border border-border-subtle rounded-md group-hover:border-gold-primary transition-colors bg-bg-card">
-        <Icon className="text-gold-primary" size={32} strokeWidth={1.5} />
+      <div className="mb-6 flex h-[52px] w-[52px] items-center justify-center rounded-md border border-border-subtle bg-bg-secondary text-gold-light shadow-[0_0_26px_rgba(200,146,60,0.12)] transition group-hover:border-gold-light/70">
+        <Icon size={26} strokeWidth={1.45} />
       </div>
-      <h3 className="font-dmsans font-medium text-base md:text-lg text-text-primary mb-6 max-w-[150px]">
+      <h3 className="max-w-[11rem] text-lg font-semibold leading-tight text-text-primary">
         {title}
       </h3>
-      <p className="font-cairo text-text-secondary dir-rtl text-xs md:text-sm leading-relaxed mt-auto">
+      <p className="dir-rtl mt-auto pt-6 text-right font-cairo text-sm leading-7 text-text-secondary">
         {description}
       </p>
     </motion.div>
