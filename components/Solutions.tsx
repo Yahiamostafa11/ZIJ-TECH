@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import { BarChart2, GitBranch, Layers, Plug } from "lucide-react";
 import { SolutionCard } from "./ui/SolutionCard";
@@ -30,12 +28,12 @@ const solutions = [
 
 export function Solutions() {
   return (
-    <section id="solutions" className="relative z-10 px-4 py-14 md:py-20">
+    <section id="solutions" className="relative z-10 px-4 py-10 md:py-20">
       <Reveal className="premium-panel mx-auto max-w-[1280px] rounded-xl p-6 md:p-9">
         <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
           <div>
             <h2 className="text-3xl font-semibold text-gold-light md:text-4xl">Solutions</h2>
-            <p className="dir-rtl mt-3 max-w-2xl text-right font-cairo text-lg text-text-secondary">
+            <p lang="ar" dir="rtl" className="mt-3 max-w-2xl text-right font-cairo text-lg text-text-secondary">
               نقدم حلول برمجية وأتمتة متكاملة تناسب احتياجات أعمالك
             </p>
           </div>
@@ -43,10 +41,8 @@ export function Solutions() {
         </div>
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {solutions.map((solution, index) => (
-            <Reveal key={solution.title} delay={index * 0.08}>
-              <SolutionCard {...solution} delay={0} />
-            </Reveal>
+          {solutions.map((solution) => (
+            <SolutionCard key={solution.title} {...solution} />
           ))}
         </div>
       </Reveal>

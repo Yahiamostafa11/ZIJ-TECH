@@ -1,7 +1,5 @@
-"use client";
-
 import React from "react";
-import { motion } from "framer-motion";
+import Image from "next/image";
 import { BarChart3, CloudCog, LockKeyhole, Sparkles } from "lucide-react";
 import { AstronomicalOrbit } from "./visuals/AstronomicalOrbit";
 import { GoldButton } from "./ui/GoldButton";
@@ -16,87 +14,52 @@ const features = [
 export function Hero() {
   return (
     <section id="home" className="relative overflow-hidden pb-14 pt-32 md:pb-20 md:pt-36">
-      <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.75, ease: "easeOut" }}
-        className="premium-panel zij-container relative grid min-h-[820px] overflow-hidden rounded-[18px] px-6 py-9 md:px-12 lg:grid-cols-[0.45fr_0.55fr] lg:px-14 lg:py-12"
+      <div
+        className="premium-panel zij-container relative grid min-h-[680px] overflow-hidden rounded-[18px] px-6 py-9 md:px-12 lg:min-h-[760px] lg:grid-cols-[0.48fr_0.52fr] lg:px-14 lg:py-12"
       >
-        <motion.img
+        <Image
           src="/svg/stars.svg"
           alt=""
           aria-hidden="true"
+          fill
+          sizes="100vw"
           className="asset-gold-screen pointer-events-none absolute inset-0 h-full w-full select-none object-cover opacity-20"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.2 }}
-          transition={{ duration: 1.2, delay: 0.2 }}
         />
         <div className="absolute inset-x-0 bottom-0 h-px bg-gold-primary/55" />
         <div className="absolute -right-28 top-24 h-[30rem] w-[30rem] rounded-full bg-gold-primary/8 blur-[120px]" />
         <div className="absolute left-0 top-0 h-full w-px bg-gradient-to-b from-transparent via-gold-primary/40 to-transparent" />
 
         <div className="relative z-20 flex flex-col justify-center py-8 lg:pr-6">
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.1 }}
-            className="mb-7 text-xs font-bold uppercase tracking-[0.34em] text-gold-light/75"
-          >
+          <p className="hero-enter mb-7 text-xs font-bold uppercase tracking-[0.34em] text-gold-light/75">
             SOFTWARE SYSTEMS • SAAS • AUTOMATION
-          </motion.p>
+          </p>
 
           <h1 className="font-dmsans text-[clamp(3.5rem,7.4vw,5.7rem)] font-bold leading-[0.94] tracking-normal">
-            <motion.span
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.18 }}
-              className="block text-gold-primary"
-            >
+            <span className="hero-enter block text-gold-primary [--hero-delay:0.08s]">
               Automate.
-            </motion.span>
-            <motion.span
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.28 }}
-              className="block text-text-primary"
-            >
+            </span>
+            <span className="hero-enter block text-text-primary [--hero-delay:0.14s]">
               Scale.
-            </motion.span>
-            <motion.span
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.38 }}
-              className="block text-text-primary"
-            >
+            </span>
+            <span className="hero-enter block text-text-primary [--hero-delay:0.2s]">
               Elevate.
-            </motion.span>
+            </span>
           </h1>
 
-          <motion.p
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.5 }}
-            className="dir-rtl mt-8 max-w-xl text-right font-cairo text-lg leading-9 text-text-primary/90 md:text-xl"
+          <p
+            lang="ar"
+            dir="rtl"
+            className="hero-enter mt-8 max-w-xl text-right font-cairo text-lg leading-9 text-text-primary/90 [--hero-delay:0.26s] md:text-xl"
           >
             نصمم أنظمة برمجية وأتمتة ذكية تدفع أعمالك إلى مستوى جديد من الكفاءة والذكاء.
-          </motion.p>
+          </p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.62 }}
-            className="mt-8 flex flex-wrap gap-4"
-          >
+          <div className="hero-enter mt-8 flex flex-wrap gap-4 [--hero-delay:0.32s]">
             <GoldButton href="#solutions" variant="filled">Discover Solutions</GoldButton>
             <GoldButton href="#about" variant="outline">About ZIJ</GoldButton>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.74 }}
-            className="mt-9 grid max-w-xl grid-cols-2 gap-4 sm:grid-cols-4"
-          >
+          <div className="hero-enter mt-9 grid max-w-xl grid-cols-2 gap-4 [--hero-delay:0.38s] sm:grid-cols-4">
             {features.map(({ label, icon: Icon }) => (
               <div key={label} className="flex items-center gap-3 text-sm text-text-secondary">
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-border-subtle bg-bg-card/70 text-gold-light shadow-[0_0_20px_rgba(200,146,60,0.08)]">
@@ -105,18 +68,13 @@ export function Hero() {
                 <span>{label}</span>
               </div>
             ))}
-          </motion.div>
+          </div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.96 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.9, delay: 0.25 }}
-          className="relative z-10 flex items-center justify-center overflow-visible py-8 lg:justify-end lg:py-0"
-        >
+        <div className="hero-enter pointer-events-none absolute inset-0 z-10 flex items-center justify-center overflow-hidden opacity-25 [--hero-delay:0.18s] lg:pointer-events-auto lg:relative lg:justify-end lg:overflow-visible lg:py-0 lg:opacity-100">
           <AstronomicalOrbit />
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
     </section>
   );
 }

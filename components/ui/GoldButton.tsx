@@ -2,14 +2,16 @@ import React from "react";
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
 
-interface GoldButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+type GoldButtonProps = {
   children: React.ReactNode;
   variant?: "outline" | "filled";
   className?: string;
-  href?: string;
-}
+} & (
+  | (React.AnchorHTMLAttributes<HTMLAnchorElement> & { href: string })
+  | (React.ButtonHTMLAttributes<HTMLButtonElement> & { href?: never })
+);
 
-export function GoldButton({ children, variant = "filled", className, href, ...props }: GoldButtonProps) {
+export function GoldButton({ children, variant = "filled", className, ...props }: GoldButtonProps) {
   const baseClasses =
     "relative inline-flex items-center justify-center rounded px-6 py-2.5 font-dmsans text-sm font-semibold transition-all duration-300 shadow-[0_10px_28px_rgba(0,0,0,0.22)]";
   
@@ -24,16 +26,18 @@ export function GoldButton({ children, variant = "filled", className, href, ...p
     className
   );
 
-  if (href) {
+  if ("href" in props && props.href) {
     return (
-      <a href={href} className={classes}>
+      <a className={classes} {...props}>
         {children}
       </a>
     );
   }
 
+  const buttonProps = props as React.ButtonHTMLAttributes<HTMLButtonElement>;
+
   return (
-    <button className={classes} {...props}>
+    <button className={classes} {...buttonProps} type={buttonProps.type ?? "button"}>
       {children}
     </button>
   );

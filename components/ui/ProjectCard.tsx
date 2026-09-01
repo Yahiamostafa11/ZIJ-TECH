@@ -1,13 +1,9 @@
-"use client";
-
 import React from "react";
-import { motion } from "framer-motion";
 
 interface ProjectCardProps {
   title: string;
   description: string;
   type: "dashboard" | "automation" | "analytics";
-  delay: number;
 }
 
 function ProjectPreview({ type }: { type: ProjectCardProps["type"] }) {
@@ -64,24 +60,18 @@ function ProjectPreview({ type }: { type: ProjectCardProps["type"] }) {
   );
 }
 
-export function ProjectCard({ title, description, type, delay }: ProjectCardProps) {
+export function ProjectCard({ title, description, type }: ProjectCardProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 28 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.55, delay }}
-      className="group overflow-hidden rounded-lg border border-border-subtle bg-bg-card/78 shadow-[0_20px_60px_rgba(0,0,0,0.22)] transition duration-300 hover:-translate-y-1 hover:border-gold-light/60 hover:shadow-[0_0_32px_rgba(242,193,102,0.14)]"
-    >
+    <div className="group overflow-hidden rounded-lg border border-border-subtle bg-bg-card/78 shadow-[0_20px_60px_rgba(0,0,0,0.22)] transition duration-300 hover:-translate-y-1 hover:border-gold-light/60 hover:shadow-[0_0_32px_rgba(242,193,102,0.14)]">
       <div className="relative h-48 overflow-hidden border-b border-border-subtle/70">
         <ProjectPreview type={type} />
       </div>
       <div className="p-6">
         <h3 className="text-base font-semibold text-text-primary">{title}</h3>
-        <p className="dir-rtl mt-4 text-right font-cairo text-sm leading-7 text-text-secondary">
+        <p lang="ar" dir="rtl" className="mt-4 text-right font-cairo text-sm leading-7 text-text-secondary">
           {description}
         </p>
       </div>
-    </motion.div>
+    </div>
   );
 }

@@ -19,7 +19,7 @@ export function Navbar() {
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 24);
     handleScroll();
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -57,17 +57,19 @@ export function Navbar() {
           </div>
 
           <button
+            type="button"
             className="flex h-10 w-10 items-center justify-center rounded-md border border-border-subtle text-gold-light lg:hidden"
             onClick={() => setIsMobileMenuOpen((open) => !open)}
             aria-label="Toggle navigation menu"
             aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-navigation"
           >
             {isMobileMenuOpen ? <X size={21} /> : <Menu size={21} />}
           </button>
         </div>
 
         {isMobileMenuOpen && (
-          <div className="mt-5 grid gap-3 border-t border-border-subtle/70 pt-5 lg:hidden">
+          <div id="mobile-navigation" className="mt-5 grid gap-3 border-t border-border-subtle/70 pt-5 lg:hidden">
             {navLinks.map((link) => (
               <a
                 key={link.name}
@@ -78,7 +80,13 @@ export function Navbar() {
                 {link.name}
               </a>
             ))}
-            <GoldButton href="#contact" className="mt-2 w-full">Get Started</GoldButton>
+            <GoldButton
+              href="#contact"
+              className="mt-2 w-full"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Get Started
+            </GoldButton>
           </div>
         )}
       </div>

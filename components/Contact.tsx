@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { GoldButton } from "./ui/GoldButton";
 import { Reveal } from "./ui/Reveal";
 
@@ -9,50 +9,84 @@ const inputClass =
 
 export function Contact() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [feedback, setFeedback] = useState("");
+
+  useEffect(() => {
+    if (status !== "success" && status !== "error") return;
+
+    const timeoutId = window.setTimeout(() => {
+      setStatus("idle");
+      setFeedback("");
+    }, 6_000);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [status]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const form = e.currentTarget;
     setStatus("loading");
+    setFeedback("");
 
-    const formData = new FormData(e.currentTarget);
+    const formData = new FormData(form);
     const data = {
       name: formData.get("name"),
       email: formData.get("email"),
       message: formData.get("message"),
+      company: formData.get("company"),
     };
+
+    const controller = new AbortController();
+    // SMTP can take longer on a cold connection. Keep the browser timeout
+    // above the transport timeouts to avoid reporting failure after delivery.
+    const timeoutId = window.setTimeout(() => controller.abort(), 45_000);
 
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
+        signal: controller.signal,
       });
 
       if (response.ok) {
         setStatus("success");
-        e.currentTarget.reset();
+        setFeedback("Message sent successfully.");
+        form.reset();
       } else {
         setStatus("error");
+        setFeedback("Failed to send message. Please try again.");
       }
-    } catch {
+    } catch (error) {
       setStatus("error");
+      setFeedback(
+        error instanceof DOMException && error.name === "AbortError"
+          ? "Sending took too long. Please check your inbox before trying again."
+          : "Failed to send message. Please try again.",
+      );
+    } finally {
+      window.clearTimeout(timeoutId);
     }
   };
 
   return (
-    <section id="contact" className="relative z-10 px-4 py-14 md:py-20">
+    <section id="contact" className="relative z-10 px-4 py-10 md:py-20">
       <Reveal className="premium-panel mx-auto max-w-[920px] rounded-xl p-6 md:p-10">
         <div className="mx-auto mb-9 max-w-2xl text-center">
           <p className="mb-3 text-xs font-bold uppercase tracking-[0.32em] text-gold-light/70">
             Contact
           </p>
           <h2 className="text-3xl font-semibold text-text-primary md:text-4xl">Get In Touch</h2>
-          <p className="dir-rtl mt-4 text-center font-cairo text-lg leading-8 text-text-secondary">
+          <p lang="ar" dir="rtl" className="mt-4 text-center font-cairo text-lg leading-8 text-text-secondary">
             تواصل معنا لنبدأ في تحويل رؤيتك إلى واقع رقمي ملموس.
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+          <div className="absolute -left-[9999px]" aria-hidden="true">
+            <label htmlFor="company">Company website</label>
+            <input id="company" name="company" type="text" tabIndex={-1} autoComplete="off" />
+          </div>
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
             <div className="flex flex-col gap-2">
               <label htmlFor="name" className="text-sm text-text-secondary">
@@ -63,6 +97,9 @@ export function Contact() {
                 id="name"
                 name="name"
                 required
+                minLength={2}
+                maxLength={100}
+                autoComplete="name"
                 className={inputClass}
                 placeholder="John Doe"
               />
@@ -76,6 +113,9 @@ export function Contact() {
                 id="email"
                 name="email"
                 required
+                maxLength={254}
+                autoComplete="email"
+                inputMode="email"
                 className={inputClass}
                 placeholder="john@example.com"
               />
@@ -90,19 +130,24 @@ export function Contact() {
               id="message"
               name="message"
               required
+              minLength={10}
+              maxLength={5000}
               rows={5}
               className={`${inputClass} resize-none`}
               placeholder="Tell us about your project..."
             />
           </div>
 
-          <div className="mt-3 flex flex-col items-center gap-4">
+          <div className="mt-3 flex flex-col items-center gap-4" aria-live="polite">
             <GoldButton type="submit" variant="filled" className="w-full md:w-auto" disabled={status === "loading"}>
               {status === "loading" ? "Sending..." : "Send Message"}
             </GoldButton>
 
-            {status === "success" && <p className="text-sm text-gold-light">Message sent successfully.</p>}
-            {status === "error" && <p className="text-sm text-red-300">Failed to send message. Please try again.</p>}
+            {(status === "success" || status === "error") && (
+              <p className={`text-sm ${status === "success" ? "text-gold-light" : "text-red-300"}`}>
+                {feedback}
+              </p>
+            )}
           </div>
         </form>
       </Reveal>

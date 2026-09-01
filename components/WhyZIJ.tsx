@@ -1,8 +1,5 @@
-"use client";
-
 import React from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
 import { Building2, Compass, ShieldCheck, TrendingUp } from "lucide-react";
 import { Reveal } from "./ui/Reveal";
 
@@ -15,7 +12,7 @@ const bullets = [
 
 export function WhyZIJ() {
   return (
-    <section className="relative z-10 px-4 py-14 md:py-20">
+    <section className="relative z-10 px-4 py-10 md:py-20">
       <Reveal className="premium-panel relative mx-auto grid max-w-[1280px] overflow-hidden rounded-xl p-6 md:grid-cols-[1.1fr_0.9fr] md:p-9">
         <Image
           src="/svg/stars.svg"
@@ -28,13 +25,13 @@ export function WhyZIJ() {
 
         <div className="relative z-10 flex flex-col justify-center py-6">
           <h2 className="text-3xl font-semibold text-gold-light md:text-4xl">Why ZIJ?</h2>
-          <p className="dir-rtl mt-5 max-w-2xl text-right font-cairo text-lg leading-8 text-text-secondary">
+          <p lang="ar" dir="rtl" className="mt-5 max-w-2xl text-right font-cairo text-lg leading-8 text-text-secondary">
             نمزج بين الإرث والحضارة والتكنولوجيا لنخلق قيمة حقيقية.
           </p>
 
           <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2">
-            {bullets.map(({ text, icon: Icon }, index) => (
-              <Reveal key={text} delay={index * 0.08}>
+            {bullets.map(({ text, icon: Icon }) => (
+              <Reveal key={text}>
                 <div className="flex items-center gap-4 text-sm text-text-secondary">
                   <span className="flex h-10 w-10 items-center justify-center rounded-md border border-border-subtle bg-bg-card/80 text-gold-primary">
                     <Icon size={18} strokeWidth={1.55} />
@@ -46,11 +43,7 @@ export function WhyZIJ() {
           </div>
         </div>
 
-        <motion.div
-          className="relative z-10 mt-8 flex min-h-[360px] justify-center md:mt-0 md:min-h-[480px] md:justify-end"
-          animate={{ y: [0, -10, 0] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        >
+        <div className="float-soft relative z-10 mt-8 flex min-h-[280px] justify-center md:mt-0 md:min-h-[420px] md:justify-end">
           <div className="absolute bottom-10 right-8 h-64 w-64 rounded-full bg-gold-primary/10 blur-[80px]" />
           <Image
             src="/svg/Pharaoh.svg"
@@ -60,7 +53,7 @@ export function WhyZIJ() {
             height={520}
             className="asset-gold-screen pointer-events-none relative h-[360px] w-auto select-none object-contain opacity-90 md:h-[500px]"
           />
-        </motion.div>
+        </div>
       </Reveal>
     </section>
   );

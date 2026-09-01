@@ -3,9 +3,6 @@
 @tailwind utilities;
 
 :root {
-  --font-cinzel: Cinzel, Georgia, "Times New Roman", serif;
-  --font-dm-sans: "DM Sans", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-cairo: Cairo, Tahoma, Arial, sans-serif;
   --bg-primary: #071011;
   --bg-secondary: #0A0F10;
   --bg-card: #0D1516;
@@ -88,10 +85,6 @@ body::before {
   transform: translateY(-4px);
 }
 
-.dir-rtl {
-  direction: rtl;
-}
-
 .icon-circle {
   display: flex;
   align-items: center;
@@ -161,4 +154,63 @@ body::before {
 @keyframes float-soft {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
+}
+
+@keyframes hero-enter {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes orbit-pulse {
+  0%, 100% { opacity: 0.82; }
+  50% { opacity: 1; }
+}
+
+.hero-enter {
+  animation: hero-enter 0.58s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--hero-delay, 0s);
+}
+
+.orbit-spin {
+  animation: orbit-rotate 180s linear infinite;
+}
+
+.orbit-stars {
+  animation: orbit-rotate 260s linear infinite;
+}
+
+.orbit-icons {
+  animation: orbit-rotate-reverse 120s linear infinite;
+}
+
+.orbit-icon {
+  animation: orbit-rotate 120s linear infinite;
+}
+
+.orbit-pulse {
+  animation: orbit-pulse 4.5s ease-in-out infinite;
+}
+
+.float-soft {
+  animation: float-soft 7s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .hero-enter {
+    opacity: 1;
+    transform: none;
+  }
 }
