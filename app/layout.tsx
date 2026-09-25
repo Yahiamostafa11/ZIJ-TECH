@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cairo, Cinzel, DM_Sans } from "next/font/google";
+import { THEME_INIT_SCRIPT } from "@/lib/theme";
 import "./globals.css";
 
 const cinzel = Cinzel({
@@ -48,13 +49,24 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fbf5e9" },
+    { media: "(prefers-color-scheme: dark)", color: "#071011" },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${cinzel.variable} ${dmSans.variable} ${cairo.variable}`}>
+    // The theme script sets data-theme on <html> before React hydrates.
+    <html lang="en" className={`${cinzel.variable} ${dmSans.variable} ${cairo.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
       <body className="font-dmsans bg-bg-primary text-text-primary antialiased">
         {children}
       </body>

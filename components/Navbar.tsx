@@ -2,7 +2,10 @@
 
 import React, { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
+import { ThemeToggle } from "./ThemeToggle";
 import { GoldButton } from "./ui/GoldButton";
+
+const THEME_LABELS = { toLight: "Switch to light theme", toDark: "Switch to dark theme" };
 
 const navLinks = [
   { name: "Home", href: "#home" },
@@ -26,8 +29,8 @@ export function Navbar() {
   return (
     <nav className="fixed inset-x-0 top-5 z-50">
       <div
-        className={`zij-container rounded-2xl border border-border-subtle bg-[rgba(10,15,16,0.68)] px-5 py-4 shadow-[0_18px_70px_rgba(0,0,0,0.34)] backdrop-blur-xl transition-all duration-300 md:px-8 ${
-          isScrolled ? "bg-bg-secondary/82 shadow-[0_18px_80px_rgba(0,0,0,0.48)]" : ""
+        className={`zij-container rounded-2xl border border-border-subtle bg-bg-secondary/70 px-5 py-4 shadow-float backdrop-blur-xl transition-all duration-300 md:px-8 ${
+          isScrolled ? "bg-bg-secondary/82 shadow-float-strong" : ""
         }`}
       >
         <div className="flex items-center justify-between gap-6">
@@ -52,20 +55,24 @@ export function Navbar() {
             ))}
           </div>
 
-          <div className="hidden lg:block">
+          <div className="hidden items-center gap-3 lg:flex">
+            <ThemeToggle labels={THEME_LABELS} />
             <GoldButton href="#contact">Get Started</GoldButton>
           </div>
 
-          <button
-            type="button"
-            className="flex h-10 w-10 items-center justify-center rounded-md border border-border-subtle text-gold-light lg:hidden"
-            onClick={() => setIsMobileMenuOpen((open) => !open)}
-            aria-label="Toggle navigation menu"
-            aria-expanded={isMobileMenuOpen}
-            aria-controls="mobile-navigation"
-          >
-            {isMobileMenuOpen ? <X size={21} /> : <Menu size={21} />}
-          </button>
+          <div className="flex items-center gap-2 lg:hidden">
+            <ThemeToggle labels={THEME_LABELS} />
+            <button
+              type="button"
+              className="flex h-10 w-10 items-center justify-center rounded-md border border-border-subtle text-gold-light"
+              onClick={() => setIsMobileMenuOpen((open) => !open)}
+              aria-label="Toggle navigation menu"
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-navigation"
+            >
+              {isMobileMenuOpen ? <X size={21} /> : <Menu size={21} />}
+            </button>
+          </div>
         </div>
 
         {isMobileMenuOpen && (

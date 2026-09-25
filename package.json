@@ -10,26 +10,40 @@
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx scripts/migrate.mts",
+    "user:create": "tsx scripts/create-user.mts",
+    "db:setup": "tsx scripts/setup.mts",
+    "build:deploy": "npm run db:setup && npm run build"
   },
   "dependencies": {
+    "better-auth": "^1.7.6",
     "clsx": "^2.1.1",
+    "drizzle-orm": "^0.45.3",
+    "exceljs": "^4.4.0",
     "lucide-react": "1.38.0",
+    "mysql2": "^3.24.4",
     "next": "16.3.4",
+    "next-intl": "^4.14.7",
     "nodemailer": "9.1.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "tailwind-merge": "^3.6.0"
+    "server-only": "^0.0.1",
+    "tailwind-merge": "^3.6.0",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@types/node": "^24",
     "@types/nodemailer": "^8.0.0",
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.5",
+    "drizzle-kit": "^0.31.11",
     "eslint": "9.39.5",
     "eslint-config-next": "16.3.4",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
+    "tsx": "^4.23.15",
     "typescript": "5.9.3"
   },
   "overrides": {
