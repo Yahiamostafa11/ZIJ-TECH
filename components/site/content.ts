@@ -92,6 +92,7 @@ const WORK_EN: WorkItem[] = [
   {
     key: "academy-portal",
     name: "Zij Academy Portal",
+    image: "/work/academy-portal.webp",
     division: "academy",
     kind: "LMS · Our own platform",
     note: "The bilingual system that runs Zij Academy: students, groups, payments, Excel import and parent accounts.",
