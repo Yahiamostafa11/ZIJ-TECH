@@ -1,0 +1,90 @@
+{
+  "common": {
+    "brand": "ZIJ Technologies",
+    "signOut": "Sign out",
+    "language": "العربية",
+    "backToHub": "All portals",
+    "menu": "Menu"
+  },
+  "login": {
+    "title": "Sign in",
+    "subtitle": "ZIJ management portal",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Sign in",
+    "submitting": "Signing in…",
+    "invalid": "Incorrect email or password.",
+    "tooMany": "Too many attempts. Wait a minute and try again.",
+    "failed": "Sign-in failed. Please try again."
+  },
+  "hub": {
+    "title": "Portals",
+    "subtitle": "Choose a division to manage.",
+    "open": "Open",
+    "academy": "Zij Academy",
+    "academyDescription": "Students, groups, attendance, payments and follow-up.",
+    "software": "Software Division",
+    "softwareDescription": "Clients, projects and delivery.",
+    "iot": "IoT & Robotics Division",
+    "iotDescription": "Hardware projects, digital twins and maintenance systems."
+  },
+  "portal": {
+    "hub": "Management",
+    "academy": "Academy",
+    "instructor": "Instructor",
+    "software": "Software",
+    "iot": "IoT & Robotics"
+  },
+  "placeholder": {
+    "title": "Coming soon",
+    "body": "This module is planned for phase {phase} of the roadmap.",
+    "divisionBody": "This division's portal will be designed after the Academy is live."
+  },
+  "overview": {
+    "welcome": "Welcome, {name}",
+    "body": "The academy portal is being built. Modules unlock as each phase ships."
+  },
+  "forbidden": {
+    "title": "No access",
+    "body": "Your account does not have permission to open this page.",
+    "noRoles": "Your account has no role yet. Ask an administrator to grant one."
+  },
+  "nav": {
+    "sections": {
+      "overview": "Overview",
+      "admissions": "Admissions",
+      "people": "People",
+      "academics": "Academics",
+      "finance": "Finance",
+      "followup": "Follow-up",
+      "operations": "Operations",
+      "settings": "Settings",
+      "teaching": "Teaching"
+    },
+    "overview": "Dashboard",
+    "leads": "Leads",
+    "trials": "Trial classes",
+    "students": "Students",
+    "families": "Families",
+    "instructors": "Instructors",
+    "levels": "Levels",
+    "groups": "Groups",
+    "schedule": "Schedule",
+    "attendance": "Attendance",
+    "grades": "Grades",
+    "homework": "Homework & portfolio",
+    "warnings": "Warnings",
+    "payments": "Payments",
+    "balances": "Outstanding balances",
+    "calls": "Follow-up calls",
+    "notes": "Notes",
+    "branches": "Branches",
+    "inventory": "Kit inventory",
+    "reports": "Reports",
+    "import": "Import from Excel",
+    "users": "Users & roles",
+    "audit": "Audit log",
+    "today": "Today",
+    "myGroups": "My groups"
+  }
+}
