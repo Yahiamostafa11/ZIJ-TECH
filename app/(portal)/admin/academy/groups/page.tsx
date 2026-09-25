@@ -1,8 +1,8 @@
 import React from "react";
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
-import { Plus } from "lucide-react";
-import { Badge, ButtonLink, EmptyState, PageHeader, Table, Td, Th } from "@/components/portal/ui";
+import { Download, FileSpreadsheet, Plus } from "lucide-react";
+import { Badge, ButtonLink, EmptyState, PageHeader, Table, Td, Th, buttonClass } from "@/components/portal/ui";
 import { formatMoney, localized } from "@/lib/academy/format";
 import { listGroups } from "@/lib/academy/queries";
 import { can } from "@/lib/auth/permissions";
@@ -23,6 +23,10 @@ export default async function GroupsPage({
     getLocale() as Promise<Locale>,
     listGroups(user, filters),
   ]);
+
+  const exportQuery = new URLSearchParams(
+    Object.entries(filters).filter(([, value]) => value) as [string, string][],
+  ).toString();
 
   const filterLink = (next: { status?: string; mode?: string }, label: string) => {
     const merged = { ...filters, ...next };
@@ -50,11 +54,25 @@ export default async function GroupsPage({
         title={t("nav.groups")}
         description={t("groups.description")}
         actions={
-          can(user.grants, "groups.write") && (
-            <ButtonLink href="/admin/academy/groups/new">
-              <Plus size={16} /> {t("groups.new")}
-            </ButtonLink>
-          )
+          <>
+            <a
+              href={`/admin/academy/export${exportQuery ? `?${exportQuery}` : ""}`}
+              download
+              className={buttonClass("secondary")}
+            >
+              <Download size={16} /> {t("groups.exportAll")}
+            </a>
+            {can(user.grants, "students.import") && (
+              <ButtonLink href="/admin/academy/import" variant="secondary">
+                <FileSpreadsheet size={16} /> {t("groups.importExcel")}
+              </ButtonLink>
+            )}
+            {can(user.grants, "groups.write") && (
+              <ButtonLink href="/admin/academy/groups/new">
+                <Plus size={16} /> {t("groups.new")}
+              </ButtonLink>
+            )}
+          </>
         }
       />
 

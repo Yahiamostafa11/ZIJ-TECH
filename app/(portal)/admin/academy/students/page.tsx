@@ -1,10 +1,11 @@
 import React from "react";
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
-import { Search } from "lucide-react";
-import { Badge, EmptyState, PageHeader, Table, Td, Th, buttonClass, inputClass } from "@/components/portal/ui";
+import { Search, UserPlus } from "lucide-react";
+import { Badge, ButtonLink, EmptyState, PageHeader, Table, Td, Th, buttonClass, inputClass } from "@/components/portal/ui";
 import { ageOf, formatMoney } from "@/lib/academy/format";
 import { listStudents } from "@/lib/academy/queries";
+import { can } from "@/lib/auth/permissions";
 import { requirePermission } from "@/lib/auth/session";
 import type { Locale } from "@/lib/i18n/config";
 
@@ -23,7 +24,17 @@ export default async function StudentsPage({
 
   return (
     <div className="mx-auto max-w-6xl">
-      <PageHeader title={t("nav.students")} description={t("students.description", { count: students.length })} />
+      <PageHeader
+        title={t("nav.students")}
+        description={t("students.description", { count: students.length })}
+        actions={
+          can(user.grants, "students.write") && (
+            <ButtonLink href="/admin/academy/students/new">
+              <UserPlus size={16} /> {t("students.new")}
+            </ButtonLink>
+          )
+        }
+      />
 
       <form className="mb-5 flex flex-wrap gap-3" role="search">
         <div className="relative min-w-[240px] flex-1">

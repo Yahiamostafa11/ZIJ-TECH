@@ -3,10 +3,10 @@ import Link from "next/link";
 import { and, asc, eq, notInArray } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
-import { FileSpreadsheet, Pencil } from "lucide-react";
+import { Download, FileSpreadsheet, Pencil } from "lucide-react";
 import { ActionForm, FieldError, FormMessage, SubmitButton } from "@/components/portal/ActionForm";
 import { WEEKDAYS } from "@/components/academy/GroupForm";
-import { Badge, ButtonLink, Card, DetailList, EmptyState, Field, PageHeader, Table, Td, Th, inputClass } from "@/components/portal/ui";
+import { Badge, ButtonLink, Card, DetailList, EmptyState, Field, PageHeader, Table, Td, Th, buttonClass, inputClass } from "@/components/portal/ui";
 import { enrollExistingStudent, enrollNewStudent } from "@/lib/academy/actions/people";
 import { ageOf, formatDate, formatMoney, localized } from "@/lib/academy/format";
 import { getGroupDetail, getGroupRoster } from "@/lib/academy/queries";
@@ -62,6 +62,9 @@ export default async function GroupPage({ params }: { params: Promise<{ id: stri
         }`}
         actions={
           <>
+            <a href={`/admin/academy/export?group=${group.id}`} download className={buttonClass("secondary")}>
+              <Download size={16} /> {t("groups.export")}
+            </a>
             {can(user.grants, "students.import", group.branchId) && (
               <ButtonLink href={`/admin/academy/import?group=${group.id}`} variant="secondary">
                 <FileSpreadsheet size={16} /> {t("nav.import")}
@@ -141,7 +144,14 @@ export default async function GroupPage({ params }: { params: Promise<{ id: stri
           </Card>
 
           {canEnroll && (
-            <Card title={t("groups.addNewStudent")}>
+            <Card
+              title={t("groups.addNewStudent")}
+              actions={
+                <Link href={`/admin/academy/students/new?group=${group.id}`} className="text-xs text-gold-light hover:underline">
+                  {t("groups.fullForm")}
+                </Link>
+              }
+            >
               <ActionForm action={enrollNewStudent.bind(null, group.id)} resetOnSuccess className="grid gap-4 sm:grid-cols-2">
                 <Field label={t("fields.nameAr")} htmlFor="new-nameAr" hint={t("students.nameHint")}>
                   <input id="new-nameAr" name="nameAr" dir="rtl" className={inputClass} />

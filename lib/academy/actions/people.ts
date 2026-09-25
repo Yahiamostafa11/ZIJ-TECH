@@ -22,7 +22,7 @@ import { field, parseForm, type ActionState } from "@/lib/forms";
 import { todayInCairo, toMoney } from "../format";
 import { cleanName, nameKey } from "../normalize";
 import { FamilyConflictError, resolveFamily, resolveStudent } from "../people";
-import { requireGroup, requireStudentAccess } from "../scope";
+import { branchScope, requireGroup, requireStudentAccess } from "../scope";
 
 const BASE = "/admin/academy";
 
@@ -336,3 +336,106 @@ async function loadEnrollment(user: CurrentUser, enrollmentId: number, permissio
   return row;
 }
 
+
+/* Manual student registration ---------------------------------------------- */
+
+const registerSchema = z
+  .object({
+    nameAr: field.text(160),
+    nameEn: field.optionalText(160),
+    birthDate: field.optionalDate(),
+    age: z.preprocess((value) => (value === "" ? null : value), z.coerce.number().int().min(3, "outOfRange").max(25, "outOfRange").nullable().default(null)),
+    school: field.optionalText(160),
+    motherName: field.optionalText(160),
+    motherPhone: field.optionalPhone(),
+    fatherName: field.optionalText(160),
+    fatherPhone: field.optionalPhone(),
+    notes: field.optionalText(2000),
+    photoConsent: field.checkbox(),
+    groupId: field.optionalId(),
+    price: z.preprocess((value) => (value === "" ? undefined : value), field.amount().optional()),
+    discount: z.preprocess((value) => (value === "" || value === undefined ? 0 : value), field.amount()),
+  })
+  .refine((value) => value.motherPhone || value.fatherPhone, {
+    path: ["motherPhone"],
+    message: "phoneRequired",
+  });
+
+class DuplicateStudentError extends Error {}
+
+/** Registers a student typed in by staff, optionally placing them in a group. */
+export async function registerStudent(_: ActionState, formData: FormData): Promise<ActionState> {
+  const user = await requirePermission("students.write");
+  const parsed = parseForm(registerSchema, formData);
+  if (!parsed.data) return parsed.state;
+  const values = parsed.data;
+
+  // Branch admins only see students enrolled in their groups, so a group is required for them.
+  if (!values.groupId && !branchScope(user).all) {
+    return { error: "checkFields", fieldErrors: { groupId: "groupRequired" } };
+  }
+
+  const group = values.groupId ? await requireGroup(user, values.groupId, "students.write") : null;
+  const price = group ? (values.price ?? Number(group.price)) : 0;
+  if (group) {
+    const customPrice = toMoney(price) !== Number(group.price) || values.discount > 0;
+    if (customPrice && !can(user.grants, "pricing.manage", group.branchId)) return { error: "noPricingPermission" };
+    if (values.discount > price) return { error: "checkFields", fieldErrors: { discount: "discountTooHigh" } };
+  }
+
+  const nameAr = cleanName(values.nameAr);
+  let studentId: number;
+  try {
+    studentId = await db.transaction(async (tx) => {
+      const { familyId } = await resolveFamily(
+        tx,
+        { mother: values.motherPhone, father: values.fatherPhone },
+        nameAr,
+        { mother: values.motherName, father: values.fatherName },
+      );
+
+      const key = nameKey(nameAr);
+      const [duplicate] = await tx
+        .select({ id: student.id })
+        .from(student)
+        .where(and(eq(student.familyId, familyId), eq(student.nameKey, key)));
+      if (duplicate) throw new DuplicateStudentError();
+
+      const [{ id }] = await tx
+        .insert(student)
+        .values({
+          familyId,
+          nameAr,
+          nameKey: key,
+          nameEn: values.nameEn,
+          birthDate: values.birthDate,
+          birthYear: values.birthDate || values.age === null ? null : new Date().getUTCFullYear() - values.age,
+          school: values.school,
+          notes: values.notes,
+          photoConsent: values.photoConsent,
+        })
+        .$returningId();
+
+      if (group) {
+        await tx.insert(enrollment).values({
+          studentId: id,
+          groupId: group.id,
+          price: price.toFixed(2),
+          discount: values.discount.toFixed(2),
+        });
+      }
+      await audit(tx, user.id, "student.create", "student", id, { nameAr, familyId, groupId: group?.id ?? null });
+      return id;
+    });
+  } catch (error) {
+    if (error instanceof FamilyConflictError) return { error: "phonesConflict" };
+    if (error instanceof DuplicateStudentError) {
+      return { error: "studentExists", fieldErrors: { nameAr: "studentExists" } };
+    }
+    throw error;
+  }
+
+  revalidatePath(`${BASE}/students`);
+  if (group) revalidatePath(`${BASE}/groups/${group.id}`);
+  redirect(`${BASE}/students/${studentId}`);
+}

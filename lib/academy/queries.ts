@@ -23,6 +23,7 @@ export function paidByEnrollment() {
     .select({
       enrollmentId: payment.enrollmentId,
       paid: sql<string>`coalesce(sum(${payment.amount}), 0)`.as("paid"),
+      lastPaidOn: sql<string | null>`max(${payment.paidOn})`.as("last_paid_on"),
     })
     .from(payment)
     .where(isNull(payment.voidedAt))
@@ -164,10 +165,12 @@ export async function getGroupRoster(groupId: number) {
       price: enrollment.price,
       discount: enrollment.discount,
       paid: paid.paid,
+      lastPaidOn: paid.lastPaidOn,
       studentId: student.id,
       nameAr: student.nameAr,
       birthDate: student.birthDate,
       birthYear: student.birthYear,
+      notes: student.notes,
       familyId: student.familyId,
     })
     .from(enrollment)

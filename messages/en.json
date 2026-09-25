@@ -213,7 +213,9 @@
     "cannotGrantRole": "You can't manage this role.",
     "emailTaken": "An account with this email already exists.",
     "cannotRevokeSelf": "You can't remove your own owner role.",
-    "useAccountPage": "Change your own password from My account."
+    "useAccountPage": "Change your own password from My account.",
+    "studentExists": "A student with this name is already registered in this family.",
+    "groupRequired": "Choose a group."
   },
   "messages": {
     "saved": "Saved.",
@@ -270,7 +272,11 @@
     "addExistingStudent": "Add an existing student",
     "enroll": "Add to group",
     "defaultPrice": "Leave empty for {amount}",
-    "details": "Details"
+    "details": "Details",
+    "exportAll": "Export to Excel",
+    "export": "Export to Excel",
+    "importExcel": "Upload from Excel",
+    "fullForm": "Full registration form"
   },
   "students": {
     "description": "{count} shown. Search by name or any part of a parent's phone.",
@@ -295,7 +301,18 @@
     "relation": "Relation",
     "familyLabel": "Family:",
     "filterActive": "Active students",
-    "filterArchived": "Archived students"
+    "filterArchived": "Archived students",
+    "new": "New student",
+    "newDescription": "Register a student by hand. Siblings are linked automatically when a parent's phone is already on file.",
+    "ageIfNoBirthDate": "Age (if birth date unknown)",
+    "guardiansHint": "At least one phone is required. A phone that already belongs to a family adds this child to that family.",
+    "motherName": "Mother's name",
+    "fatherName": "Father's name",
+    "groupRequiredHint": "Choose one of your branch's groups.",
+    "groupOptionalHint": "Optional — you can place the student in a group later.",
+    "noGroupYet": "No group yet",
+    "priceHint": "Leave empty to use the group's price.",
+    "register": "Register student"
   },
   "families": {
     "description": "{count} families. Siblings are grouped by shared parent phone.",
@@ -342,7 +359,7 @@
     "fileHint": "Google Sheets: File → Download → Microsoft Excel (.xlsx). Max 5 MB.",
     "working": "Reading…",
     "step2": "2. Match each tab to a group",
-    "mappingHint": "Tabs named exactly like a group are matched automatically. Choose \"Skip\" for tabs that are not groups.",
+    "mappingHint": "Tabs named exactly like a group are matched automatically. For a tab that is a new group, choose \"Create a new group\". Choose \"Skip\" for tabs that are not groups.",
     "sheetStats": "{rows} students · {errors} with errors · {warnings} to check",
     "ignoredColumns": "ignored columns: {columns}",
     "noHeader": "No header row with a student name column was found.",
@@ -390,8 +407,14 @@
       "invalidMapping": "Something went wrong. Choose the groups again.",
       "noMapping": "Match at least one tab to a group.",
       "outOfScope": "You can't import into one of the chosen groups.",
-      "failed": "The request failed. Check your connection and try again."
-    }
+      "failed": "The request failed. Check your connection and try again.",
+      "cannotCreateGroup": "You don't have permission to create one of these groups."
+    },
+    "createGroup": "➕ Create a new group from this tab",
+    "createLevelFirst": "Add a program and level first",
+    "priceFromSheet": "Pre-filled from the tab's subscription column.",
+    "newGroupHint": "Size limits are set automatically (6–10 in branch, 2–5 online). Add the weekly schedule from the group page after importing.",
+    "groupCreated": "New group"
   },
   "users": {
     "description": "Accounts and what each person can open. New accounts get a temporary password shown once.",

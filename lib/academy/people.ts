@@ -21,6 +21,7 @@ export async function resolveFamily(
   tx: Tx,
   phones: { mother: string | null; father: string | null },
   studentName: string,
+  names: { mother?: string | null; father?: string | null } = {},
 ) {
   const entries = (["mother", "father"] as const)
     .map((relation) => ({ relation, phone: phones[relation] }))
@@ -28,7 +29,7 @@ export async function resolveFamily(
 
   const existing = entries.length
     ? await tx
-        .select({ familyId: guardian.familyId, phone: guardian.phone })
+        .select({ id: guardian.id, familyId: guardian.familyId, phone: guardian.phone, name: guardian.name })
         .from(guardian)
         .where(inArray(guardian.phone, entries.map((entry) => entry.phone)))
     : [];
@@ -49,7 +50,16 @@ export async function resolveFamily(
   const known = new Set(existing.map((row) => row.phone));
   const missing = entries.filter((entry) => !known.has(entry.phone));
   if (missing.length) {
-    await tx.insert(guardian).values(missing.map((entry) => ({ ...entry, familyId })));
+    await tx
+      .insert(guardian)
+      .values(missing.map((entry) => ({ ...entry, familyId, name: names[entry.relation] || null })));
+  }
+
+  // Fill in a parent's name the first time we learn it; never overwrite one.
+  for (const entry of entries) {
+    const row = existing.find((item) => item.phone === entry.phone);
+    const name = names[entry.relation];
+    if (row && !row.name && name) await tx.update(guardian).set({ name }).where(eq(guardian.id, row.id));
   }
 
   return { familyId, created };

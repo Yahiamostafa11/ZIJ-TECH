@@ -23,6 +23,8 @@ export type SheetResult = {
   sheet: string;
   groupId: number;
   groupName: string;
+  /** The group was created from this tab by the import. */
+  groupCreated: boolean;
   rows: RowOutcome[];
   totals: {
     studentsCreated: number;
@@ -35,6 +37,21 @@ export type SheetResult = {
 };
 
 class DryRunRollback extends Error {}
+
+/** A group to create from an Excel tab. Validated by the caller. */
+export type NewGroupSpec = {
+  name: string;
+  levelId: number;
+  mode: "offline" | "online";
+  branchId: number | null;
+  instructorId: string | null;
+  price: number;
+};
+
+export type SheetTarget = { groupId: number } | { create: NewGroupSpec };
+
+/** Default size limits, matching the academy's rules for each mode. */
+const DEFAULT_CAPACITY = { offline: [6, 10], online: [2, 5] } as const;
 
 /**
  * Imports sheets into their mapped groups. Idempotent: re-importing the same
@@ -50,7 +67,7 @@ export async function runImport({
   dryRun,
 }: {
   sheets: ParsedSheet[];
-  mapping: Record<string, number>;
+  mapping: Record<string, SheetTarget>;
   actorId: string;
   fileName: string;
   dryRun: boolean;
@@ -62,8 +79,28 @@ export async function runImport({
     await db.transaction(async (tx) => {
       results = [];
       for (const sheet of sheets) {
-        const groupId = mapping[sheet.name];
-        if (!groupId) continue;
+        const target = mapping[sheet.name];
+        if (!target) continue;
+
+        // Groups created here are part of the same transaction, so a dry run
+        // previews them and rolls them back with everything else.
+        let groupId: number;
+        if ("create" in target) {
+          const spec = target.create;
+          const [min, max] = DEFAULT_CAPACITY[spec.mode];
+          const values = {
+            ...spec,
+            branchId: spec.mode === "online" ? null : spec.branchId,
+            price: spec.price.toFixed(2),
+            capacityMin: min,
+            capacityMax: max,
+            status: "active" as const,
+          };
+          [{ id: groupId }] = await tx.insert(classGroup).values(values).$returningId();
+          await audit(tx, actorId, "group.create", "group", groupId, { ...values, via: "import" });
+        } else {
+          groupId = target.groupId;
+        }
         const [group] = await tx.select().from(classGroup).where(eq(classGroup.id, groupId));
         if (!group) continue;
 
@@ -71,6 +108,7 @@ export async function runImport({
           sheet: sheet.name,
           groupId,
           groupName: group.name,
+          groupCreated: "create" in target,
           rows: [],
           totals: {
             studentsCreated: 0,
@@ -130,8 +168,10 @@ export async function runImport({
             outcome.enrollmentCreated = true;
             result.totals.enrollmentsCreated += 1;
             if (row.price === null) outcome.warnings.push({ code: "usedGroupPrice" });
-          } else if (row.price !== null && toMoney(row.price) !== Number(existing.price)) {
-            outcome.warnings.push({ code: "priceDiffers", value: existing.price });
+          } else if (row.price !== null) {
+            // Sheets and exports show what the family owes: price minus discount.
+            const net = toMoney(Number(existing.price) - Number(existing.discount));
+            if (toMoney(row.price) !== net) outcome.warnings.push({ code: "priceDiffers", value: String(net) });
           }
 
           const [{ paid }] = await tx
