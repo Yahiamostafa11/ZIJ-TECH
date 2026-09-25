@@ -64,18 +64,18 @@ export function CreateUserForm({ roles, branches }: { roles: Role[]; branches: B
     <form action={action} className="grid gap-4 sm:grid-cols-2" noValidate>
       <Field label={t("fields.name")} htmlFor="user-name">
         <input id="user-name" name="name" className={inputClass} />
-        {state.fieldErrors?.name && <p className="text-xs text-red-300">{t(`errors.${state.fieldErrors.name}`)}</p>}
+        {state.fieldErrors?.name && <p className="text-xs text-danger">{t(`errors.${state.fieldErrors.name}`)}</p>}
       </Field>
       <Field label={t("fields.email")} htmlFor="user-email">
         <input id="user-email" name="email" type="email" dir="ltr" className={inputClass} />
-        {state.fieldErrors?.email && <p className="text-xs text-red-300">{t(`errors.${state.fieldErrors.email}`)}</p>}
+        {state.fieldErrors?.email && <p className="text-xs text-danger">{t(`errors.${state.fieldErrors.email}`)}</p>}
       </Field>
       <RoleFields roles={roles} branches={branches} prefix="new" />
       <div className="flex items-center gap-4 sm:col-span-2">
         <button type="submit" disabled={pending} className={buttonClass("primary")}>
           {t("users.create")}
         </button>
-        {state.error && <p className="text-sm text-red-300">{t(`errors.${state.error}`)}</p>}
+        {state.error && <p className="text-sm text-danger">{t(`errors.${state.error}`)}</p>}
       </div>
       {state.password && (
         <div className="sm:col-span-2">
@@ -105,7 +105,7 @@ export function GrantRoleForm({
       <button type="submit" disabled={pending} className={buttonClass("secondary")}>
         {t("users.grant")}
       </button>
-      {state.error && <p className="text-sm text-red-300 sm:col-span-3">{t(`errors.${state.error}`)}</p>}
+      {state.error && <p className="text-sm text-danger sm:col-span-3">{t(`errors.${state.error}`)}</p>}
     </form>
   );
 }
@@ -127,11 +127,11 @@ export function RevokeRoleButton({ roleId, label }: { roleId: number; label: str
             setError(result.error ?? null);
           })
         }
-        className="ms-1 rounded-full p-0.5 text-text-secondary hover:bg-red-500/20 hover:text-red-300"
+        className="ms-1 rounded-full p-0.5 text-text-secondary hover:bg-danger/20 hover:text-danger"
       >
         <X size={12} />
       </button>
-      {error && <span className="text-xs text-red-300">{t(`errors.${error}`)}</span>}
+      {error && <span className="text-xs text-danger">{t(`errors.${error}`)}</span>}
     </>
   );
 }
@@ -154,7 +154,7 @@ export function ResetPasswordButton({ userId }: { userId: string }) {
         {t("users.resetPassword")}
       </button>
       {result?.password && <PasswordNotice password={result.password} />}
-      {result?.error && <p className="text-xs text-red-300">{t(`errors.${result.error}`)}</p>}
+      {result?.error && <p className="text-xs text-danger">{t(`errors.${result.error}`)}</p>}
     </div>
   );
 }

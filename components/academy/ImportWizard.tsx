@@ -114,7 +114,7 @@ export function ImportWizard(props: ImportWizardProps) {
           />
         </label>
         {isPending && <p className="mt-3 text-sm text-text-secondary">{t("working")}</p>}
-        {error && <p className="mt-3 text-sm text-red-300">{t(`errors.${error}`)}</p>}
+        {error && <p className="mt-3 text-sm text-danger">{t(`errors.${error}`)}</p>}
       </Card>
 
       {sheets && results?.stage !== "done" && (
@@ -139,7 +139,7 @@ export function ImportWizard(props: ImportWizardProps) {
                             ` · ${t("ignoredColumns", { columns: sheet.ignoredHeaders.join("، ") })}`}
                         </p>
                       ) : (
-                        <p className="text-xs text-amber-300">{t("noHeader")}</p>
+                        <p className="text-xs text-warning">{t("noHeader")}</p>
                       )}
                     </div>
                     <select
@@ -380,11 +380,11 @@ function SheetReport({
               <Td>
                 <span className="inline-flex items-center gap-1.5">
                   {row.status === "skipped" ? (
-                    <XCircle size={15} className="text-red-300" />
+                    <XCircle size={15} className="text-danger" />
                   ) : row.warnings.length ? (
-                    <AlertTriangle size={15} className="text-amber-300" />
+                    <AlertTriangle size={15} className="text-warning" />
                   ) : (
-                    <CheckCircle2 size={15} className="text-emerald-300" />
+                    <CheckCircle2 size={15} className="text-success" />
                   )}
                   {tOptions(`importStatus.${row.status}`)}
                   {row.paymentAdded ? ` · ${t("paymentAdded", { amount: row.paymentAdded })}` : ""}
@@ -393,12 +393,12 @@ function SheetReport({
               <Td>
                 <ul className="grid gap-0.5 text-xs">
                   {row.errors.map((issue, index) => (
-                    <li key={`e${index}`} className="text-red-300">
+                    <li key={`e${index}`} className="text-danger">
                       {t(`issues.${issue.code}`, { value: issue.value ?? "" })}
                     </li>
                   ))}
                   {row.warnings.map((issue, index) => (
-                    <li key={`w${index}`} className="text-amber-300">
+                    <li key={`w${index}`} className="text-warning">
                       {t(`issues.${issue.code}`, { value: issue.value ?? "" })}
                     </li>
                   ))}

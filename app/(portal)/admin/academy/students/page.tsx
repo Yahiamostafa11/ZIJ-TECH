@@ -71,7 +71,7 @@ export default async function StudentsPage({
           </thead>
           <tbody>
             {students.map((row) => (
-              <tr key={row.id} className="hover:bg-white/[0.02]">
+              <tr key={row.id} className="hover:bg-hover">
                 <Td>
                   <Link href={`/admin/academy/students/${row.id}`} className="font-semibold text-gold-light hover:underline">
                     {row.nameAr}
@@ -99,7 +99,7 @@ export default async function StudentsPage({
                   </div>
                 </Td>
                 <Td>
-                  <span className={row.balance > 0 ? "font-semibold text-red-300" : "text-text-secondary"}>
+                  <span className={row.balance > 0 ? "font-semibold text-danger" : "text-text-secondary"}>
                     {formatMoney(row.balance, locale)}
                   </span>
                 </Td>

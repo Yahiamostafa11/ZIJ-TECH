@@ -106,7 +106,7 @@ export default async function GroupsPage({
               const count = Number(group.enrolled);
               const outOfRange = count < group.capacityMin || count > group.capacityMax;
               return (
-                <tr key={group.id} className="hover:bg-white/[0.02]">
+                <tr key={group.id} className="hover:bg-hover">
                   <Td>
                     <Link href={`/admin/academy/groups/${group.id}`} className="font-semibold text-gold-light hover:underline">
                       {group.name}
@@ -120,7 +120,7 @@ export default async function GroupsPage({
                   </Td>
                   <Td>{group.instructorName ?? <span className="text-text-secondary">—</span>}</Td>
                   <Td>
-                    <span className={outOfRange ? "text-amber-300" : ""}>
+                    <span className={outOfRange ? "text-warning" : ""}>
                       {count} / {group.capacityMax}
                     </span>
                   </Td>

@@ -36,6 +36,10 @@ Every protected page and server action must call `requirePermission()` from `lib
 - **Users and roles** (`/admin/academy/users`): create accounts with a one-time temporary password; everyone changes their own password at `/account`.
 - **Audit log**: every change is recorded with who made it.
 
+### Themes
+
+The site and portal have a dark theme and a light theme (cream, deep teal and gold, from the Zij Academy slides). Visitors get the one matching their device; the sun/moon button overrides it and the choice is remembered per browser. All colours are tokens in `app/globals.css`, exposed to Tailwind in `tailwind.config.ts`: use `text-danger`, `text-success`, `bg-field`, `bg-hover`, `shadow-card` and the `bg-*`/`text-*`/`gold-*` tokens instead of fixed colours such as `text-red-300` or `rgba(0,0,0,…)`, which only suit one theme.
+
 The portal UI is bilingual. Strings live in `messages/ar.json` and `messages/en.json` (Arabic is the default); use logical Tailwind classes (`ms-`, `pe-`, `start-`, `border-e`) so layouts work right-to-left.
 
 ## Requirements

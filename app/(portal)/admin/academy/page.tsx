@@ -63,7 +63,7 @@ export default async function AcademyOverviewPage() {
         {stats.map((stat) => (
           <Link key={stat.label} href={stat.href} className="rounded-lg border border-border-subtle bg-bg-card/70 p-5 transition hover:border-gold-light/50">
             <p className="text-xs text-text-secondary">{stat.label}</p>
-            <p className={`mt-2 text-2xl font-semibold ${"alert" in stat && stat.alert ? "text-red-300" : "text-gold-light"}`}>
+            <p className={`mt-2 text-2xl font-semibold ${"alert" in stat && stat.alert ? "text-danger" : "text-gold-light"}`}>
               {stat.value}
             </p>
           </Link>
@@ -79,7 +79,7 @@ export default async function AcademyOverviewPage() {
               {capacityIssues.map((group) => (
                 <li key={group.id} className="flex items-center justify-between gap-3">
                   <Link href={`/admin/academy/groups/${group.id}`} className="flex items-center gap-2 text-gold-light hover:underline">
-                    <AlertTriangle size={15} className="text-amber-300" />
+                    <AlertTriangle size={15} className="text-warning" />
                     {group.name}
                   </Link>
                   <span className="text-text-secondary">
@@ -103,7 +103,7 @@ export default async function AcademyOverviewPage() {
                       {row.nameAr}
                       <span className="ms-2 text-xs text-text-secondary">{row.groupName}</span>
                     </Link>
-                    <span className="font-semibold text-red-300">{formatMoney(row.balance, locale)}</span>
+                    <span className="font-semibold text-danger">{formatMoney(row.balance, locale)}</span>
                   </li>
                 ))}
               </ul>

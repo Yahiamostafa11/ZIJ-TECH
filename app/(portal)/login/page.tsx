@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { LoginForm } from "@/components/portal/LoginForm";
 import { LocaleSwitch } from "@/components/portal/LocaleSwitch";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { homePathFor } from "@/lib/auth/permissions";
 import { getCurrentUser } from "@/lib/auth/session";
 
@@ -10,11 +11,12 @@ export default async function LoginPage() {
   const user = await getCurrentUser();
   if (user) redirect(homePathFor(user.grants) ?? "/forbidden");
 
-  const t = await getTranslations("login");
+  const [t, tCommon] = await Promise.all([getTranslations("login"), getTranslations("common")]);
 
   return (
     <div className="relative z-10 flex min-h-screen items-center justify-center px-4 py-12">
-      <div className="absolute end-4 top-4">
+      <div className="absolute end-4 top-4 flex items-center gap-2">
+        <ThemeToggle labels={{ toLight: tCommon("toLight"), toDark: tCommon("toDark") }} />
         <LocaleSwitch />
       </div>
       <div className="premium-panel w-full max-w-sm rounded-xl p-8">

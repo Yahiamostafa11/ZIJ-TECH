@@ -132,7 +132,7 @@ export default async function GroupPage({ params }: { params: Promise<{ id: stri
                       <Td>{formatMoney(Number(row.price) - Number(row.discount), locale)}</Td>
                       <Td>{formatMoney(row.paid, locale)}</Td>
                       <Td>
-                        <span className={row.balance > 0 ? "font-semibold text-red-300" : "text-emerald-300"}>
+                        <span className={row.balance > 0 ? "font-semibold text-danger" : "text-success"}>
                           {formatMoney(row.balance, locale)}
                         </span>
                       </Td>

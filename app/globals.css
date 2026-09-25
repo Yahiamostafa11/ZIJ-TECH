@@ -2,24 +2,157 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * Theme tokens. Colours are RGB channels so Tailwind opacity modifiers
+ * (e.g. bg-gold-primary/10) work. Dark is the base; the light palette follows
+ * the device setting unless the visitor picked a theme (html[data-theme]).
+ */
 :root {
-  /* Colour tokens are RGB channels so Tailwind opacity modifiers (e.g. bg-gold-primary/10) work. */
+  color-scheme: dark;
   --bg-primary: 7 16 17;
   --bg-secondary: 10 15 16;
   --bg-card: 13 21 22;
   --gold-primary: 200 146 60;
   --gold-light: 242 193 102;
   --gold-dark: 142 101 39;
-  --gold-gradient: linear-gradient(135deg, #8E6424, #F2C166 48%, #C8923C);
   --text-primary: 244 239 230;
   --text-secondary: 184 176 165;
+  --on-accent: 7 16 17;
+  --danger: 252 165 165;
+  --success: 110 231 183;
+  --warning: 252 211 77;
+  --info: 125 211 252;
+  --shadow: 0 0 0;
+  --shadow-strength: 1;
+  --field: rgba(255, 255, 255, 0.04);
+  --hover: rgba(255, 255, 255, 0.04);
+  --overlay: rgba(0, 0, 0, 0.6);
+  --gold-gradient: linear-gradient(135deg, #8e6424, #f2c166 48%, #c8923c);
+  --gold-text-gradient: var(--gold-gradient);
   --border-subtle: rgba(200, 146, 60, 0.28);
   --glow-gold: 0 0 28px rgba(242, 193, 102, 0.25);
+  --page-bg:
+    radial-gradient(circle at 78% 4%, rgba(200, 146, 60, 0.1), transparent 32rem),
+    radial-gradient(circle at 12% 22%, rgba(242, 193, 102, 0.055), transparent 28rem),
+    linear-gradient(180deg, #071011 0%, #091111 48%, #060a0b 100%);
+  --grid-line: rgba(255, 255, 255, 0.035);
+  --panel-bg:
+    radial-gradient(circle at 78% 36%, rgba(200, 146, 60, 0.18), transparent 26rem),
+    linear-gradient(135deg, rgba(13, 21, 22, 0.96), rgba(7, 16, 17, 0.96));
+  --panel-shadow: 0 26px 90px rgba(0, 0, 0, 0.42), inset 0 0 0 1px rgba(255, 255, 255, 0.025);
+  --card-sheen: linear-gradient(145deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01));
+  --line-card-bg: rgba(13, 21, 22, 0.82);
+  --asset-blend: screen;
+  --asset-glow: drop-shadow(0 0 18px rgba(242, 193, 102, 0.18));
+  --scrollbar: rgba(200, 146, 60, 0.62) #071011;
+}
+
+/* Light palette, taken from the Zij Academy "Python Explorers" slides. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
+    --bg-primary: 251 245 233;
+    --bg-secondary: 244 236 218;
+    --bg-card: 255 252 244;
+    --gold-primary: 176 132 56;
+    --gold-light: 126 91 34;
+    --gold-dark: 110 80 28;
+    --text-primary: 14 68 74;
+    --text-secondary: 92 109 108;
+    --on-accent: 14 68 74;
+    --danger: 180 35 24;
+    --success: 6 118 71;
+    --warning: 154 91 0;
+    --info: 11 106 143;
+    --shadow: 110 82 30;
+    --shadow-strength: 0.32;
+    --field: #ffffff;
+    --hover: rgba(14, 68, 74, 0.05);
+    --overlay: rgba(14, 40, 42, 0.35);
+    --gold-gradient: linear-gradient(135deg, #d2a559, #ebcb8b 48%, #d8ad62);
+    --gold-text-gradient: linear-gradient(135deg, #7e5b22, #b08438 50%, #8a6424);
+    --border-subtle: rgba(176, 132, 56, 0.34);
+    --glow-gold: 0 0 26px rgba(176, 132, 56, 0.22);
+    --page-bg:
+      radial-gradient(circle at 78% 4%, rgba(210, 165, 89, 0.14), transparent 32rem),
+      radial-gradient(circle at 12% 22%, rgba(14, 68, 74, 0.04), transparent 28rem),
+      linear-gradient(180deg, #faf1e4 0%, #fbf5e9 48%, #fef9ef 100%);
+    --grid-line: rgba(14, 68, 74, 0.05);
+    --panel-bg:
+      radial-gradient(circle at 78% 36%, rgba(210, 165, 89, 0.16), transparent 26rem),
+      linear-gradient(135deg, #fffcf4, #fbf5e9);
+    --panel-shadow: 0 24px 70px rgba(110, 82, 30, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+    --card-sheen: linear-gradient(145deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.2));
+    --line-card-bg: rgba(255, 252, 244, 0.9);
+    --asset-blend: multiply;
+    --asset-glow: none;
+    --scrollbar: rgba(176, 132, 56, 0.55) #f4ecda;
+  }
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+    --bg-primary: 251 245 233;
+    --bg-secondary: 244 236 218;
+    --bg-card: 255 252 244;
+    --gold-primary: 176 132 56;
+    --gold-light: 126 91 34;
+    --gold-dark: 110 80 28;
+    --text-primary: 14 68 74;
+    --text-secondary: 92 109 108;
+    --on-accent: 14 68 74;
+    --danger: 180 35 24;
+    --success: 6 118 71;
+    --warning: 154 91 0;
+    --info: 11 106 143;
+    --shadow: 110 82 30;
+    --shadow-strength: 0.32;
+    --field: #ffffff;
+    --hover: rgba(14, 68, 74, 0.05);
+    --overlay: rgba(14, 40, 42, 0.35);
+    --gold-gradient: linear-gradient(135deg, #d2a559, #ebcb8b 48%, #d8ad62);
+    --gold-text-gradient: linear-gradient(135deg, #7e5b22, #b08438 50%, #8a6424);
+    --border-subtle: rgba(176, 132, 56, 0.34);
+    --glow-gold: 0 0 26px rgba(176, 132, 56, 0.22);
+    --page-bg:
+      radial-gradient(circle at 78% 4%, rgba(210, 165, 89, 0.14), transparent 32rem),
+      radial-gradient(circle at 12% 22%, rgba(14, 68, 74, 0.04), transparent 28rem),
+      linear-gradient(180deg, #faf1e4 0%, #fbf5e9 48%, #fef9ef 100%);
+    --grid-line: rgba(14, 68, 74, 0.05);
+    --panel-bg:
+      radial-gradient(circle at 78% 36%, rgba(210, 165, 89, 0.16), transparent 26rem),
+      linear-gradient(135deg, #fffcf4, #fbf5e9);
+    --panel-shadow: 0 24px 70px rgba(110, 82, 30, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+    --card-sheen: linear-gradient(145deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.2));
+    --line-card-bg: rgba(255, 252, 244, 0.9);
+    --asset-blend: multiply;
+    --asset-glow: none;
+    --scrollbar: rgba(176, 132, 56, 0.55) #f4ecda;
+}
+
+/*
+ * Translucent gold/grey text (e.g. text-gold-light/70) softens labels on the
+ * dark theme but drops below readable contrast on cream, so light mode uses
+ * the solid token.
+ */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) [class*="text-gold-light/"] {
+    color: rgb(var(--gold-light));
+  }
+  :root:not([data-theme="dark"]) [class*="text-text-secondary/"] {
+    color: rgb(var(--text-secondary));
+  }
+}
+:root[data-theme="light"] [class*="text-gold-light/"] {
+  color: rgb(var(--gold-light));
+}
+:root[data-theme="light"] [class*="text-text-secondary/"] {
+  color: rgb(var(--text-secondary));
 }
 
 html {
   scroll-behavior: smooth;
-  scrollbar-color: rgba(200, 146, 60, 0.62) #071011;
+  scrollbar-color: var(--scrollbar);
 }
 
 section,
@@ -28,10 +161,7 @@ section,
 }
 
 body {
-  background:
-    radial-gradient(circle at 78% 4%, rgba(200, 146, 60, 0.1), transparent 32rem),
-    radial-gradient(circle at 12% 22%, rgba(242, 193, 102, 0.055), transparent 28rem),
-    linear-gradient(180deg, #071011 0%, #091111 48%, #060a0b 100%);
+  background: var(--page-bg);
   color: rgb(var(--text-primary));
   position: relative;
   overflow-x: hidden;
@@ -44,26 +174,15 @@ body::before {
   pointer-events: none;
   opacity: 0.17;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.026) 1px, transparent 1px);
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
   background-size: 72px 72px;
   mask-image: radial-gradient(circle at 50% 15%, black, transparent 72%);
   z-index: 0;
 }
 
-[data-theme="light"] {
-  --bg-primary: 250 248 243;
-  --bg-secondary: 255 255 255;
-  --bg-card: 255 255 255;
-  --gold-primary: 196 137 53;
-  --gold-light: 215 154 60;
-  --text-primary: 37 37 37;
-  --text-secondary: 95 90 82;
-  --border-subtle: rgba(196, 137, 53, 0.28);
-}
-
 .gold-gradient-text {
-  background: var(--gold-gradient);
+  background: var(--gold-text-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -71,17 +190,15 @@ body::before {
 }
 
 .glass-card {
-  background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01)),
-    rgb(var(--bg-card));
+  background: var(--card-sheen), rgb(var(--bg-card));
   border: 1px solid var(--border-subtle);
   transition: all 0.3s ease;
   border-radius: 8px;
-  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 22px 70px rgb(var(--shadow) / calc(0.28 * var(--shadow-strength)));
 }
 
 .glass-card:hover {
-  border-color: rgba(242, 193, 102, 0.46);
+  border-color: rgb(var(--gold-light) / 0.46);
   box-shadow: var(--glow-gold);
   transform: translateY(-4px);
 }
@@ -96,11 +213,9 @@ body::before {
 }
 
 .premium-panel {
-  background:
-    radial-gradient(circle at 78% 36%, rgba(200, 146, 60, 0.18), transparent 26rem),
-    linear-gradient(135deg, rgba(13, 21, 22, 0.96), rgba(7, 16, 17, 0.96));
+  background: var(--panel-bg);
   border: 1px solid var(--border-subtle);
-  box-shadow: 0 26px 90px rgba(0, 0, 0, 0.42), inset 0 0 0 1px rgba(255, 255, 255, 0.025);
+  box-shadow: var(--panel-shadow);
 }
 
 .zij-container {
@@ -109,24 +224,23 @@ body::before {
 }
 
 .gold-line-card {
-  background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01)),
-    rgba(13, 21, 22, 0.82);
+  background: var(--card-sheen), var(--line-card-bg);
   border: 1px solid var(--border-subtle);
-  box-shadow: 0 20px 70px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 20px 70px rgb(var(--shadow) / calc(0.28 * var(--shadow-strength)));
 }
 
 .gold-glow {
   box-shadow: var(--glow-gold);
 }
 
+/* Gold line art: lightens a dark page, darkens (multiplies onto) a light one. */
 .asset-gold-screen {
-  mix-blend-mode: screen;
-  filter: drop-shadow(0 0 18px rgba(242, 193, 102, 0.18));
+  mix-blend-mode: var(--asset-blend);
+  filter: var(--asset-glow);
 }
 
 .egyptian-rule {
-  background-image: linear-gradient(90deg, transparent, rgba(200, 146, 60, 0.45), transparent);
+  background-image: linear-gradient(90deg, transparent, rgb(var(--gold-primary) / 0.45), transparent);
 }
 
 @media (max-width: 640px) {

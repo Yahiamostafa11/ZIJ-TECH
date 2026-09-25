@@ -59,7 +59,7 @@ export function Sidebar({ nav, basePath, allowed }: SidebarProps) {
                     className={`mx-2 flex items-center gap-3 rounded-md px-3 py-2 text-sm transition ${
                       isActive
                         ? "bg-gold-primary/15 text-gold-light"
-                        : "text-text-secondary hover:bg-white/[0.04] hover:text-text-primary"
+                        : "text-text-secondary hover:bg-hover hover:text-text-primary"
                     }`}
                   >
                     <Icon size={17} strokeWidth={1.6} className="shrink-0" />
@@ -88,7 +88,7 @@ export function Sidebar({ nav, basePath, allowed }: SidebarProps) {
       </button>
 
       {isOpen && (
-        <div className="fixed inset-0 z-30 bg-black/60 lg:hidden" onClick={() => setIsOpen(false)} />
+        <div className="fixed inset-0 z-30 bg-overlay lg:hidden" onClick={() => setIsOpen(false)} />
       )}
 
       <aside

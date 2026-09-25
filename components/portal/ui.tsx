@@ -2,20 +2,20 @@ import React from "react";
 import Link from "next/link";
 
 export const inputClass =
-  "w-full rounded-md border border-border-subtle bg-white/[0.04] px-3 py-2 text-sm text-text-primary outline-none transition placeholder:text-text-secondary/60 focus:border-gold-primary focus:shadow-[0_0_0_3px_rgba(200,146,60,0.12)] disabled:opacity-60";
+  "w-full rounded-md border border-border-subtle bg-field px-3 py-2 text-sm text-text-primary outline-none transition placeholder:text-text-secondary/60 focus:border-gold-primary focus:shadow-focus disabled:opacity-60";
 
 export function buttonClass(variant: "primary" | "secondary" | "danger" | "ghost" = "primary") {
   const base =
     "inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-60";
   switch (variant) {
     case "primary":
-      return `${base} bg-gold-gradient text-bg-primary hover:brightness-110`;
+      return `${base} bg-gold-gradient text-on-accent hover:brightness-110`;
     case "secondary":
       return `${base} border border-border-subtle text-gold-light hover:border-gold-light/60 hover:bg-gold-primary/10`;
     case "danger":
-      return `${base} border border-red-400/40 text-red-300 hover:bg-red-500/10`;
+      return `${base} border border-danger/40 text-danger hover:bg-danger/10`;
     case "ghost":
-      return `${base} text-text-secondary hover:bg-white/[0.04] hover:text-text-primary`;
+      return `${base} text-text-secondary hover:bg-hover hover:text-text-primary`;
   }
 }
 
@@ -90,9 +90,9 @@ export function Field({
 const toneClasses = {
   neutral: "border-border-subtle text-text-secondary",
   gold: "border-gold-primary/50 text-gold-light",
-  green: "border-emerald-400/40 text-emerald-300",
-  red: "border-red-400/40 text-red-300",
-  blue: "border-sky-400/40 text-sky-300",
+  green: "border-success/40 text-success",
+  red: "border-danger/40 text-danger",
+  blue: "border-info/40 text-info",
 };
 
 export function Badge({

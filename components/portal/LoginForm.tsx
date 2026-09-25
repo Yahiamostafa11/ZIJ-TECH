@@ -7,7 +7,7 @@ import { authClient } from "@/lib/auth/client";
 import { GoldButton } from "@/components/ui/GoldButton";
 
 const inputClass =
-  "rounded-lg border border-border-subtle bg-white/[0.04] p-3 text-text-primary outline-none transition focus:border-gold-primary focus:shadow-[0_0_0_3px_rgba(200,146,60,0.12)]";
+  "rounded-lg border border-border-subtle bg-field p-3 text-text-primary outline-none transition focus:border-gold-primary focus:shadow-focus";
 
 export function LoginForm() {
   const t = useTranslations("login");
@@ -70,7 +70,7 @@ export function LoginForm() {
       <GoldButton type="submit" disabled={isPending} className="mt-2 w-full">
         {isPending ? t("submitting") : t("submit")}
       </GoldButton>
-      <p role="alert" className="min-h-5 text-center text-sm text-red-300">
+      <p role="alert" className="min-h-5 text-center text-sm text-danger">
         {error}
       </p>
     </form>

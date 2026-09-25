@@ -49,7 +49,7 @@ export function ChangePasswordForm() {
         {t("submit")}
       </button>
       {status && (
-        <p role="status" className={`text-sm ${status.tone === "ok" ? "text-emerald-300" : "text-red-300"}`}>
+        <p role="status" className={`text-sm ${status.tone === "ok" ? "text-success" : "text-danger"}`}>
           {t(status.key)}
         </p>
       )}

@@ -90,7 +90,7 @@ export default async function StudentPage({ params }: { params: Promise<{ id: st
                     { label: t("payments.paid"), value: formatMoney(row.paid, locale) },
                     {
                       label: t("payments.remaining"),
-                      value: <span className={row.balance > 0 ? "font-semibold text-red-300" : "text-emerald-300"}>{formatMoney(row.balance, locale)}</span>,
+                      value: <span className={row.balance > 0 ? "font-semibold text-danger" : "text-success"}>{formatMoney(row.balance, locale)}</span>,
                     },
                     { label: t("students.enrolledOn"), value: formatDate(row.enrolledAt, locale) },
                   ]}
@@ -119,7 +119,7 @@ export default async function StudentPage({ params }: { params: Promise<{ id: st
                             </Td>
                             <Td>
                               <span className={item.voidedAt ? "line-through" : ""}>{formatMoney(item.amount, locale)}</span>
-                              {item.voidedAt && <p className="text-xs text-red-300">
+                              {item.voidedAt && <p className="text-xs text-danger">
                                   {t("payments.voidedLabel")} <bdi>{item.voidReason}</bdi>
                                 </p>}
                             </Td>
@@ -132,7 +132,7 @@ export default async function StudentPage({ params }: { params: Promise<{ id: st
                             <Td className="text-end">
                               {canVoid && !item.voidedAt && (
                                 <details className="text-start">
-                                  <summary className="cursor-pointer text-xs text-red-300">{t("payments.void")}</summary>
+                                  <summary className="cursor-pointer text-xs text-danger">{t("payments.void")}</summary>
                                   <ActionForm action={voidPayment.bind(null, item.id)} className="mt-2 grid w-56 gap-2">
                                     <input name="reason" placeholder={t("payments.voidReason")} className={inputClass} />
                                     <FieldError name="reason" />
@@ -226,7 +226,7 @@ export default async function StudentPage({ params }: { params: Promise<{ id: st
                       <a href={`tel:${item.phone}`} aria-label={t("students.call")} className="text-text-secondary hover:text-gold-light">
                         <Phone size={16} />
                       </a>
-                      <a href={`https://wa.me/2${item.phone}`} target="_blank" rel="noreferrer" aria-label="WhatsApp" className="text-text-secondary hover:text-emerald-300">
+                      <a href={`https://wa.me/2${item.phone}`} target="_blank" rel="noreferrer" aria-label="WhatsApp" className="text-text-secondary hover:text-success">
                         <MessageCircle size={16} />
                       </a>
                     </div>

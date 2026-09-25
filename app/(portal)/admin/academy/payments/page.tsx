@@ -106,7 +106,7 @@ export default async function PaymentsPage({
                 <Td>
                   <span className={row.voidedAt ? "line-through" : "font-semibold"}>{formatMoney(row.amount, locale)}</span>
                   {row.voidedAt && (
-                    <p className="text-xs text-red-300">
+                    <p className="text-xs text-danger">
                       {t("payments.voidedLabel")} <bdi>{row.voidReason}</bdi>
                     </p>
                   )}

@@ -73,7 +73,7 @@ export default async function FamiliesPage() {
                   </div>
                 </Td>
                 <Td>
-                  <span className={row.balance > 0 ? "font-semibold text-red-300" : "text-text-secondary"}>
+                  <span className={row.balance > 0 ? "font-semibold text-danger" : "text-text-secondary"}>
                     {formatMoney(row.balance, locale)}
                   </span>
                 </Td>

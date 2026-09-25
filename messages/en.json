@@ -13,7 +13,9 @@
     "edit": "Edit",
     "all": "All",
     "search": "Search",
-    "apply": "Apply"
+    "apply": "Apply",
+    "toLight": "Switch to light theme",
+    "toDark": "Switch to dark theme"
   },
   "login": {
     "title": "Sign in",

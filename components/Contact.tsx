@@ -5,7 +5,7 @@ import { GoldButton } from "./ui/GoldButton";
 import { Reveal } from "./ui/Reveal";
 
 const inputClass =
-  "rounded-lg border border-[rgba(200,146,60,0.25)] bg-white/[0.04] p-3 text-text-primary outline-none transition placeholder:text-text-secondary/70 focus:border-gold-primary focus:shadow-[0_0_0_3px_rgba(200,146,60,0.12)]";
+  "rounded-lg border border-border-subtle bg-field p-3 text-text-primary outline-none transition placeholder:text-text-secondary/70 focus:border-gold-primary focus:shadow-focus";
 
 export function Contact() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -144,7 +144,7 @@ export function Contact() {
             </GoldButton>
 
             {(status === "success" || status === "error") && (
-              <p className={`text-sm ${status === "success" ? "text-gold-light" : "text-red-300"}`}>
+              <p className={`text-sm ${status === "success" ? "text-gold-light" : "text-danger"}`}>
                 {feedback}
               </p>
             )}

@@ -26,7 +26,7 @@ export default async function BalancesPage() {
       <div className="mb-5 grid gap-4 sm:grid-cols-2">
         <Card>
           <p className="text-xs text-text-secondary">{t("balances.total")}</p>
-          <p className="mt-1 text-2xl font-semibold text-red-300">{formatMoney(total, locale)}</p>
+          <p className="mt-1 text-2xl font-semibold text-danger">{formatMoney(total, locale)}</p>
         </Card>
         <Card>
           <p className="text-xs text-text-secondary">{t("balances.enrollments")}</p>
@@ -62,7 +62,7 @@ export default async function BalancesPage() {
                   </Td>
                   <Td>{row.groupName}</Td>
                   <Td>
-                    <span className="font-semibold text-red-300">{formatMoney(row.balance, locale)}</span>
+                    <span className="font-semibold text-danger">{formatMoney(row.balance, locale)}</span>
                   </Td>
                   <Td>
                     <div className="flex flex-col gap-1">
@@ -72,7 +72,7 @@ export default async function BalancesPage() {
                           href={`https://wa.me/2${phone.phone}?text=${encodeURIComponent(message)}`}
                           target="_blank"
                           rel="noreferrer"
-                          className="inline-flex items-center gap-1.5 text-xs text-text-secondary hover:text-emerald-300"
+                          className="inline-flex items-center gap-1.5 text-xs text-text-secondary hover:text-success"
                         >
                           <MessageCircle size={14} />
                           <span dir="ltr">{phone.phone}</span> ({t(`options.relation.${phone.relation}`)})

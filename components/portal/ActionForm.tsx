@@ -36,7 +36,7 @@ export function FieldError({ name }: { name: string }) {
   const t = useTranslations("errors");
   const code = state.fieldErrors?.[name];
   if (!code) return null;
-  return <p className="text-xs text-red-300">{t(code)}</p>;
+  return <p className="text-xs text-danger">{t(code)}</p>;
 }
 
 /** Form-level outcome: an error, or a success message. */
@@ -46,7 +46,7 @@ export function FormMessage() {
   const tMessages = useTranslations("messages");
 
   return (
-    <p role="status" className={`min-h-5 text-sm ${state.error ? "text-red-300" : "text-gold-light"}`}>
+    <p role="status" className={`min-h-5 text-sm ${state.error ? "text-danger" : "text-gold-light"}`}>
       {state.error ? tErrors(state.error) : state.message ? tMessages(state.message) : ""}
     </p>
   );

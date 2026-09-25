@@ -5,6 +5,7 @@ import { LayoutGrid } from "lucide-react";
 import type { CurrentUser } from "@/lib/auth/session";
 import { can, type Permission } from "@/lib/auth/permissions";
 import type { NavSection } from "@/lib/portal/nav";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { LocaleSwitch } from "./LocaleSwitch";
 import { SignOutButton } from "./SignOutButton";
 import { Sidebar } from "./Sidebar";
@@ -55,6 +56,7 @@ export async function PortalShell({ user, title, basePath, sidebar, children }: 
           <Link href="/account" className="hidden text-sm text-text-secondary hover:text-gold-light md:inline">
             {user.name}
           </Link>
+          <ThemeToggle labels={{ toLight: t("common.toLight"), toDark: t("common.toDark") }} />
           <LocaleSwitch />
           <SignOutButton />
         </div>
