@@ -10,9 +10,22 @@ import * as schema from "@/lib/db/schema";
 import { bilingualMail, sendMail } from "@/lib/mail";
 import { USERNAME_PATTERN, hasRealEmail } from "./accounts";
 
+// Sign-in is accepted from the site address with and without "www.", so
+// visitors are not refused for typing the other form of the domain.
+function siteOrigins(): string[] {
+  try {
+    const url = new URL(process.env.BETTER_AUTH_URL ?? "");
+    const host = url.host.replace(/^www\./, "");
+    return [`${url.protocol}//${host}`, `${url.protocol}//www.${host}`];
+  } catch {
+    return [];
+  }
+}
+
 export const auth = betterAuth({
   appName: "ZIJ Technologies",
   baseURL: process.env.BETTER_AUTH_URL,
+  trustedOrigins: siteOrigins(),
   secret: process.env.BETTER_AUTH_SECRET,
   database: drizzleAdapter(db, { provider: "mysql", schema }),
   emailAndPassword: {

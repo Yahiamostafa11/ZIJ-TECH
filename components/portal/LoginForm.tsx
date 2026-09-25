@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { parseLogin } from "@/lib/auth/accounts";
 import { authClient } from "@/lib/auth/client";
 import { GoldButton } from "@/components/ui/GoldButton";
+import { PasswordInput } from "./PasswordInput";
 import { inputClass } from "./ui";
 
 export function LoginForm() {
@@ -64,7 +65,7 @@ export function LoginForm() {
       </label>
       <label className="flex flex-col gap-2 text-sm text-text-secondary">
         {t("password")}
-        <input type="password" name="password" required autoComplete="current-password" dir="ltr" className={inputClass} />
+        <PasswordInput name="password" required autoComplete="current-password" />
       </label>
       <GoldButton type="submit" disabled={isPending} className="mt-2 w-full">
         {isPending ? t("submitting") : t("submit")}

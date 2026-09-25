@@ -28,7 +28,9 @@
     "tooMany": "Too many attempts. Wait a minute and try again.",
     "failed": "Sign-in failed. Please try again.",
     "login": "Username or email",
-    "forgot": "Forgot your password?"
+    "forgot": "Forgot your password?",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
   },
   "hub": {
     "title": "Portals",
