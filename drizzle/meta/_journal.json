@@ -8,6 +8,13 @@
       "when": 1790340581125,
       "tag": "0000_init",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1790341960336,
+      "tag": "0001_academy",
+      "breakpoints": true
     }
   ]
 }

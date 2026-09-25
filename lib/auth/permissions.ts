@@ -30,6 +30,8 @@ export const PERMISSIONS = [
   "warnings.approve",
   "payments.read",
   "payments.write",
+  "payments.void",
+  "pricing.manage",
   "finance.reports",
   "followup.read",
   "followup.write",
@@ -60,9 +62,18 @@ export const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
   academy_admin: ACADEMY_ADMIN,
   branch_admin: ACADEMY_ADMIN.filter(
     (permission) =>
-      !["finance.reports", "users.manage", "branches.manage", "audit.read"].includes(permission),
+      ![
+        "finance.reports",
+        "users.manage",
+        "branches.manage",
+        "levels.manage",
+        "instructors.manage",
+        "audit.read",
+      ].includes(permission),
   ),
-  // Follow-up calls, parent and instructor notes, and checking payments.
+  // Follow-up calls, parent and instructor notes, and recording payments.
+  // Voiding a payment stays with admins so one person cannot both take and
+  // erase money.
   moderator: [
     "portal.academy",
     "academy.overview",
@@ -74,6 +85,7 @@ export const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
     "attendance.read",
     "warnings.read",
     "payments.read",
+    "payments.write",
     "followup.read",
     "followup.write",
   ],

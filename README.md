@@ -25,6 +25,15 @@ Access is role-based. Roles are defined in `lib/db/schema.ts` and their permissi
 
 Every protected page and server action must call `requirePermission()` from `lib/auth/session.ts`. The sidebar hides links a user cannot open, but that is not the security boundary.
 
+### Academy modules
+
+- **Groups** (`/admin/academy/groups`): level, branch or online, instructor, weekly schedule, size limits, price. Each group page lists its students with what they paid and still owe, and adds students directly.
+- **Students and families**: siblings share a family, matched by parent phone. The student page records payments, voids them (admins only, with a reason), and edits guardians.
+- **Payments and balances**: payments are never deleted, only voided. Outstanding balances link to a ready WhatsApp reminder.
+- **Excel import** (`/admin/academy/import`): one tab per group. Header names are matched in Arabic or English, merged cells (siblings sharing a phone) are followed, and phones that lost their leading zero are repaired. "Check" runs the full import inside a transaction and rolls it back, so the preview is exactly what will be saved. Re-importing the same file adds nothing new; if the sheet's "paid" grew, only the difference is recorded.
+- **Users and roles** (`/admin/academy/users`): create accounts with a one-time temporary password; everyone changes their own password at `/account`.
+- **Audit log**: every change is recorded with who made it.
+
 The portal UI is bilingual. Strings live in `messages/ar.json` and `messages/en.json` (Arabic is the default); use logical Tailwind classes (`ms-`, `pe-`, `start-`, `border-e`) so layouts work right-to-left.
 
 ## Requirements

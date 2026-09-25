@@ -16,9 +16,9 @@ import {
  * defaults. This avoids TIMESTAMP's 2038 limit and differences between the
  * MariaDB/MySQL server time zone and the application's.
  */
-const createdAt = () =>
+export const createdAt = () =>
   datetime("created_at").notNull().$defaultFn(() => new Date());
-const updatedAt = () =>
+export const updatedAt = () =>
   datetime("updated_at")
     .notNull()
     .$defaultFn(() => new Date())

@@ -2,7 +2,10 @@ import "server-only";
 import { PHASE_PRODUCTION_BUILD } from "next/constants";
 import { drizzle } from "drizzle-orm/mysql2";
 import mysql from "mysql2/promise";
-import * as schema from "./schema";
+import * as academy from "./academy";
+import * as authSchema from "./schema";
+
+const schema = { ...authSchema, ...academy };
 
 const globalForDb = globalThis as unknown as { mysqlPool?: mysql.Pool };
 

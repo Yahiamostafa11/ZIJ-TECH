@@ -52,7 +52,9 @@ export async function PortalShell({ user, title, basePath, sidebar, children }: 
           )}
         </div>
         <div className="flex items-center gap-2">
-          <span className="hidden text-sm text-text-secondary md:inline">{user.name}</span>
+          <Link href="/account" className="hidden text-sm text-text-secondary hover:text-gold-light md:inline">
+            {user.name}
+          </Link>
           <LocaleSwitch />
           <SignOutButton />
         </div>

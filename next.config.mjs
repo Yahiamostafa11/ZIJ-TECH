@@ -5,6 +5,10 @@ const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   poweredByHeader: false,
+  experimental: {
+    // Excel uploads for the academy import go through a server action.
+    serverActions: { bodySizeLimit: "6mb" },
+  },
   async headers() {
     const isDevelopment = process.env.NODE_ENV === "development";
     const contentSecurityPolicy = [
