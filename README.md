@@ -89,24 +89,24 @@ npm run build
 
 ## Deployment
 
-Build with `npm run build` and run with `npm start`. The application requires a Node.js runtime because `/api/contact` sends email through SMTP.
+The application needs a Node.js runtime (server rendering, the portal, `/api/contact` and account emails). `npm run build:deploy` applies database migrations, creates the first super admin if needed, and builds; `npm start` runs it.
 
 ### Hostinger hPanel
 
-Deploy this project as a **Node.js Web App**, not as a static website. Select Node.js 20 or newer and configure these environment variables in hPanel before building:
+1. **Database** — hPanel → **Databases → MySQL Databases**: create a database and a user with a strong password. Note the database name, user and host that hPanel shows (Hostinger prefixes names, e.g. `u123456789_zij`).
+2. **App** — hPanel → **Websites → Add website → Node.js Web App** (not a static site). Connect GitHub, pick this repository and the `main` branch.
+3. **Build settings** — Node.js 22 (20.9+ works). Install command `npm ci`, build command `npm run build:deploy`, start command `npm start`.
+4. **Environment variables** — add these before the first deploy:
 
-```text
-SMTP_HOST
-SMTP_PORT
-SMTP_USER
-SMTP_PASS
-SMTP_FROM
-CONTACT_EMAIL
-DATABASE_URL
-BETTER_AUTH_SECRET
-BETTER_AUTH_URL
-```
+   | Variable | Value |
+   | --- | --- |
+   | `DATABASE_URL` | `mysql://USER:PASSWORD@HOST:3306/DATABASE`. URL-encode special characters in the password (`@`→`%40`, `#`→`%23`, `:`→`%3A`, `/`→`%2F`). |
+   | `BETTER_AUTH_SECRET` | 32+ random characters (`openssl rand -base64 32`). Never change it after launch; it signs sessions. |
+   | `BETTER_AUTH_URL` | The site's public address, e.g. `https://zijtech.com` (no trailing slash). Used in email links. |
+   | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM` | A mailbox for sending, e.g. Hostinger Email: `smtp.hostinger.com`, `465`, `no-reply@yourdomain`, its password, same address. Needed for password-reset and confirmation emails. |
+   | `CONTACT_EMAIL` | Where the website contact form is delivered. |
+   | `INITIAL_ADMIN_EMAIL`, `INITIAL_ADMIN_PASSWORD` | First deploy only: creates the super admin. Remove the password after the first sign-in. |
 
-Set `BETTER_AUTH_URL` to the public site URL (for example `https://zijtech.com`). Create the database in hPanel under **Databases**. Run `npm run db:migrate` whenever a deployment adds files to `drizzle/`, either over SSH on the server or from your machine after allowing your IP under **Remote MySQL**. The migration and user scripts need dev dependencies installed.
+5. **Deploy**, then open `/login`. The super admin must choose a new password at first sign-in (or use "Forgot password?", which emails a link once SMTP is set).
 
-Keep the values in hPanel across deployments and never commit `.env.local`. After adding or changing an environment variable, save it and redeploy the application so the Node.js runtime loads the new value.
+Each later deploy re-runs `npm run build:deploy`, which applies any new migrations in `drizzle/` automatically. Keep variables in hPanel and never commit `.env.local`; after changing a variable, redeploy so the app picks it up.

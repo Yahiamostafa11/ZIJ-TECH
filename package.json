@@ -13,7 +13,9 @@
     "typecheck": "tsc --noEmit",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx scripts/migrate.mts",
-    "user:create": "tsx scripts/create-user.mts"
+    "user:create": "tsx scripts/create-user.mts",
+    "db:setup": "tsx scripts/setup.mts",
+    "build:deploy": "npm run db:setup && npm run build"
   },
   "dependencies": {
     "better-auth": "^1.7.6",
