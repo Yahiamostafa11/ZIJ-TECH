@@ -11,6 +11,8 @@ export const PERMISSIONS = [
   "portal.software",
   "portal.iot",
   "portal.instructor",
+  "portal.student",
+  "portal.parent",
   // Academy administration
   "academy.overview",
   "leads.read",
@@ -53,7 +55,7 @@ export type Permission = (typeof PERMISSIONS)[number];
 
 const ACADEMY_ADMIN: Permission[] = PERMISSIONS.filter(
   (permission) =>
-    permission.startsWith("portal.academy") ||
+    permission === "portal.academy" ||
     !(permission.startsWith("portal.") || permission.startsWith("teaching.")),
 );
 
@@ -89,6 +91,8 @@ export const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
     "followup.read",
     "followup.write",
   ],
+  student: ["portal.student"],
+  parent: ["portal.parent"],
   instructor: [
     "portal.instructor",
     "teaching.attendance",
@@ -132,5 +136,7 @@ export function homePathFor(grants: readonly RoleGrant[]) {
   if (can(grants, "portal.software")) return "/admin/software";
   if (can(grants, "portal.iot")) return "/admin/iot";
   if (can(grants, "portal.instructor")) return "/instructor";
+  // Student and parent dashboards come later; until then they manage their profile.
+  if (can(grants, "portal.student") || can(grants, "portal.parent")) return "/account";
   return null;
 }

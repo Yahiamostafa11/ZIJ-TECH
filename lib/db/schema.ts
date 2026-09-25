@@ -30,10 +30,23 @@ export const updatedAt = () =>
 
 export const user = mysqlTable("user", {
   id: varchar("id", { length: 36 }).primaryKey(),
+  /** Display name; kept in sync with nameAr/nameEn. */
   name: varchar("name", { length: 255 }).notNull(),
+  /**
+   * Login email for staff, or the person's own verified email. Username-only
+   * accounts get an undeliverable placeholder (see lib/auth/accounts.ts).
+   */
   email: varchar("email", { length: 255 }).notNull().unique(),
   emailVerified: boolean("email_verified").notNull().default(false),
   image: text("image"),
+  /** Login name shown as <username>@zij-academy (Better Auth username plugin). */
+  username: varchar("username", { length: 64 }).unique(),
+  nameAr: varchar("name_ar", { length: 160 }),
+  nameEn: varchar("name_en", { length: 160 }),
+  /** Free self-service name edits used; after one, changes need approval. */
+  nameEditsUsed: int("name_edits_used").notNull().default(0),
+  /** Set for new accounts and admin resets; cleared when they choose a password. */
+  mustChangePassword: boolean("must_change_password").notNull().default(false),
   createdAt: createdAt(),
   updatedAt: updatedAt(),
 });
@@ -116,6 +129,8 @@ export const ROLES = [
   "branch_admin",
   "moderator",
   "instructor",
+  "student",
+  "parent",
 ] as const;
 
 export type Role = (typeof ROLES)[number];
@@ -159,4 +174,38 @@ export const auditLog = mysqlTable(
     index("audit_log_entity_idx").on(table.entity, table.entityId),
     index("audit_log_actor_idx").on(table.actorId),
   ],
+);
+
+/** A name change submitted after the free edit was used; an admin decides. */
+export const nameChangeRequest = mysqlTable(
+  "name_change_request",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    userId: varchar("user_id", { length: 36 })
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    nameAr: varchar("name_ar", { length: 160 }).notNull(),
+    nameEn: varchar("name_en", { length: 160 }),
+    status: mysqlEnum("status", ["pending", "approved", "rejected"]).notNull().default("pending"),
+    reviewedBy: varchar("reviewed_by", { length: 36 }).references(() => user.id, { onDelete: "set null" }),
+    reviewedAt: datetime("reviewed_at"),
+    createdAt: createdAt(),
+  },
+  (table) => [index("name_change_request_status_idx").on(table.status)],
+);
+
+/** Pending "add my email" confirmation. Only a hash of the token is stored. */
+export const emailChange = mysqlTable(
+  "email_change",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    userId: varchar("user_id", { length: 36 })
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    email: varchar("email", { length: 255 }).notNull(),
+    tokenHash: varchar("token_hash", { length: 64 }).notNull().unique(),
+    expiresAt: datetime("expires_at").notNull(),
+    createdAt: createdAt(),
+  },
+  (table) => [index("email_change_user_idx").on(table.userId)],
 );

@@ -54,7 +54,7 @@ try {
     password = randomBytes(12).toString("base64url");
 
     await db.transaction(async (tx) => {
-      await tx.insert(user).values({ id, name: values.name!, email, emailVerified: true });
+      await tx.insert(user).values({ id, name: values.name!, email, emailVerified: true, mustChangePassword: true });
       await tx.insert(account).values({
         id: randomUUID(),
         accountId: id,

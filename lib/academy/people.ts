@@ -1,5 +1,5 @@
 import "server-only";
-import { and, eq, inArray } from "drizzle-orm";
+import { and, eq, inArray, or } from "drizzle-orm";
 import type { db } from "@/lib/db";
 import { family, guardian, student } from "@/lib/db/academy";
 import { cleanName, familyNameFrom, nameKey } from "./normalize";
@@ -76,7 +76,7 @@ export async function resolveStudent(
   const [match] = await tx
     .select({ id: student.id, birthDate: student.birthDate, birthYear: student.birthYear })
     .from(student)
-    .where(and(eq(student.familyId, familyId), eq(student.nameKey, key)));
+    .where(and(eq(student.familyId, familyId), or(eq(student.nameKey, key), eq(student.originalNameKey, key))));
 
   if (match) {
     // Fill gaps only; never overwrite what staff already corrected.
@@ -93,6 +93,7 @@ export async function resolveStudent(
       familyId,
       nameAr,
       nameKey: key,
+      originalNameKey: key,
       nameEn: values.nameEn ?? null,
       birthDate: values.birthDate ?? null,
       birthYear: values.birthYear ?? null,

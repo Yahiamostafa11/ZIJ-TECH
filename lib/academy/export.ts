@@ -8,11 +8,13 @@ import { getGroupDetail, getGroupRoster } from "./queries";
 const HEADERS = ["م", "اسم الطالب", "السن", "رقم الأم", "رقم الأب", "الاشتراك", "المدفوع", "المتبقي", "تاريخ الدفع", "ملاحظات"];
 const WIDTHS = [6, 28, 7, 15, 15, 12, 12, 12, 14, 30];
 const HEADER_ROW = 4;
+const GREEN = "FF00FF00";
+const RED = "FFFF4D4D";
 
 const WEEKDAYS_AR = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
 const ENROLLMENT_STATUS_AR: Record<string, string> = {
   completed: "أنهى المستوى",
-  withdrawn: "انسحب",
+  withdrawn: "مفقود",
   transferred: "انتقل",
 };
 
@@ -121,9 +123,14 @@ export async function buildGroupsWorkbook(groupIds: number[], { includeMoney }: 
         includeMoney ? isoToDate(row.lastPaidOn) : null,
         notes || null,
       ];
+      // Same convention as the academy's sheets: green = attending, red = lost.
+      const highlight = row.status === "active" ? GREEN : row.status === "withdrawn" ? RED : null;
       excelRow.eachCell({ includeEmpty: true }, (cell, column) => {
         if (column > HEADERS.length) return;
         cell.border = border;
+        if (highlight && (column === 2 || column === 4 || column === 5)) {
+          cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: highlight } };
+        }
         if (column === 4 || column === 5) cell.numFmt = "@"; // keep the leading zero
         if (column >= 6 && column <= 8) cell.numFmt = "#,##0";
         if (column === 9) cell.numFmt = "yyyy-mm-dd";

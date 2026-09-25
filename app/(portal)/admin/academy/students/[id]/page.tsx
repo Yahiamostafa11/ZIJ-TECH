@@ -19,6 +19,11 @@ import { requireStudentAccess } from "@/lib/academy/scope";
 import { can } from "@/lib/auth/permissions";
 import { requirePermission } from "@/lib/auth/session";
 import { ENROLLMENT_STATUSES, GUARDIAN_RELATIONS, PAYMENT_METHODS } from "@/lib/db/academy";
+import { inArray } from "drizzle-orm";
+import { FamilyAccountControl } from "@/components/academy/FamilyAccountControl";
+import { hasRealEmail, loginIdOf, suggestUsername } from "@/lib/auth/accounts";
+import { db } from "@/lib/db";
+import { user as userTable } from "@/lib/db/schema";
 import type { Locale } from "@/lib/i18n/config";
 
 export default async function StudentPage({ params }: { params: Promise<{ id: string }> }) {
@@ -40,6 +45,15 @@ export default async function StudentPage({ params }: { params: Promise<{ id: st
   const canVoid = can(user.grants, "payments.void");
   const canPrice = can(user.grants, "pricing.manage");
   const age = ageOf(student.birthDate, student.birthYear);
+
+  const accountIds = [student.userId, ...guardians.map((item) => item.userId)].filter((id): id is string => Boolean(id));
+  const accounts = accountIds.length
+    ? await db.select().from(userTable).where(inArray(userTable.id, accountIds))
+    : [];
+  const accountOf = (id: string | null) => {
+    const found = accounts.find((item) => item.id === id);
+    return found ? { loginId: loginIdOf(found), hasEmail: hasRealEmail(found) } : null;
+  };
   const totalBalance = enrollments.reduce((sum, row) => sum + row.balance, 0);
 
   return (
@@ -254,6 +268,38 @@ export default async function StudentPage({ params }: { params: Promise<{ id: st
               </details>
             )}
           </Card>
+
+          {canEdit && (
+            <Card title={t("accounts.title")}>
+              <p className="mb-3 text-xs text-text-secondary">{t("accounts.hint")}</p>
+              <div className="grid gap-4">
+                <div>
+                  <p className="text-sm font-semibold">{t("accounts.studentAccount")}</p>
+                  <FamilyAccountControl
+                    kind="student"
+                    recordId={student.id}
+                    loginId={accountOf(student.userId)?.loginId ?? null}
+                    hasEmail={accountOf(student.userId)?.hasEmail ?? false}
+                    suggestedUsername={suggestUsername(student.nameEn, `student${student.id}`)}
+                  />
+                </div>
+                {guardians.map((item) => (
+                  <div key={item.id} className="border-t border-border-subtle/60 pt-3">
+                    <p className="text-sm font-semibold">
+                      {t("accounts.parentAccount", { relation: t(`options.relation.${item.relation}`) })}
+                    </p>
+                    <FamilyAccountControl
+                      kind="parent"
+                      recordId={item.id}
+                      loginId={accountOf(item.userId)?.loginId ?? null}
+                      hasEmail={accountOf(item.userId)?.hasEmail ?? false}
+                      suggestedUsername={`parent${item.id}`}
+                    />
+                  </div>
+                ))}
+              </div>
+            </Card>
+          )}
 
           {siblings.length > 0 && (
             <Card title={t("students.siblings")}>

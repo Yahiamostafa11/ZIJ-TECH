@@ -32,9 +32,18 @@ Every protected page and server action must call `requirePermission()` from `lib
 - **Payments and balances**: payments are never deleted, only voided. Outstanding balances link to a ready WhatsApp reminder.
 - **Manual entry**: groups from "New group", students from "New student" (full profile, both parents, optional group; branch admins must choose one of their groups).
 - **Excel export** (`/admin/academy/export`, buttons on the groups list and each group page): one tab per group in the academy's own layout plus a summary tab. An exported file can be edited and uploaded again.
+- **Row colours**: in imported sheets a green name cell marks an attending student and red marks a lost one (recorded as withdrawn); exports use the same colours.
 - **Excel import** (`/admin/academy/import`): one tab per group. A tab can go into an existing group or create a new one (level, branch or online, instructor, price pre-filled from the sheet). Header names are matched in Arabic or English, merged cells (siblings sharing a phone) are followed, and phones that lost their leading zero are repaired. "Check" runs the full import inside a transaction and rolls it back, so the preview is exactly what will be saved. Re-importing the same file adds nothing new; if the sheet's "paid" grew, only the difference is recorded.
 - **Users and roles** (`/admin/academy/users`): create accounts with a one-time temporary password; everyone changes their own password at `/account`.
 - **Audit log**: every change is recorded with who made it.
+
+### Accounts
+
+- Staff sign in with email. Students and parents sign in with a username shown as `name@zij-academy`; this is a login name, not a mailbox. Their accounts are created from the student's page ("Portal accounts"), which shows the temporary password once with a ready WhatsApp message to the parent.
+- Every new account and every admin reset uses a temporary password that must be changed at first sign-in (`/account`).
+- Each person may correct their Arabic and English name once; later changes go to Users & roles for approval. Approved names also update the linked student or parent record. Students keep their original name as a matching key so older Excel sheets still recognise them.
+- People can add their own email at `/account`; it is used only after they confirm the link sent to it. Password reset links (`/forgot-password`) go only to a confirmed email; without one, an admin resets the password.
+- Account emails use the same SMTP settings as the contact form, and links use `BETTER_AUTH_URL`.
 
 ### Themes
 

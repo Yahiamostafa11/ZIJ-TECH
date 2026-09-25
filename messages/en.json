@@ -26,7 +26,9 @@
     "submitting": "Signing in…",
     "invalid": "Incorrect email or password.",
     "tooMany": "Too many attempts. Wait a minute and try again.",
-    "failed": "Sign-in failed. Please try again."
+    "failed": "Sign-in failed. Please try again.",
+    "login": "Username or email",
+    "forgot": "Forgot your password?"
   },
   "hub": {
     "title": "Portals",
@@ -144,7 +146,7 @@
     "enrollmentStatus": {
       "active": "Active",
       "completed": "Completed",
-      "withdrawn": "Withdrawn",
+      "withdrawn": "Lost",
       "transferred": "Transferred"
     },
     "studentStatus": {
@@ -177,11 +179,13 @@
       "academy_admin": "Academy admin",
       "branch_admin": "Branch admin",
       "moderator": "Moderator",
-      "instructor": "Instructor"
+      "instructor": "Instructor",
+      "student": "Student",
+      "parent": "Parent"
     },
     "importStatus": {
       "created": "Added",
-      "updated": "Payment updated",
+      "updated": "Updated",
       "unchanged": "Already up to date",
       "skipped": "Skipped"
     }
@@ -217,7 +221,16 @@
     "cannotRevokeSelf": "You can't remove your own owner role.",
     "useAccountPage": "Change your own password from My account.",
     "studentExists": "A student with this name is already registered in this family.",
-    "groupRequired": "Choose a group."
+    "groupRequired": "Choose a group.",
+    "passwordTooShort": "Use at least 10 characters.",
+    "passwordMismatch": "The new passwords don't match.",
+    "passwordSame": "Choose a different password from the current one.",
+    "wrongPassword": "The current password is wrong.",
+    "emailSame": "This email is already confirmed on your account.",
+    "mailFailed": "The email could not be sent. Try again later or contact the academy.",
+    "invalidUsername": "Use 3–40 lowercase letters, numbers, dots or dashes.",
+    "usernameTaken": "This username is taken.",
+    "accountExists": "This person already has an account."
   },
   "messages": {
     "saved": "Saved.",
@@ -225,7 +238,13 @@
     "paymentRecorded": "Payment recorded.",
     "paymentVoided": "Payment voided.",
     "userCreated": "Account created.",
-    "passwordReset": "Password reset."
+    "passwordReset": "Password reset.",
+    "passwordChanged": "Password changed. Other devices were signed out.",
+    "nameSaved": "Name saved.",
+    "nameRequested": "Sent to the academy for approval.",
+    "verificationSent": "Confirmation link sent. Open your email to finish.",
+    "resetRequested": "If your account has a confirmed email, a reset link is on its way.",
+    "accountCreated": "Account created."
   },
   "branches": {
     "description": "Physical branches. Online groups do not belong to a branch.",
@@ -416,7 +435,9 @@
     "createLevelFirst": "Add a program and level first",
     "priceFromSheet": "Pre-filled from the tab's subscription column.",
     "newGroupHint": "Size limits are set automatically (6–10 in branch, 2–5 online). Add the weekly schedule from the group page after importing.",
-    "groupCreated": "New group"
+    "groupCreated": "New group",
+    "markedLost": "marked lost (red)",
+    "markedActive": "marked attending (green)"
   },
   "users": {
     "description": "Accounts and what each person can open. New accounts get a temporary password shown once.",
@@ -427,7 +448,10 @@
     "revoke": "Remove {role}",
     "resetPassword": "Reset password",
     "confirmReset": "Reset this person's password? They will be signed out.",
-    "passwordOnce": "Temporary password — shown only once. Send it privately; they should change it from My account."
+    "passwordOnce": "Temporary password — shown only once. Send it privately; they should change it from My account.",
+    "nameRequests": "Name change requests ({count})",
+    "approve": "Approve",
+    "reject": "Reject"
   },
   "account": {
     "title": "My account",
@@ -436,11 +460,25 @@
     "newPassword": "New password (10+ characters)",
     "confirmPassword": "Repeat new password",
     "submit": "Change password",
-    "tooShort": "Use at least 10 characters.",
-    "mismatch": "The new passwords don't match.",
-    "wrongCurrent": "The current password is wrong.",
-    "failed": "Could not change the password.",
-    "changed": "Password changed. Other devices were signed out."
+    "mustChange": "You're signed in with a temporary password. Choose your own password below to continue.",
+    "emailVerified": "Your email is confirmed. Notifications and password reset links will go there.",
+    "emailLinkInvalid": "That confirmation link is invalid or has expired. Send a new one below.",
+    "names": "Your name",
+    "loginId": "Sign-in name",
+    "nameFreeEdit": "You can correct your Arabic and English name once. After that, changes are sent to the academy for approval.",
+    "namePending": "Your requested name is waiting for the academy's approval. You can still update the request.",
+    "nameNeedsApproval": "You've used your free name edit. A new name will be sent to the academy for approval.",
+    "requested": "Requested",
+    "saveName": "Save name",
+    "requestName": "Send for approval",
+    "email": "Your email",
+    "verified": "Confirmed",
+    "emailWhy": "Add your own email (for example Gmail) to get notifications and reset your password yourself.",
+    "emailPendingPrefix": "We sent a confirmation link to",
+    "emailPendingSuffix": "Open it to finish. Check spam if you don't see it.",
+    "changeEmail": "Change email",
+    "addEmail": "Add email",
+    "sendConfirmation": "Send confirmation link"
   },
   "audit": {
     "description": "Who changed what, newest first.",
@@ -456,5 +494,34 @@
     "addAccount": "Add instructor account",
     "empty": "No instructors yet. Create an account with the Instructor role.",
     "currentGroups": "Current groups"
+  },
+  "recovery": {
+    "forgotTitle": "Forgot password",
+    "forgotSubtitle": "We'll email a reset link to the address saved on your account.",
+    "login": "Username or email",
+    "send": "Send reset link",
+    "noEmailHelp": "If no email is saved on your account, ask the academy to reset your password — they'll send you a new one on WhatsApp.",
+    "backToLogin": "Back to sign in",
+    "resetTitle": "Choose a new password",
+    "newPassword": "New password (10+ characters)",
+    "confirmPassword": "Repeat new password",
+    "setPassword": "Save new password",
+    "resetDone": "Your password was changed. Sign in with the new one.",
+    "tooShort": "Use at least 10 characters.",
+    "mismatch": "The passwords don't match.",
+    "invalidLink": "This link is invalid or has expired.",
+    "requestNew": "Request a new link"
+  },
+  "accounts": {
+    "title": "Portal accounts",
+    "hint": "Create a sign-in for the student and each parent. The temporary password is shown once — send it on WhatsApp; they choose their own at first sign-in.",
+    "studentAccount": "Student",
+    "parentAccount": "Parent ({relation})",
+    "username": "Username",
+    "create": "Create account",
+    "shareOnce": "Shown once. Send it now:",
+    "sendWhatsapp": "Send on WhatsApp",
+    "hasEmail": "Email confirmed — can reset their own password",
+    "noEmail": "No email yet — resets go through the academy"
   }
 }

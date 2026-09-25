@@ -1,6 +1,6 @@
 "use server";
 
-import { and, eq, isNull, ne, sql } from "drizzle-orm";
+import { and, eq, isNull, ne, or, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -398,7 +398,7 @@ export async function registerStudent(_: ActionState, formData: FormData): Promi
       const [duplicate] = await tx
         .select({ id: student.id })
         .from(student)
-        .where(and(eq(student.familyId, familyId), eq(student.nameKey, key)));
+        .where(and(eq(student.familyId, familyId), or(eq(student.nameKey, key), eq(student.originalNameKey, key))));
       if (duplicate) throw new DuplicateStudentError();
 
       const [{ id }] = await tx
@@ -407,6 +407,7 @@ export async function registerStudent(_: ActionState, formData: FormData): Promi
           familyId,
           nameAr,
           nameKey: key,
+          originalNameKey: key,
           nameEn: values.nameEn,
           birthDate: values.birthDate,
           birthYear: values.birthDate || values.age === null ? null : new Date().getUTCFullYear() - values.age,

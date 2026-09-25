@@ -15,6 +15,8 @@ export type RowOutcome = {
   studentCreated?: boolean;
   enrollmentCreated?: boolean;
   paymentAdded?: number;
+  /** Enrollment status set from the row colour. */
+  statusChanged?: "active" | "withdrawn";
   errors: RowIssue[];
   warnings: RowIssue[];
 };
@@ -174,6 +176,13 @@ export async function runImport({
             if (toMoney(row.price) !== net) outcome.warnings.push({ code: "priceDiffers", value: String(net) });
           }
 
+          // Row colour is the sheet's attendance status: red = lost, green = attending.
+          const sheetStatus = row.status === "lost" ? "withdrawn" : row.status === "active" ? "active" : null;
+          if (sheetStatus && existing.status !== sheetStatus && ["active", "withdrawn"].includes(existing.status)) {
+            await tx.update(enrollment).set({ status: sheetStatus }).where(eq(enrollment.id, existing.id));
+            outcome.statusChanged = sheetStatus;
+          }
+
           const [{ paid }] = await tx
             .select({ paid: sql<string>`coalesce(sum(${payment.amount}), 0)` })
             .from(payment)
@@ -197,7 +206,12 @@ export async function runImport({
             outcome.warnings.push({ code: "excelPaidLess", value: String(toMoney(Number(paid))) });
           }
 
-          outcome.status = studentCreated || outcome.enrollmentCreated ? "created" : outcome.paymentAdded ? "updated" : "unchanged";
+          outcome.status =
+            studentCreated || outcome.enrollmentCreated
+              ? "created"
+              : outcome.paymentAdded || outcome.statusChanged
+                ? "updated"
+                : "unchanged";
         }
 
         results.push(result);

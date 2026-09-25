@@ -48,6 +48,8 @@ export type ParsedRow = {
   paid: number | null;
   paidOn: string | null;
   notes: string | null;
+  /** From the row's highlight: green = active, red = lost, null = no colour. */
+  status: "active" | "lost" | null;
   /** Problems that stop the row from importing. */
   errors: RowIssue[];
   /** Problems worth checking that do not stop the row. */
@@ -65,6 +67,23 @@ export type ParsedSheet = {
 type CellValue = ExcelJS.CellValue;
 
 /** Plain value of a cell, following merges, formulas, rich text and hyperlinks. */
+/**
+ * Classifies a cell's background: the academy marks attending students green
+ * and lost students red. Theme colours without an RGB value are ignored.
+ */
+function highlightOf(cell: ExcelJS.Cell): "active" | "lost" | null {
+  const source = cell.isMerged ? cell.master : cell;
+  const fill = source.fill;
+  if (!fill || fill.type !== "pattern" || fill.pattern === "none") return null;
+  const argb = fill.fgColor?.argb;
+  if (!argb || !/^[0-9a-f]{6,8}$/i.test(argb)) return null;
+  const hex = argb.slice(-6);
+  const [red, green, blue] = [0, 2, 4].map((offset) => parseInt(hex.slice(offset, offset + 2), 16));
+  if (green > red + 40 && green > blue + 40) return "active";
+  if (red > green + 60 && red > blue + 60) return "lost";
+  return null;
+}
+
 function readCell(cell: ExcelJS.Cell): string | number | Date | null {
   const value: CellValue = cell.isMerged ? cell.master.value : cell.value;
   return unwrap(value);
@@ -213,6 +232,7 @@ export async function parseWorkbook(data: ArrayBuffer): Promise<ParsedSheet[]> {
           paid,
           paidOn,
           notes: asText(get("notes")) || null,
+          status: header.columns.name === undefined ? null : highlightOf(row.getCell(header.columns.name)),
           errors,
           warnings,
         });

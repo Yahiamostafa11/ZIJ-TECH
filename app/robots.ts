@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/api/", "/admin", "/instructor", "/login", "/forbidden"],
+      disallow: ["/api/", "/admin", "/instructor", "/account", "/login", "/forgot-password", "/reset-password", "/forbidden"],
     },
     sitemap: "https://zijtech.com/sitemap.xml",
     host: "https://zijtech.com",

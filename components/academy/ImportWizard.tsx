@@ -388,6 +388,7 @@ function SheetReport({
                   )}
                   {tOptions(`importStatus.${row.status}`)}
                   {row.paymentAdded ? ` · ${t("paymentAdded", { amount: row.paymentAdded })}` : ""}
+                  {row.statusChanged ? ` · ${t(row.statusChanged === "withdrawn" ? "markedLost" : "markedActive")}` : ""}
                 </span>
               </Td>
               <Td>

@@ -16,7 +16,7 @@ const USERS_PATH = "/admin/academy/users";
 /** Roles each actor may grant or revoke. Only the owner manages admins. */
 function grantableRoles(actor: CurrentUser): Role[] {
   if (actor.grants.some((grant) => grant.role === "super_admin")) return [...ROLES];
-  return ["branch_admin", "moderator", "instructor"];
+  return ["branch_admin", "moderator", "instructor", "student", "parent"];
 }
 
 async function rolesOf(userId: string) {
@@ -59,7 +59,7 @@ export async function createUser(_: CreateUserState, formData: FormData): Promis
     };
   }
   const { role, branchId } = parsedRole.data;
-  if (!grantableRoles(actor).includes(role)) return { error: "cannotGrantRole" };
+  if (role === "student" || role === "parent" || !grantableRoles(actor).includes(role)) return { error: "cannotGrantRole" };
 
   const email = parsedUser.data.email.toLowerCase();
   const [existing] = await db.select({ id: user.id }).from(user).where(eq(user.email, email));
@@ -68,7 +68,7 @@ export async function createUser(_: CreateUserState, formData: FormData): Promis
   const id = randomUUID();
   const password = temporaryPassword();
   await db.transaction(async (tx) => {
-    await tx.insert(user).values({ id, name: parsedUser.data.name, email, emailVerified: true });
+    await tx.insert(user).values({ id, name: parsedUser.data.name, email, emailVerified: true, mustChangePassword: true });
     await tx.insert(account).values({
       id: randomUUID(),
       accountId: id,
@@ -90,7 +90,7 @@ export async function grantRole(userId: string, _: ActionState, formData: FormDa
   if (!parsed.data) return parsed.state;
   const { role } = parsed.data;
   const branchId = role === "branch_admin" ? parsed.data.branchId : null;
-  if (!grantableRoles(actor).includes(role) || !(await canManage(actor, userId))) {
+  if (role === "student" || role === "parent" || !grantableRoles(actor).includes(role) || !(await canManage(actor, userId))) {
     return { error: "cannotGrantRole" };
   }
   if (branchId !== null) {
@@ -145,6 +145,7 @@ export async function resetPassword(userId: string): Promise<ResetPasswordState>
       .update(account)
       .set({ password: await hashPassword(password) })
       .where(and(eq(account.userId, userId), eq(account.providerId, "credential")));
+    await tx.update(user).set({ mustChangePassword: true }).where(eq(user.id, userId));
     // Sign the user out everywhere so the old password stops working immediately.
     await tx.delete(session).where(eq(session.userId, userId));
     await audit(tx, actor.id, "user.reset_password", "user", userId);

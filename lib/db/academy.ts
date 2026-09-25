@@ -132,6 +132,10 @@ export const guardian = mysqlTable(
     /** Normalised Egyptian mobile number, e.g. 01012345678. One family per number. */
     phone: varchar("phone", { length: 20 }).notNull().unique(),
     notes: text("notes"),
+    /** Parent portal account; one account sees every child in the family. */
+    userId: varchar("user_id", { length: 36 })
+      .unique()
+      .references(() => user.id, { onDelete: "set null" }),
     createdAt: createdAt(),
   },
   (table) => [index("guardian_family_idx").on(table.familyId)],
@@ -150,6 +154,11 @@ export const student = mysqlTable(
     nameEn: varchar("name_en", { length: 160 }),
     /** Normalised Arabic name used to match re-imported rows to this student. */
     nameKey: varchar("name_key", { length: 160 }).notNull(),
+    /**
+     * The name key the student was first registered with. Kept when the name
+     * is later corrected, so older Excel sheets still match this student.
+     */
+    originalNameKey: varchar("original_name_key", { length: 160 }),
     birthDate: date("birth_date", { mode: "string" }),
     /** Estimated from an age when the birth date is unknown. */
     birthYear: smallint("birth_year"),
@@ -158,6 +167,10 @@ export const student = mysqlTable(
     status: mysqlEnum("status", STUDENT_STATUSES).notNull().default("active"),
     /** Guardian consent to show the student's work or photos publicly. */
     photoConsent: boolean("photo_consent").notNull().default(false),
+    /** Student portal account. */
+    userId: varchar("user_id", { length: 36 })
+      .unique()
+      .references(() => user.id, { onDelete: "set null" }),
     createdAt: createdAt(),
     updatedAt: updatedAt(),
   },
