@@ -301,7 +301,7 @@ function Work({ copy }: { copy: SiteCopy }) {
               >
                 <div className="relative aspect-[16/9] overflow-hidden border-b border-border-subtle/70 bg-[linear-gradient(135deg,rgb(var(--bg-secondary)),rgb(var(--bg-primary)))]">
                   {item.image ? (
-                    <Image src={item.image} alt={item.name} fill sizes="(min-width: 1024px) 400px, 100vw" className="object-cover object-top" />
+                    <Image src={item.image} alt={item.name} fill sizes={featured ? "(min-width: 1024px) 800px, 100vw" : "(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw"} className="object-cover object-top" />
                   ) : (
                     <div className="absolute inset-0 flex flex-col">
                       <div className="flex items-center gap-1.5 border-b border-border-subtle/60 px-4 py-2.5" aria-hidden="true">
