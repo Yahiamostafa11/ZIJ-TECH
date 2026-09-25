@@ -24,6 +24,9 @@ export function Footer() {
               {link}
             </a>
           ))}
+          <a href="/login" className="text-sm font-semibold text-gold-light transition-colors hover:text-gold-primary">
+            Client portal
+          </a>
         </div>
 
         <div className="text-center text-xs text-text-secondary md:text-right">

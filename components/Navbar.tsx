@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { LogIn, Menu, X } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { GoldButton } from "./ui/GoldButton";
 
@@ -57,6 +57,10 @@ export function Navbar() {
 
           <div className="hidden items-center gap-3 lg:flex">
             <ThemeToggle labels={THEME_LABELS} />
+            {/* Academy families, instructors and staff; /login forwards signed-in users to their portal. */}
+            <GoldButton href="/login" variant="outline">
+              <LogIn size={16} className="me-2" /> Sign in
+            </GoldButton>
             <GoldButton href="#contact">Get Started</GoldButton>
           </div>
 
@@ -87,9 +91,12 @@ export function Navbar() {
                 {link.name}
               </a>
             ))}
+            <GoldButton href="/login" variant="outline" className="mt-2 w-full">
+              <LogIn size={16} className="me-2" /> Sign in
+            </GoldButton>
             <GoldButton
               href="#contact"
-              className="mt-2 w-full"
+              className="w-full"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Get Started
