@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "ZIJ Technologies — Automate. Scale. Elevate.";
+export const alt = "ZIJ Technologies — From classrooms to factories.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -27,10 +27,10 @@ export default function OpenGraphImage() {
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
           <div style={{ fontSize: 72, fontWeight: 700, lineHeight: 1.05 }}>
-            Automate. Scale. Elevate.
+            From classrooms to factories.
           </div>
           <div style={{ color: "#B8B0A5", fontSize: 28 }}>
-            SaaS systems, automation, integrations, and data solutions.
+            Software · IoT & Robotics · STEM.org accredited Zij Academy
           </div>
         </div>
       </div>
