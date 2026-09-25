@@ -10,22 +10,32 @@ const config: Config = {
     extend: {
       colors: {
         bg: {
-          primary: "var(--bg-primary)",
-          secondary: "var(--bg-secondary)",
-          card: "var(--bg-card)",
+          primary: "rgb(var(--bg-primary) / <alpha-value>)",
+          secondary: "rgb(var(--bg-secondary) / <alpha-value>)",
+          card: "rgb(var(--bg-card) / <alpha-value>)",
         },
         gold: {
-          primary: "var(--gold-primary)",
-          light: "var(--gold-light)",
-          dark: "var(--gold-dark)",
+          primary: "rgb(var(--gold-primary) / <alpha-value>)",
+          light: "rgb(var(--gold-light) / <alpha-value>)",
+          dark: "rgb(var(--gold-dark) / <alpha-value>)",
         },
         text: {
-          primary: "var(--text-primary)",
-          secondary: "var(--text-secondary)",
+          primary: "rgb(var(--text-primary) / <alpha-value>)",
+          secondary: "rgb(var(--text-secondary) / <alpha-value>)",
         },
         border: {
-          subtle: "var(--border-subtle)",
+          // The subtle border is gold at 28%; a modifier scales that base alpha.
+          subtle: "rgb(var(--gold-primary) / calc(0.28 * <alpha-value>))",
         },
+      },
+      opacity: {
+        8: "0.08",
+        12: "0.12",
+        14: "0.14",
+        16: "0.16",
+        78: "0.78",
+        82: "0.82",
+        86: "0.86",
       },
       fontFamily: {
         cinzel: ["var(--font-cinzel)", "serif"],

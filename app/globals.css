@@ -3,15 +3,16 @@
 @tailwind utilities;
 
 :root {
-  --bg-primary: #071011;
-  --bg-secondary: #0A0F10;
-  --bg-card: #0D1516;
-  --gold-primary: #C8923C;
-  --gold-light: #F2C166;
-  --gold-dark: #8E6527;
+  /* Colour tokens are RGB channels so Tailwind opacity modifiers (e.g. bg-gold-primary/10) work. */
+  --bg-primary: 7 16 17;
+  --bg-secondary: 10 15 16;
+  --bg-card: 13 21 22;
+  --gold-primary: 200 146 60;
+  --gold-light: 242 193 102;
+  --gold-dark: 142 101 39;
   --gold-gradient: linear-gradient(135deg, #8E6424, #F2C166 48%, #C8923C);
-  --text-primary: #F4EFE6;
-  --text-secondary: #B8B0A5;
+  --text-primary: 244 239 230;
+  --text-secondary: 184 176 165;
   --border-subtle: rgba(200, 146, 60, 0.28);
   --glow-gold: 0 0 28px rgba(242, 193, 102, 0.25);
 }
@@ -31,7 +32,7 @@ body {
     radial-gradient(circle at 78% 4%, rgba(200, 146, 60, 0.1), transparent 32rem),
     radial-gradient(circle at 12% 22%, rgba(242, 193, 102, 0.055), transparent 28rem),
     linear-gradient(180deg, #071011 0%, #091111 48%, #060a0b 100%);
-  color: var(--text-primary);
+  color: rgb(var(--text-primary));
   position: relative;
   overflow-x: hidden;
 }
@@ -51,13 +52,13 @@ body::before {
 }
 
 [data-theme="light"] {
-  --bg-primary: #FAF8F3;
-  --bg-secondary: #FFFFFF;
-  --bg-card: #FFFFFF;
-  --gold-primary: #C48935;
-  --gold-light: #D79A3C;
-  --text-primary: #252525;
-  --text-secondary: #5F5A52;
+  --bg-primary: 250 248 243;
+  --bg-secondary: 255 255 255;
+  --bg-card: 255 255 255;
+  --gold-primary: 196 137 53;
+  --gold-light: 215 154 60;
+  --text-primary: 37 37 37;
+  --text-secondary: 95 90 82;
   --border-subtle: rgba(196, 137, 53, 0.28);
 }
 
@@ -72,7 +73,7 @@ body::before {
 .glass-card {
   background:
     linear-gradient(145deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01)),
-    var(--bg-card);
+    rgb(var(--bg-card));
   border: 1px solid var(--border-subtle);
   transition: all 0.3s ease;
   border-radius: 8px;
@@ -89,9 +90,9 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--gold-primary);
+  border: 1px solid rgb(var(--gold-primary));
   border-radius: 50%;
-  color: var(--gold-primary);
+  color: rgb(var(--gold-primary));
 }
 
 .premium-panel {
