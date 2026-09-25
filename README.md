@@ -89,13 +89,13 @@ npm run build
 
 ## Deployment
 
-The application needs a Node.js runtime (server rendering, the portal, `/api/contact` and account emails). `npm run build:deploy` applies database migrations, creates the first super admin if needed, and builds; `npm start` runs it.
+The application needs a Node.js runtime (server rendering, the portal, `/api/contact` and account emails). `npm run build` first applies database migrations and creates the first super admin if needed (the `prebuild` step, skipped when `DATABASE_URL` is not set), then builds; `npm start` runs it.
 
 ### Hostinger hPanel
 
 1. **Database** — hPanel → **Databases → MySQL Databases**: create a database and a user with a strong password. Note the database name, user and host that hPanel shows (Hostinger prefixes names, e.g. `u123456789_zij`).
 2. **App** — hPanel → **Websites → Add website → Node.js Web App** (not a static site). Connect GitHub, pick this repository and the `main` branch.
-3. **Build settings** — Node.js 22 (20.9+ works). Install command `npm ci`, build command `npm run build:deploy`, start command `npm start`.
+3. **Build settings** — Node.js 22 (20.9+ works). Install command `npm ci`, build command `npm run build` (hPanel's default), start command `npm start`.
 4. **Environment variables** — add these before the first deploy:
 
    | Variable | Value |
@@ -109,4 +109,4 @@ The application needs a Node.js runtime (server rendering, the portal, `/api/con
 
 5. **Deploy**, then open `/login`. The super admin must choose a new password at first sign-in (or use "Forgot password?", which emails a link once SMTP is set).
 
-Each later deploy re-runs `npm run build:deploy`, which applies any new migrations in `drizzle/` automatically. Keep variables in hPanel and never commit `.env.local`; after changing a variable, redeploy so the app picks it up.
+Each later deploy re-runs `npm run build`, which applies any new migrations in `drizzle/` automatically. Keep variables in hPanel and never commit `.env.local`; after changing a variable, redeploy so the app picks it up.

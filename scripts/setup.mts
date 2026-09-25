@@ -3,6 +3,10 @@
  * super admin from INITIAL_ADMIN_EMAIL / INITIAL_ADMIN_PASSWORD if no super
  * admin exists yet. Safe to run on every deploy.
  *
+ * It runs automatically before `npm run build` (npm's prebuild step), so a
+ * host whose build command is fixed to `npm run build` still gets it. Without
+ * DATABASE_URL it does nothing, so builds without a database still work.
+ *
  *   npm run db:setup
  *
  * The first admin must choose a new password at first sign-in. Remove
@@ -16,6 +20,11 @@ import { drizzle } from "drizzle-orm/mysql2";
 import { migrate } from "drizzle-orm/mysql2/migrator";
 import mysql from "mysql2/promise";
 import { account, auditLog, user, userRole } from "../lib/db/schema.ts";
+
+if (!process.env.DATABASE_URL) {
+  console.log("DATABASE_URL is not set; skipping database setup.");
+  process.exit(0);
+}
 
 const connection = await mysql.createConnection({ uri: requireEnv("DATABASE_URL") });
 const db = drizzle(connection);
