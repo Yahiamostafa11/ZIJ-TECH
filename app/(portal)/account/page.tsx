@@ -3,6 +3,7 @@ import { and, desc, eq } from "drizzle-orm";
 import { getTranslations } from "next-intl/server";
 import { CheckCircle2, KeyRound, Mail, ShieldAlert, UserRound } from "lucide-react";
 import { ActionForm, FieldError, FormMessage, SubmitButton } from "@/components/portal/ActionForm";
+import { PasswordInput } from "@/components/portal/PasswordInput";
 import { PortalShell } from "@/components/portal/PortalShell";
 import { Badge, Card, DetailList, Field, PageHeader, inputClass } from "@/components/portal/ui";
 import { changeOwnPassword, requestEmailChange, updateOwnName } from "@/lib/auth/account-actions";
@@ -30,13 +31,10 @@ export default async function AccountPage({ searchParams }: { searchParams: Prom
     <>
       {(["currentPassword", "newPassword", "confirmPassword"] as const).map((name) => (
         <Field key={name} label={t(`account.${name}`)} htmlFor={name}>
-          <input
+          <PasswordInput
             id={name}
             name={name}
-            type="password"
-            dir="ltr"
             autoComplete={name === "currentPassword" ? "current-password" : "new-password"}
-            className={inputClass}
           />
           <FieldError name={name} />
         </Field>

@@ -4,7 +4,8 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { authClient } from "@/lib/auth/client";
-import { buttonClass, inputClass } from "./ui";
+import { PasswordInput } from "./PasswordInput";
+import { buttonClass } from "./ui";
 
 export function ResetPasswordForm({ token }: { token: string }) {
   const t = useTranslations("recovery");
@@ -37,11 +38,11 @@ export function ResetPasswordForm({ token }: { token: string }) {
     >
       <label className="flex flex-col gap-2 text-sm text-text-secondary">
         {t("newPassword")}
-        <input name="password" type="password" autoComplete="new-password" dir="ltr" required className={inputClass} />
+        <PasswordInput name="password" autoComplete="new-password" required />
       </label>
       <label className="flex flex-col gap-2 text-sm text-text-secondary">
         {t("confirmPassword")}
-        <input name="confirm" type="password" autoComplete="new-password" dir="ltr" required className={inputClass} />
+        <PasswordInput name="confirm" autoComplete="new-password" required />
       </label>
       <button type="submit" disabled={status === "pending"} className={buttonClass("primary")}>
         {t("setPassword")}
