@@ -6,6 +6,12 @@ export const runtime = "nodejs";
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
 const RATE_LIMIT_MAX_REQUESTS = 5;
 const MAX_BODY_BYTES = 12_000;
+const DIVISION_LABELS: Record<string, string> = {
+  academy: "Zij Academy",
+  software: "Software",
+  iot: "IoT & Robotics",
+  other: "General",
+};
 const requestsByClient = new Map<string, { count: number; resetAt: number }>();
 
 function escapeHtml(value: string) {
@@ -73,6 +79,8 @@ export async function POST(req: Request) {
     const name = normalizeText(body.name, 100);
     const email = normalizeText(body.email, 254);
     const message = normalizeText(body.message, 5_000);
+    const division = DIVISION_LABELS[String(body.division)] ?? DIVISION_LABELS.other;
+    const phone = normalizeText(body.phone, 30)?.replace(/[^\d+\s()-]/g, "") || null;
 
     // A filled honeypot is treated as success so bots do not learn how to bypass it.
     if (typeof body.company === "string" && body.company.trim()) {
@@ -112,18 +120,20 @@ export async function POST(req: Request) {
     const safeEmail = escapeHtml(email);
     const safeMessage = escapeHtml(message).replace(/\r?\n/g, "<br />");
     const safeHeaderName = name.replace(/[\r\n]+/g, " ");
+    const safePhone = phone ? escapeHtml(phone) : null;
 
     const mailOptions = {
       from: `ZIJ Technologies <${sender}>`,
       replyTo: { name: safeHeaderName, address: email },
       to: recipient,
-      subject: `New Contact Form Submission from ${safeHeaderName}`,
-      text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
+      subject: `[${division}] New enquiry from ${safeHeaderName}`,
+      text: `Division: ${division}\nName: ${name}\nEmail: ${email}${phone ? `\nPhone: ${phone}` : ""}\n\n${message}`,
       html: `
         <div style="font-family: sans-serif; color: #333;">
-          <h2 style="color: #8B6914;">New Contact Submission</h2>
+          <h2 style="color: #8B6914;">New enquiry — ${division}</h2>
           <p><strong>Name:</strong> ${safeName}</p>
           <p><strong>Email:</strong> ${safeEmail}</p>
+          ${safePhone ? `<p><strong>Phone:</strong> ${safePhone}</p>` : ""}
           <p><strong>Message:</strong></p>
           <p style="background: #f4f4f4; padding: 12px; border-radius: 4px;">${safeMessage}</p>
         </div>

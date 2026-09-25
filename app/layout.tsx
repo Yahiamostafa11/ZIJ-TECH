@@ -24,27 +24,26 @@ const cairo = Cairo({
 export const metadata: Metadata = {
   metadataBase: new URL("https://zijtech.com"),
   title: {
-    default: "ZIJ Technologies | Automate. Scale. Elevate.",
+    default: "ZIJ Technologies | From classrooms to factories",
     template: "%s | ZIJ Technologies",
   },
   description:
-    "Custom SaaS systems, workflow automation, integrations, and data solutions for modern businesses.",
-  alternates: { canonical: "/" },
+    "Software and SaaS, IoT and robotics solutions, and Zij Academy — STEM.org accredited programming and robotics classes for children.",
   applicationName: "ZIJ Technologies",
-  keywords: ["SaaS development", "workflow automation", "system integration", "data analytics"],
+  keywords: ["software development Egypt", "SaaS", "IoT", "predictive maintenance", "digital twin", "robotics for kids", "programming for kids", "STEM academy El Shorouk"],
   openGraph: {
     type: "website",
     url: "/",
     siteName: "ZIJ Technologies",
-    title: "ZIJ Technologies | Automate. Scale. Elevate.",
-    description: "Modern software systems inspired by ancient navigation and built for business growth.",
+    title: "ZIJ Technologies | From classrooms to factories",
+    description: "Software, IoT and robotics, and a STEM.org accredited academy for young engineers.",
     locale: "en_US",
     alternateLocale: ["ar_EG"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "ZIJ Technologies | Automate. Scale. Elevate.",
-    description: "Custom SaaS, automation, integrations, and data solutions.",
+    title: "ZIJ Technologies | From classrooms to factories",
+    description: "Software, IoT and robotics, and a STEM.org accredited academy.",
   },
   robots: { index: true, follow: true },
 };

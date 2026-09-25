@@ -63,16 +63,6 @@ const config: Config = {
       backgroundImage: {
         "gold-gradient": "var(--gold-gradient)",
       },
-      animation: {
-        "spin-slow": "spin 60s linear infinite",
-        "pulse-glow": "pulse-glow 3s infinite",
-      },
-      keyframes: {
-        "pulse-glow": {
-          "0%, 100%": { boxShadow: "0 0 10px rgba(201, 168, 76, 0.1)" },
-          "50%": { boxShadow: "var(--glow-gold)" },
-        },
-      },
     },
   },
   plugins: [],
