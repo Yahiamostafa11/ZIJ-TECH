@@ -210,3 +210,37 @@ export const payrollPayment = mysqlTable(
   },
   (table) => [index("payroll_payment_month_idx").on(table.instructorId, table.month)],
 );
+
+/* -------------------------------------------------------------------------- */
+/* Feedback after sessions                                                     */
+/* -------------------------------------------------------------------------- */
+
+export const RESPONDENTS = ["parent", "student"] as const;
+export const FEEDBACK_FORMS = ["short", "long"] as const;
+
+/**
+ * A one-use link sent on WhatsApp after a session. Parents and students answer
+ * without signing in; the token is the only key. Answers are stored as JSON.
+ */
+export const feedback = mysqlTable(
+  "feedback",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    token: varchar("token", { length: 48 }).notNull().unique(),
+    sessionId: int("session_id")
+      .notNull()
+      .references(() => classSession.id, { onDelete: "cascade" }),
+    studentId: int("student_id")
+      .notNull()
+      .references(() => student.id),
+    respondent: mysqlEnum("respondent", RESPONDENTS).notNull(),
+    form: mysqlEnum("form", FEEDBACK_FORMS).notNull(),
+    answers: text("answers"),
+    submittedAt: datetime("submitted_at"),
+    createdAt: createdAt(),
+  },
+  (table) => [
+    uniqueIndex("feedback_session_student_respondent_unique").on(table.sessionId, table.studentId, table.respondent),
+    index("feedback_student_idx").on(table.studentId),
+  ],
+);

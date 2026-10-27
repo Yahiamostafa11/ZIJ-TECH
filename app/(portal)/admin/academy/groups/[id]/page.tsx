@@ -117,6 +117,9 @@ export default async function GroupPage({ params }: { params: Promise<{ id: stri
                         <Link href={`/admin/academy/students/${row.studentId}`} className="font-semibold text-gold-light hover:underline">
                           {row.nameAr}
                         </Link>
+                        <Link href={`/admin/academy/groups/${group.id}/report/${row.studentId}`} className="ms-2 text-xs text-text-secondary hover:text-gold-light">
+                          {t("report.open")}
+                        </Link>
                         {row.status !== "active" && (
                           <span className="ms-2">
                             <Badge>{t(`options.enrollmentStatus.${row.status}`)}</Badge>

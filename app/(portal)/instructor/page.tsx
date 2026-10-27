@@ -8,6 +8,7 @@ import { EarningsChart } from "@/components/teaching/EarningsChart";
 import { GlassCard, Pill, StatTile } from "@/components/teaching/Glass";
 import { formatClock, formatDate, formatMoney, formatMonth, formatSessionTime, localized } from "@/lib/academy/format";
 import { getMonthStatement, getPayrollBalance } from "@/lib/academy/payroll";
+import { getRecentFeedback } from "@/lib/academy/feedback";
 import { getInstructorActivity, getInstructorHome } from "@/lib/academy/teaching";
 import { cairoParts } from "@/lib/academy/time";
 import { requirePermission } from "@/lib/auth/session";
@@ -40,6 +41,7 @@ export default async function InstructorHomePage() {
     getMonthStatement(user.id, month),
     getPayrollBalance(user.id),
   ]);
+  const reviews = await getRecentFeedback(user.id);
   const lastOf = (kind: "bonus" | "deduction") => statement.adjustments.filter((row) => row.kind === kind).at(-1)?.reason;
 
   const firstName = localized(locale, user.nameAr, user.nameEn).split(" ")[0] || user.name.split(" ")[0];
@@ -216,7 +218,40 @@ export default async function InstructorHomePage() {
         </GlassCard>
       </div>
 
-      <p className="text-center text-xs text-text-secondary">{tAll("teaching.home.reviewsSoon")}</p>
+      <GlassCard title={t("home.reviews")}>
+        {reviews.length === 0 ? (
+          <p className="text-sm text-text-secondary">{t("home.noReviews")}</p>
+        ) : (
+          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+            {reviews.map((review) => {
+              const parent = review.respondent === "parent";
+              const score = parent ? review.data.enthusiasm : review.data.enjoyed;
+              const comment = parent ? review.data.comment : review.data.likedMost;
+              return (
+                <Link
+                  key={review.id}
+                  href={`/instructor/groups/${review.groupId}/students/${review.studentId}`}
+                  className="glass-inset grid gap-2 p-4 transition hover:bg-gold-primary/10"
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <bdi className="font-bold">{localized(locale, review.nameAr, review.nameEn)}</bdi>
+                    <span className={parent ? "tracking-widest text-gold-light" : "text-xl"} aria-label={String(score ?? "")}>
+                      {parent
+                        ? "★★★★★".slice(0, Number(score) || 0) + "☆☆☆☆☆".slice(0, 5 - (Number(score) || 0))
+                        : ["", "😕", "😐", "😄"][Number(score) || 0]}
+                    </span>
+                  </div>
+                  {typeof comment === "string" && comment && <p className="text-sm text-text-primary">{comment}</p>}
+                  <p className="text-xs text-text-secondary">
+                    <Pill tone={parent ? "offline" : "online"}>{parent ? t("home.fromParent") : t("home.fromStudent")}</Pill>{" "}
+                    <bdi>{review.groupName}</bdi> · {t("sessionNumber", { number: review.number })}
+                  </p>
+                </Link>
+              );
+            })}
+          </div>
+        )}
+      </GlassCard>
     </div>
   );
 }

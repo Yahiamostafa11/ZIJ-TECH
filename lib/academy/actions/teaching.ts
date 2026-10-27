@@ -17,6 +17,7 @@ import {
   studentRequest,
 } from "@/lib/db/teaching";
 import { field, parseForm, type ActionState } from "@/lib/forms";
+import { createFeedbackLinks } from "../feedback";
 import { FamilyConflictError, resolveFamily, resolveStudent } from "../people";
 import { requireGroup } from "../scope";
 import { rateFor, requireTeachingGroup, requireTeachingSession, sessionStarted } from "../teaching";
@@ -45,7 +46,7 @@ const sheetSchema = z
  */
 export async function saveAttendance(sessionId: number, _: ActionState, formData: FormData): Promise<ActionState> {
   const user = await requirePermission("teaching.attendance");
-  const { session, group } = await requireTeachingSession(user, sessionId);
+  const { session, group, sessionCount } = await requireTeachingSession(user, sessionId);
   if (session.status === "cancelled") return { error: "sessionCancelled" };
   if (!sessionStarted(session.scheduledAt)) return { error: "sessionNotStarted" };
 
@@ -82,6 +83,13 @@ export async function saveAttendance(sessionId: number, _: ActionState, formData
         .values({ sessionId, studentId: row.studentId, ...values })
         .onDuplicateKeyUpdate({ set: { ...values, updatedAt: new Date() } });
     }
+    // Parent and student feedback links for everyone who attended.
+    await createFeedbackLinks(
+      tx,
+      session,
+      sessionCount,
+      rows.filter((row) => row.status === "present" || row.status === "late").map((row) => row.studentId),
+    );
     if (rate !== null) {
       await tx
         .update(classSession)

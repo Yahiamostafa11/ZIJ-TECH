@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
 import { ExternalLink } from "lucide-react";
@@ -98,7 +99,9 @@ export default async function InstructorGroupPage({ params }: { params: Promise<
                     {progress.map((row) => (
                       <tr key={row.studentId} className="border-t border-border-subtle/50">
                         <td className="px-2 py-2.5 font-semibold">
-                          <bdi>{localized(locale, row.nameAr, row.nameEn)}</bdi>
+                          <Link href={`/instructor/groups/${group.id}/students/${row.studentId}`} className="text-gold-light hover:underline">
+                            <bdi>{localized(locale, row.nameAr, row.nameEn)}</bdi>
+                          </Link>
                         </td>
                         <td className="px-2 py-2.5 font-dmsans tabular-nums">
                           {row.attended}/{row.counted}
@@ -115,7 +118,7 @@ export default async function InstructorGroupPage({ params }: { params: Promise<
                     ))}
                   </tbody>
                 </table>
-                <p className="mt-3 text-xs text-text-secondary">{t("groupPage.progressHint")}</p>
+                <p className="mt-3 text-xs text-text-secondary">{t("groupPage.progressHint")} {t("groupPage.reportHint")}</p>
               </div>
             )}
           </GlassCard>

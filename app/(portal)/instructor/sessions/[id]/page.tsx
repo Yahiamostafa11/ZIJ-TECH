@@ -6,8 +6,10 @@ import { ArrowRight, ExternalLink } from "lucide-react";
 import { ActionForm, FieldError, FormMessage, SubmitButton } from "@/components/portal/ActionForm";
 import { Field, inputClass } from "@/components/portal/ui";
 import { AttendanceSheet } from "@/components/teaching/AttendanceSheet";
+import { FeedbackLinks } from "@/components/teaching/FeedbackLinks";
 import { GlassCard, Pill } from "@/components/teaching/Glass";
 import { postponeSession, saveAttendance } from "@/lib/academy/actions/teaching";
+import { getSessionFeedbackLinks } from "@/lib/academy/feedback";
 import { formatDateTime, formatSessionTime, localized } from "@/lib/academy/format";
 import { getSessionRoster, requireTeachingSession, sessionStarted } from "@/lib/academy/teaching";
 import { cairoParts, whatsappNumber } from "@/lib/academy/time";
@@ -21,10 +23,11 @@ export default async function InstructorSessionPage({ params }: { params: Promis
   const detail = await requireTeachingSession(user, id);
   const { session, group } = detail;
 
-  const [t, locale, roster] = await Promise.all([
+  const [t, locale, roster, links] = await Promise.all([
     getTranslations("teaching"),
     getLocale() as Promise<Locale>,
     getSessionRoster(session.id, group.id),
+    getSessionFeedbackLinks(session.id),
   ]);
 
   const started = sessionStarted(session.scheduledAt);
@@ -83,6 +86,16 @@ export default async function InstructorSessionPage({ params }: { params: Promis
         </GlassCard>
 
         <div className="grid content-start gap-6">
+          <FeedbackLinks
+            instructor={instructorName}
+            session={title}
+            rows={roster.map((row) => ({
+              studentId: row.studentId,
+              name: localized(locale, row.nameAr, row.nameEn),
+              phones: row.phones.map((phone) => ({ relation: phone.relation, whatsapp: whatsappNumber(phone.phone) })),
+              links: links.get(row.studentId),
+            }))}
+          />
           {session.status === "held" && (
             <GlassCard title={t("sheet.credited")}>
               <p className="text-sm text-text-secondary">

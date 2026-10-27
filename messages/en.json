@@ -646,7 +646,6 @@
       "noSessionsToday": "No sessions today.",
       "activity": "Recent activity",
       "noActivity": "Nothing new in the last 30 days.",
-      "reviewsSoon": "Parent and student reviews after each session arrive in the next update.",
       "earnedSessions": "{count} sessions plus bonuses, minus deductions",
       "lastTransfer": "Last transfer",
       "noTransfer": "No transfers yet",
@@ -654,7 +653,11 @@
       "owedHint": "All months; paid on the 1st",
       "bonus": "Bonus this month",
       "deductions": "Deductions this month",
-      "none": "None"
+      "none": "None",
+      "reviews": "Reviews after sessions",
+      "noReviews": "Reviews appear here when parents and students answer the forms you send after each session.",
+      "fromParent": "Parent",
+      "fromStudent": "Student"
     },
     "activity": {
       "held": "You saved session {number} of {group}",
@@ -687,7 +690,8 @@
       "student": "Student",
       "attendance": "Attended",
       "overall": "Average",
-      "progressHint": "Average level per criterion (1–4). Green is 3.5 or more, red is below 2.5."
+      "progressHint": "Average level per criterion (1–4). Green is 3.5 or more, red is below 2.5.",
+      "reportHint": "Open a student's name for their full report."
     },
     "request": {
       "title": "Request to add a student",
@@ -732,6 +736,19 @@
     },
     "rates": {
       "title": "Session rate (EGP)"
+    },
+    "feedback": {
+      "title": "Feedback forms",
+      "answered": "Parents answered: {done}/{total}",
+      "hint": "Send each family one WhatsApp message with two links: one for the parent and one for the student. No sign-in is needed. Links work for 14 days.",
+      "parentDone": "Parent ✓",
+      "studentDone": "Student ✓",
+      "to": {
+        "mother": "Mother",
+        "father": "Father",
+        "other": "Guardian"
+      },
+      "message": "Hello, this is {instructor} from Zij Academy. {session} for {name} has finished 🌟\nYour opinion takes one minute: {parentUrl}\nAnd let {name} rate the session too: {studentUrl}"
     }
   },
   "payroll": {
@@ -787,5 +804,115 @@
     "remainingAfter": "Remaining after this transfer",
     "issuedBy": "Issued by {name}",
     "signature": "Signature"
+  },
+  "feedback": {
+    "parentTitle": "How was today's session?",
+    "studentTitle": "Hi {name}! How was your session?",
+    "session": "Session {number}",
+    "remedial": "Extra session {number}",
+    "parentIntro": "One minute of your time helps us support {name} better. Your answers go to the academy and the instructor.",
+    "studentIntro": "There are no wrong answers. Just tell us how you felt.",
+    "scaleLow": "Not at all",
+    "scaleHigh": "Very much",
+    "npsLow": "Unlikely",
+    "npsHigh": "Very likely",
+    "yes": "Yes",
+    "no": "No",
+    "optional": "optional",
+    "emoji": {
+      "1": "Not really",
+      "2": "Somewhat",
+      "3": "Yes!"
+    },
+    "difficulty": {
+      "1": "Easy",
+      "2": "Just right",
+      "3": "Hard"
+    },
+    "missing": "Please answer every question.",
+    "submit": "Send",
+    "privacy": "Only the academy and the instructor see these answers.",
+    "thanks": "Thank you!",
+    "thanksBody": "Your answers were sent to the academy.",
+    "expired": "This link has expired. Ask the academy for a new one.",
+    "q": {
+      "parent": {
+        "enthusiasm": "Was {name} excited and did they talk about the session at home?",
+        "showed": "Did {name} show you something they made or learned?",
+        "thinking": "Have you noticed better thinking and problem solving in {name}?",
+        "confidence": "Has {name} become more confident?",
+        "communication": "How happy are you with communication from the instructor?",
+        "value": "How good is the value for the price?",
+        "recommend": "How likely are you to recommend Zij Academy to a friend?",
+        "comment": "Anything you'd like the instructor to know?"
+      },
+      "student": {
+        "enjoyed": "Did you enjoy today's session?",
+        "understood": "Did you understand what we learned?",
+        "difficulty": "Was the session easy or hard?",
+        "likedMost": "What did you like most so far?",
+        "hardest": "What was the hardest part?",
+        "nextTopic": "What would you like to learn next?"
+      }
+    }
+  },
+  "report": {
+    "open": "Report",
+    "print": "Download PDF",
+    "attendance": "Attended {attended} of {total}",
+    "overall": "Average level (1–4)",
+    "flagsTitle": "Worth a closer look",
+    "flags": {
+      "understandingGap": "The student says they understand, but scores low on understanding. Check with a quick question or task.",
+      "lowConfidence": "The student scores well but says they don't understand. They may need encouragement.",
+      "lowEnthusiasm": "Parents report low enthusiasm at home.",
+      "tooHard": "The student finds the sessions hard.",
+      "notEnjoying": "The student isn't enjoying the sessions.",
+      "attendance": "Attendance is below 75%.",
+      "decline": "Scores are dropping in: {criteria}."
+    },
+    "criteriaTitle": "Instructor evaluation",
+    "trendTitle": "Average per session",
+    "up": "Improving",
+    "down": "Dropping",
+    "strengths": "Excellent at",
+    "noStrengths": "No criterion at 3.5 or above yet.",
+    "improve": "Needs to improve",
+    "noImprove": "Nothing below 2.5.",
+    "suggestion": {
+      "understanding": "Start each session by asking them to explain the last idea in their own words, and give a short task that checks it.",
+      "computational": "Ask them to plan the steps on paper before coding, and to find and fix a planted bug.",
+      "building": "Give smaller milestones within the task and check each one works before moving on.",
+      "creativity": "Add a 'make it yours' step: change one behaviour or design after the main task is done.",
+      "collaboration": "Pair them with a classmate and ask them to present their work for one minute.",
+      "conduct": "Agree on clear rules with them, seat them near the instructor, and praise focused moments."
+    },
+    "studentView": "What the student says",
+    "parentView": "What the parent sees",
+    "self": {
+      "enjoyed": "Enjoying",
+      "understood": "Understanding",
+      "difficulty": "Difficulty",
+      "likedMost": "Liked most",
+      "hardest": "Hardest",
+      "nextTopic": "Wants to learn"
+    },
+    "difficulty": {
+      "1": "Easy",
+      "2": "Just right",
+      "3": "Hard"
+    },
+    "parent": {
+      "enthusiasm": "Enthusiasm",
+      "showed": "Showed their work",
+      "thinking": "Thinking",
+      "confidence": "Confidence",
+      "communication": "Communication",
+      "value": "Value",
+      "recommend": "Would recommend"
+    },
+    "noAnswers": "No answers yet.",
+    "notes": "Instructor notes",
+    "sessionShort": "Session {number}"
   }
 }
