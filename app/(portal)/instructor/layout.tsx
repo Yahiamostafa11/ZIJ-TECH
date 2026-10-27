@@ -13,6 +13,7 @@ export default async function InstructorLayout({ children }: { children: React.R
       basePath="/instructor"
       sidebar={{ nav: "instructor", sections: INSTRUCTOR_NAV }}
     >
+      <div className="teaching-glow" aria-hidden="true" />
       {children}
     </PortalShell>
   );

@@ -253,3 +253,66 @@ body::before {
     transform: none;
   }
 }
+
+/* Instructor portal: frosted panels over a soft gold and teal glow. */
+.glass {
+  background: rgb(var(--bg-card) / 0.58);
+  border: 1px solid rgb(var(--gold-primary) / 0.24);
+  border-radius: 1.25rem;
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: 0 10px 40px rgb(var(--shadow) / calc(0.16 * var(--shadow-strength)));
+}
+
+.glass-inset {
+  background: rgb(var(--text-primary) / 0.045);
+  border-radius: 0.875rem;
+}
+
+.teaching-glow {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.teaching-glow::before,
+.teaching-glow::after {
+  content: "";
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+}
+
+.teaching-glow::before {
+  width: 34rem;
+  height: 34rem;
+  inset-inline-end: -8rem;
+  top: -10rem;
+  background: rgb(var(--gold-light) / 0.22);
+}
+
+.teaching-glow::after {
+  width: 30rem;
+  height: 30rem;
+  inset-inline-start: 10%;
+  bottom: -10rem;
+  background: rgb(var(--info) / 0.16);
+}
+
+@keyframes live-pulse {
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.live-dot {
+  animation: live-pulse 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-dot {
+    animation: none;
+  }
+}

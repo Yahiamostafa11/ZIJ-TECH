@@ -4,8 +4,9 @@ import { drizzle } from "drizzle-orm/mysql2";
 import mysql from "mysql2/promise";
 import * as academy from "./academy";
 import * as authSchema from "./schema";
+import * as teaching from "./teaching";
 
-const schema = { ...authSchema, ...academy };
+const schema = { ...authSchema, ...academy, ...teaching };
 
 const globalForDb = globalThis as unknown as { mysqlPool?: mysql.Pool };
 

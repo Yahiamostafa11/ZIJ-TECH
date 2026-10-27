@@ -61,3 +61,30 @@ export function toMoney(value: number) {
 export function localized(locale: Locale, ar: string | null | undefined, en: string | null | undefined) {
   return (locale === "ar" ? ar || en : en || ar) ?? "";
 }
+
+/** "Sat 31 Oct · 4:00 PM" in Cairo time, for session listings. */
+export function formatSessionTime(value: Date, locale: Locale) {
+  return new Intl.DateTimeFormat(numberLocale(locale), {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    hour: "numeric",
+    minute: "2-digit",
+    timeZone: "Africa/Cairo",
+  }).format(value);
+}
+
+export function formatClock(value: Date, locale: Locale) {
+  return new Intl.DateTimeFormat(numberLocale(locale), {
+    hour: "numeric",
+    minute: "2-digit",
+    timeZone: "Africa/Cairo",
+  }).format(value);
+}
+
+/** Month name and year for a YYYY-MM key, e.g. "Oct 2026". */
+export function formatMonth(month: string, locale: Locale, style: "short" | "long" = "short") {
+  return new Intl.DateTimeFormat(numberLocale(locale), { month: style, year: style === "long" ? "numeric" : undefined, timeZone: "UTC" }).format(
+    new Date(`${month}-01T00:00:00Z`),
+  );
+}

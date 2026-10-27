@@ -83,7 +83,9 @@
       "followup": "المتابعة",
       "operations": "التشغيل",
       "settings": "الإعدادات",
-      "teaching": "التدريس"
+      "teaching": "التدريس",
+      "content": "المحتوى",
+      "mine": "حسابي"
     },
     "overview": "لوحة التحكم",
     "leads": "الاستفسارات",
@@ -109,7 +111,15 @@
     "users": "المستخدمون والصلاحيات",
     "audit": "سجل التعديلات",
     "today": "اليوم",
-    "myGroups": "مجموعاتي"
+    "myGroups": "مجموعاتي",
+    "courses": "الكورسات والمحتوى",
+    "assignments": "الواجبات",
+    "quizzes": "الكويزات",
+    "announcements": "الإعلانات",
+    "certificates": "الشهادات",
+    "payroll": "مستحقاتي",
+    "liveClasses": "الحصص المباشرة",
+    "studentRequests": "طلبات إضافة طلاب"
   },
   "fields": {
     "name": "الاسم",
@@ -232,7 +242,12 @@
     "mailFailed": "تعذر إرسال البريد. حاول لاحقًا أو تواصل مع الأكاديمية.",
     "invalidUsername": "استخدم من 3 إلى 40 حرفًا إنجليزيًا صغيرًا أو أرقامًا أو نقاطًا أو شرطات.",
     "usernameTaken": "اسم المستخدم مستخدم بالفعل.",
-    "accountExists": "لهذا الشخص حساب بالفعل."
+    "accountExists": "لهذا الشخص حساب بالفعل.",
+    "sessionCancelled": "هذه الحصة ملغاة.",
+    "sessionNotStarted": "يفتح الحضور في يوم الحصة.",
+    "sessionAlreadyHeld": "تمت هذه الحصة بالفعل ولا يمكن تأجيلها.",
+    "dateInPast": "اختر تاريخ اليوم أو تاريخًا لاحقًا.",
+    "alreadyReviewed": "راجع شخص آخر هذا الطلب بالفعل."
   },
   "messages": {
     "saved": "تم الحفظ.",
@@ -246,7 +261,12 @@
     "nameRequested": "تم الإرسال للأكاديمية للموافقة.",
     "verificationSent": "تم إرسال رابط التأكيد. افتح بريدك لإكمال الربط.",
     "resetRequested": "إذا كان في حسابك بريد مؤكد فسيصلك رابط إعادة التعيين.",
-    "accountCreated": "تم إنشاء الحساب."
+    "accountCreated": "تم إنشاء الحساب.",
+    "attendanceSaved": "تم حفظ الحصة.",
+    "sessionPostponed": "تم تغيير موعد الحصة.",
+    "requestSent": "تم إرسال الطلب للأكاديمية.",
+    "requestApproved": "تمت الموافقة وأُضيف الطالب للمجموعة.",
+    "requestRejected": "تم رفض الطلب."
   },
   "branches": {
     "description": "الفروع الفعلية. المجموعات الأونلاين لا تتبع فرعًا.",
@@ -525,5 +545,182 @@
     "sendWhatsapp": "إرسال على واتساب",
     "hasEmail": "البريد مؤكد — يستطيع استعادة كلمة المرور بنفسه",
     "noEmail": "لا يوجد بريد بعد — الاستعادة عن طريق الأكاديمية"
+  },
+  "teaching": {
+    "online": "أونلاين",
+    "offline": "أوفلاين",
+    "live": "مباشر",
+    "autoUpdates": "يتحدّث تلقائيًا",
+    "meetingLink": "رابط الحصة",
+    "minutes": "{minutes} دقيقة",
+    "sessionNumber": "الحصة {number}",
+    "remedialNumber": "حصة إضافية {number}",
+    "postponedFrom": "تأجّلت من {date}",
+    "absenceMessage": "السلام عليكم، معاك {instructor} مدرّس مجموعة {group} في أكاديمية زيج. {name} غاب النهارده عن {session}. نتمنى يكون بخير، ولو محتاج مساعدة في اللي فاته أنا موجود.",
+    "status": {
+      "present": "حاضر",
+      "late": "متأخر",
+      "absent": "غائب",
+      "excused": "بعذر"
+    },
+    "allPresent": "الكل حاضر",
+    "resetScores": "إرجاع الدرجات إلى 3",
+    "rubric": {
+      "title": "طريقة التقييم (من 1 إلى 4)"
+    },
+    "criteria": {
+      "understanding": "الفهم",
+      "computational": "التفكير الحاسوبي",
+      "building": "التطبيق والبناء",
+      "creativity": "الإبداع والتجريب",
+      "collaboration": "التعاون والتواصل",
+      "conduct": "الالتزام والسلوك"
+    },
+    "criteriaShort": {
+      "understanding": "الفهم",
+      "computational": "التفكير",
+      "building": "التطبيق",
+      "creativity": "الإبداع",
+      "collaboration": "التعاون",
+      "conduct": "السلوك"
+    },
+    "criteriaHint": {
+      "understanding": "يفهم فكرة الحصة ويستطيع شرحها بكلماته.",
+      "computational": "يقسّم المشكلة ويرتّب الخطوات ويكتشف الخطأ ويصلحه بنفسه.",
+      "building": "يُشغّل الكود أو الدائرة أو الروبوت وينهي المهمة.",
+      "creativity": "يجرّب أفكارًا من عنده ويحسّن بعد المحاولة الأولى.",
+      "collaboration": "يعمل مع زملائه ويسأل ويعرض عمله.",
+      "conduct": "مركّز ومحترم ويحافظ على الأدوات."
+    },
+    "levels": {
+      "1": "بداية",
+      "2": "يقترب",
+      "3": "يحقق المطلوب",
+      "4": "متميّز"
+    },
+    "attendanceOf": "حضور {name}",
+    "noteFor": "ملاحظة عن {name}",
+    "notePlaceholder": "ملاحظة (اختياري)",
+    "notePlaceholderAbsent": "سبب الغياب إن وُجد",
+    "saving": "جارٍ الحفظ…",
+    "saveSession": "حفظ الحصة",
+    "absentNotify": "بلّغ أولياء أمور الغائبين على واتساب",
+    "relation": {
+      "mother": "الأم",
+      "father": "الأب",
+      "other": "ولي الأمر"
+    },
+    "sessionState": {
+      "held": "تمت",
+      "cancelled": "ملغاة",
+      "today": "اليوم",
+      "missing": "الحضور لم يُسجَّل",
+      "postponed": "مؤجلة",
+      "scheduled": "مجدولة"
+    },
+    "home": {
+      "morning": "صباح الخير يا {name}",
+      "evening": "مساء الخير يا {name}",
+      "summary": "حصص اليوم: {sessions} · مجموعات قائمة: {groups}",
+      "startedAgo": "بدأت {time}",
+      "startAttendance": "سجّل الحضور",
+      "noUpcoming": "لا توجد حصص قادمة.",
+      "earnedThisMonth": "مستحقات {month}",
+      "earnedHint": "الحصص المنفّذة × سعر الحصة",
+      "sessionsThisMonth": "حصص الشهر",
+      "sessionsHint": "المنفّذة من المجدولة",
+      "students": "طلابك",
+      "studentsHint": "المسجلون في مجموعاتك",
+      "attendanceRate": "الحضور هذا الشهر",
+      "attendanceHint": "حاضر أو متأخر، بدون الغياب بعذر",
+      "pendingRequests": "طلبات معلّقة",
+      "pendingHint": "طلاب في انتظار موافقة الأكاديمية",
+      "chartTitle": "دخلك وطلابك",
+      "chartEarnings": "الدخل (ج.م)",
+      "chartStudents": "الطلاب الذين درّستهم",
+      "studentsUnit": "طالب",
+      "today": "جدول اليوم",
+      "noSessionsToday": "لا توجد حصص اليوم.",
+      "activity": "آخر النشاط",
+      "noActivity": "لا جديد خلال آخر 30 يومًا.",
+      "reviewsSoon": "تقييمات أولياء الأمور والطلاب بعد كل حصة تأتي في التحديث القادم."
+    },
+    "activity": {
+      "held": "حفظت الحصة {number} لمجموعة {group}",
+      "joined": "انضم {name} إلى {group}",
+      "request": {
+        "pending": "طلبك لإضافة {name} إلى {group} في انتظار الموافقة",
+        "approved": "وافقت الأكاديمية على إضافة {name} إلى {group}",
+        "rejected": "رفضت الأكاديمية إضافة {name} إلى {group}"
+      }
+    },
+    "groups": {
+      "title": "مجموعاتي",
+      "description": "مجموعاتك الحالية والمنتهية. افتح أي مجموعة لتسجيل الحضور أو طلب إضافة طالب.",
+      "active": "الحالية",
+      "finished": "المنتهية",
+      "noneFinished": "لا توجد مجموعات منتهية بعد.",
+      "noneActive": "لا توجد مجموعات حالية. الأكاديمية هي التي تعيّن المجموعات.",
+      "noSchedule": "لم يُحدَّد الجدول الأسبوعي بعد",
+      "progress": "الحصة {held} من {total}",
+      "studentCount": "{count} طالب",
+      "attendance": "الحضور {rate}%",
+      "next": "القادمة: {date}"
+    },
+    "groupPage": {
+      "sessions": "الحصص",
+      "noSessions": "لا توجد حصص بعد. تحتاج الأكاديمية إلى تحديد تاريخ البدء والجدول الأسبوعي للمجموعة.",
+      "noSessionsAdmin": "حدّد تاريخ البدء والجدول الأسبوعي لإنشاء الحصص.",
+      "progress": "تقدّم الطلاب",
+      "noProgress": "يظهر التقدّم بعد حفظ أول حصة.",
+      "student": "الطالب",
+      "attendance": "الحضور",
+      "overall": "المتوسط",
+      "progressHint": "متوسط المستوى في كل بند (من 1 إلى 4). الأخضر 3.5 فأكثر، والأحمر أقل من 2.5."
+    },
+    "request": {
+      "title": "طلب إضافة طالب",
+      "hint": "تراجع الأكاديمية الطلب، وبعد الموافقة يظهر الطالب في هذه المجموعة فورًا وتستطيع تسجيل غياباته السابقة.",
+      "nameAr": "الاسم بالعربية",
+      "nameEn": "الاسم بالإنجليزية (اختياري)",
+      "birthDate": "تاريخ الميلاد",
+      "motherPhone": "رقم الأم",
+      "fatherPhone": "رقم الأب",
+      "notes": "ملاحظات",
+      "submit": "إرسال الطلب",
+      "history": "طلباتك",
+      "status": {
+        "pending": "في الانتظار",
+        "approved": "تمت الموافقة",
+        "rejected": "مرفوض"
+      }
+    },
+    "sheet": {
+      "title": "الحضور والتقييم",
+      "notYet": "يفتح الحضور في يوم الحصة. يمكنك تغيير موعدها من اللوحة الجانبية.",
+      "noStudents": "لا يوجد طلاب في هذه المجموعة بعد.",
+      "credited": "محسوبة في مستحقاتك",
+      "creditedBody": "أُضيفت هذه الحصة إلى مستحقاتك يوم {date}. يمكنك تعديل الحضور والدرجات."
+    },
+    "postpone": {
+      "title": "تأجيل الحصة",
+      "date": "التاريخ الجديد",
+      "time": "الوقت الجديد (بتوقيت القاهرة)",
+      "reason": "السبب",
+      "submit": "تأجيل الحصة",
+      "hint": "يتغيّر موعد هذه الحصة فقط، وتبقى باقي الحصص في مواعيدها."
+    },
+    "requests": {
+      "description": "طلاب طلب المدرّسون إضافتهم لمجموعاتهم. الموافقة تضيف الطالب للمجموعة بسعرها.",
+      "none": "لا توجد طلبات في الانتظار.",
+      "requestedBy": "طلبه",
+      "approve": "موافقة وإضافة",
+      "reject": "رفض",
+      "rejectReason": "سبب الرفض (اختياري)",
+      "recent": "تمت مراجعتها مؤخرًا"
+    },
+    "rates": {
+      "title": "سعر الحصة (ج.م)"
+    }
   }
 }

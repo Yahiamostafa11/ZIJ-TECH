@@ -10,6 +10,8 @@ import { Badge, ButtonLink, Card, DetailList, EmptyState, Field, PageHeader, Tab
 import { enrollExistingStudent, enrollNewStudent } from "@/lib/academy/actions/people";
 import { ageOf, formatDate, formatMoney, localized } from "@/lib/academy/format";
 import { getGroupDetail, getGroupRoster } from "@/lib/academy/queries";
+import { ensureSessions, listGroupSessions } from "@/lib/academy/teaching";
+import { SessionList } from "@/components/teaching/SessionList";
 import { requireGroup, studentScopeCondition } from "@/lib/academy/scope";
 import { can } from "@/lib/auth/permissions";
 import { requirePermission } from "@/lib/auth/session";
@@ -23,11 +25,13 @@ export default async function GroupPage({ params }: { params: Promise<{ id: stri
   if (!Number.isInteger(id)) notFound();
   await requireGroup(user, id, "groups.read");
 
-  const [t, locale, detail, roster] = await Promise.all([
+  await ensureSessions([id]);
+  const [t, locale, detail, roster, sessions] = await Promise.all([
     getTranslations(),
     getLocale() as Promise<Locale>,
     getGroupDetail(id),
     getGroupRoster(id),
+    listGroupSessions(id),
   ]);
   if (!detail) notFound();
   const { group } = detail;
@@ -222,6 +226,14 @@ export default async function GroupPage({ params }: { params: Promise<{ id: stri
               <a href={group.meetingUrl} target="_blank" rel="noreferrer" className="mt-4 block truncate text-sm text-gold-light hover:underline" dir="ltr">
                 {group.meetingUrl}
               </a>
+            )}
+          </Card>
+
+          <Card title={t("teaching.groupPage.sessions")}>
+            {sessions.length === 0 ? (
+              <p className="text-sm text-text-secondary">{t("teaching.groupPage.noSessionsAdmin")}</p>
+            ) : (
+              <SessionList sessions={sessions} />
             )}
           </Card>
 

@@ -83,7 +83,9 @@
       "followup": "Follow-up",
       "operations": "Operations",
       "settings": "Settings",
-      "teaching": "Teaching"
+      "teaching": "Teaching",
+      "content": "Content",
+      "mine": "My account"
     },
     "overview": "Dashboard",
     "leads": "Leads",
@@ -109,7 +111,15 @@
     "users": "Users & roles",
     "audit": "Audit log",
     "today": "Today",
-    "myGroups": "My groups"
+    "myGroups": "My groups",
+    "courses": "Courses & content",
+    "assignments": "Assignments",
+    "quizzes": "Quizzes",
+    "announcements": "Announcements",
+    "certificates": "Certificates",
+    "payroll": "My pay",
+    "liveClasses": "Live classes",
+    "studentRequests": "Student requests"
   },
   "fields": {
     "name": "Name",
@@ -232,7 +242,12 @@
     "mailFailed": "The email could not be sent. Try again later or contact the academy.",
     "invalidUsername": "Use 3–40 lowercase letters, numbers, dots or dashes.",
     "usernameTaken": "This username is taken.",
-    "accountExists": "This person already has an account."
+    "accountExists": "This person already has an account.",
+    "sessionCancelled": "This session was cancelled.",
+    "sessionNotStarted": "Attendance opens on the day of the session.",
+    "sessionAlreadyHeld": "This session was already held; it can't be postponed.",
+    "dateInPast": "Choose today or a later date.",
+    "alreadyReviewed": "Someone already reviewed this request."
   },
   "messages": {
     "saved": "Saved.",
@@ -246,7 +261,12 @@
     "nameRequested": "Sent to the academy for approval.",
     "verificationSent": "Confirmation link sent. Open your email to finish.",
     "resetRequested": "If your account has a confirmed email, a reset link is on its way.",
-    "accountCreated": "Account created."
+    "accountCreated": "Account created.",
+    "attendanceSaved": "Session saved.",
+    "sessionPostponed": "Session moved.",
+    "requestSent": "Request sent to the academy.",
+    "requestApproved": "Approved. The student is now in the group.",
+    "requestRejected": "Request rejected."
   },
   "branches": {
     "description": "Physical branches. Online groups do not belong to a branch.",
@@ -525,5 +545,182 @@
     "sendWhatsapp": "Send on WhatsApp",
     "hasEmail": "Email confirmed — can reset their own password",
     "noEmail": "No email yet — resets go through the academy"
+  },
+  "teaching": {
+    "online": "Online",
+    "offline": "Offline",
+    "live": "Live",
+    "autoUpdates": "Updates automatically",
+    "meetingLink": "Meeting link",
+    "minutes": "{minutes} min",
+    "sessionNumber": "Session {number}",
+    "remedialNumber": "Extra session {number}",
+    "postponedFrom": "Moved from {date}",
+    "absenceMessage": "Hello, this is {instructor}, the {group} instructor at Zij Academy. {name} missed {session} today. We hope all is well, and I'm happy to help them catch up.",
+    "status": {
+      "present": "Present",
+      "late": "Late",
+      "absent": "Absent",
+      "excused": "Excused"
+    },
+    "allPresent": "Mark all present",
+    "resetScores": "Reset scores to 3",
+    "rubric": {
+      "title": "How to score (1–4)"
+    },
+    "criteria": {
+      "understanding": "Understanding",
+      "computational": "Computational thinking",
+      "building": "Building & applying",
+      "creativity": "Creativity & iteration",
+      "collaboration": "Collaboration & communication",
+      "conduct": "Focus & conduct"
+    },
+    "criteriaShort": {
+      "understanding": "Underst.",
+      "computational": "Thinking",
+      "building": "Building",
+      "creativity": "Creativity",
+      "collaboration": "Teamwork",
+      "conduct": "Conduct"
+    },
+    "criteriaHint": {
+      "understanding": "Grasps the session's idea and can explain it in their own words.",
+      "computational": "Breaks the problem down, orders the steps, finds and fixes mistakes on their own.",
+      "building": "Gets the code, circuit or robot working and finishes the task.",
+      "creativity": "Tries their own ideas and improves after the first attempt.",
+      "collaboration": "Works with classmates, asks questions and presents their work.",
+      "conduct": "Stays focused, respectful and careful with the kit."
+    },
+    "levels": {
+      "1": "Beginning",
+      "2": "Approaching",
+      "3": "Meeting",
+      "4": "Exceeding"
+    },
+    "attendanceOf": "Attendance for {name}",
+    "noteFor": "Note for {name}",
+    "notePlaceholder": "Note (optional)",
+    "notePlaceholderAbsent": "Reason, if known",
+    "saving": "Saving…",
+    "saveSession": "Save session",
+    "absentNotify": "Tell the parents of absent students on WhatsApp",
+    "relation": {
+      "mother": "Mother",
+      "father": "Father",
+      "other": "Guardian"
+    },
+    "sessionState": {
+      "held": "Held",
+      "cancelled": "Cancelled",
+      "today": "Today",
+      "missing": "Attendance missing",
+      "postponed": "Moved",
+      "scheduled": "Scheduled"
+    },
+    "home": {
+      "morning": "Good morning, {name}",
+      "evening": "Good evening, {name}",
+      "summary": "Sessions today: {sessions} · Active groups: {groups}",
+      "startedAgo": "Started {time}",
+      "startAttendance": "Take attendance",
+      "noUpcoming": "No upcoming sessions.",
+      "earnedThisMonth": "Earned in {month}",
+      "earnedHint": "Sessions held × your session rate",
+      "sessionsThisMonth": "Sessions this month",
+      "sessionsHint": "Held of scheduled",
+      "students": "Your students",
+      "studentsHint": "Active in your groups",
+      "attendanceRate": "Attendance this month",
+      "attendanceHint": "Present or late, excluding excused",
+      "pendingRequests": "Pending requests",
+      "pendingHint": "Students waiting for academy approval",
+      "chartTitle": "Your earnings and students",
+      "chartEarnings": "Earnings (EGP)",
+      "chartStudents": "Students taught",
+      "studentsUnit": "students",
+      "today": "Today's schedule",
+      "noSessionsToday": "No sessions today.",
+      "activity": "Recent activity",
+      "noActivity": "Nothing new in the last 30 days.",
+      "reviewsSoon": "Parent and student reviews after each session arrive in the next update."
+    },
+    "activity": {
+      "held": "You saved session {number} of {group}",
+      "joined": "{name} joined {group}",
+      "request": {
+        "pending": "Your request to add {name} to {group} is waiting for approval",
+        "approved": "The academy approved {name} for {group}",
+        "rejected": "The academy declined {name} for {group}"
+      }
+    },
+    "groups": {
+      "title": "My groups",
+      "description": "Your current and finished groups. Open one to take attendance or request a student.",
+      "active": "Current",
+      "finished": "Finished",
+      "noneFinished": "No finished groups yet.",
+      "noneActive": "You have no current groups. The academy assigns them to you.",
+      "noSchedule": "No weekly schedule yet",
+      "progress": "Session {held} of {total}",
+      "studentCount": "{count} students",
+      "attendance": "attendance {rate}%",
+      "next": "Next: {date}"
+    },
+    "groupPage": {
+      "sessions": "Sessions",
+      "noSessions": "No sessions yet. The academy needs to set the group's start date and weekly schedule.",
+      "noSessionsAdmin": "Set a start date and weekly schedule to generate the sessions.",
+      "progress": "Student progress",
+      "noProgress": "Progress appears after the first saved session.",
+      "student": "Student",
+      "attendance": "Attended",
+      "overall": "Average",
+      "progressHint": "Average level per criterion (1–4). Green is 3.5 or more, red is below 2.5."
+    },
+    "request": {
+      "title": "Request to add a student",
+      "hint": "The academy reviews the request. Once approved, the student appears in this group straight away and you can record their earlier absences.",
+      "nameAr": "Name in Arabic",
+      "nameEn": "Name in English (optional)",
+      "birthDate": "Birth date",
+      "motherPhone": "Mother's phone",
+      "fatherPhone": "Father's phone",
+      "notes": "Notes",
+      "submit": "Send request",
+      "history": "Your requests",
+      "status": {
+        "pending": "Waiting",
+        "approved": "Approved",
+        "rejected": "Declined"
+      }
+    },
+    "sheet": {
+      "title": "Attendance and evaluation",
+      "notYet": "Attendance opens on the day of the session. You can still move it from the side panel.",
+      "noStudents": "No students in this group yet.",
+      "credited": "Counted in your pay",
+      "creditedBody": "This session was added to your pay on {date}. You can still correct attendance and scores."
+    },
+    "postpone": {
+      "title": "Move this session",
+      "date": "New date",
+      "time": "New time (Cairo)",
+      "reason": "Reason",
+      "submit": "Move session",
+      "hint": "Only this session moves; the rest keep their dates."
+    },
+    "requests": {
+      "description": "Students instructors asked to add to their groups. Approving adds them to the group at its price.",
+      "none": "No requests waiting.",
+      "requestedBy": "Requested by",
+      "approve": "Approve and add",
+      "reject": "Decline",
+      "rejectReason": "Reason for declining (optional)",
+      "recent": "Recently reviewed"
+    },
+    "rates": {
+      "title": "Session rate (EGP)"
+    }
   }
 }

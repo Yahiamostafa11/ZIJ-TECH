@@ -49,7 +49,7 @@ export function Sidebar({ nav, basePath, allowed }: SidebarProps) {
           <ul className="flex flex-col gap-0.5">
             {section.items.map(({ slug, key, icon: Icon }) => {
               const href = slug ? `${basePath}/${slug}` : basePath;
-              const isActive = pathname === href;
+              const isActive = pathname === href || (slug !== "" && pathname.startsWith(`${href}/`));
               return (
                 <li key={slug}>
                   <Link

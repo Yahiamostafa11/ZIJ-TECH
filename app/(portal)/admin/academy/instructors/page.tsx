@@ -1,18 +1,24 @@
 import React from "react";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
-import { Badge, ButtonLink, EmptyState, PageHeader, Table, Td, Th } from "@/components/portal/ui";
+import { ActionForm, FormMessage, SubmitButton } from "@/components/portal/ActionForm";
+import { Badge, ButtonLink, EmptyState, PageHeader, Table, Td, Th, inputClass } from "@/components/portal/ui";
+import { saveInstructorRate } from "@/lib/academy/actions/teaching";
 import { listGroups, listInstructors } from "@/lib/academy/queries";
 import { can } from "@/lib/auth/permissions";
 import { requirePermission } from "@/lib/auth/session";
+import { db } from "@/lib/db";
+import { DEFAULT_RATES, instructorRate } from "@/lib/db/teaching";
 
 export default async function InstructorsPage() {
   const user = await requirePermission("instructors.manage");
-  const [t, instructors, groups] = await Promise.all([
+  const [t, instructors, groups, rates] = await Promise.all([
     getTranslations(),
     listInstructors(),
     listGroups(user),
+    db.select().from(instructorRate),
   ]);
+  const canPrice = can(user.grants, "pricing.manage");
 
   return (
     <div className="mx-auto max-w-5xl">
@@ -30,6 +36,7 @@ export default async function InstructorsPage() {
               <Th>{t("fields.name")}</Th>
               <Th>{t("fields.email")}</Th>
               <Th>{t("instructors.currentGroups")}</Th>
+              <Th>{t("teaching.rates.title")}</Th>
             </tr>
           </thead>
           <tbody>
@@ -55,6 +62,31 @@ export default async function InstructorsPage() {
                         ))
                       )}
                     </div>
+                  </Td>
+                  <Td>
+                    {(() => {
+                      const rate = rates.find((row) => row.userId === item.id);
+                      const offline = rate ? Number(rate.rateOffline) : DEFAULT_RATES.offline;
+                      const online = rate ? Number(rate.rateOnline) : DEFAULT_RATES.online;
+                      return canPrice ? (
+                        <ActionForm action={saveInstructorRate.bind(null, item.id)} className="flex flex-wrap items-center gap-2">
+                          <label className="flex items-center gap-1 text-xs text-text-secondary">
+                            {t("teaching.offline")}
+                            <input name="rateOffline" defaultValue={offline} inputMode="decimal" dir="ltr" className={`${inputClass} w-20`} />
+                          </label>
+                          <label className="flex items-center gap-1 text-xs text-text-secondary">
+                            {t("teaching.online")}
+                            <input name="rateOnline" defaultValue={online} inputMode="decimal" dir="ltr" className={`${inputClass} w-20`} />
+                          </label>
+                          <SubmitButton variant="secondary" className="px-3 py-1.5">{t("common.save")}</SubmitButton>
+                          <FormMessage />
+                        </ActionForm>
+                      ) : (
+                        <span className="text-text-secondary">
+                          {t("teaching.offline")} {offline} · {t("teaching.online")} {online}
+                        </span>
+                      );
+                    })()}
                   </Td>
                 </tr>
               );

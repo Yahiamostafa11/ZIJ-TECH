@@ -1,5 +1,11 @@
 import {
+  Award,
   Banknote,
+  BookOpen,
+  ListChecks,
+  Megaphone,
+  Video,
+  Inbox,
   BarChart3,
   Boxes,
   Building2,
@@ -60,6 +66,7 @@ export const ACADEMY_NAV: NavSection[] = [
       { slug: "students", key: "students", icon: GraduationCap, permission: "students.read", phase: "1a" },
       { slug: "families", key: "families", icon: UsersRound, permission: "students.read", phase: "1a" },
       { slug: "instructors", key: "instructors", icon: Users, permission: "instructors.manage", phase: "1a" },
+      { slug: "requests", key: "studentRequests", icon: Inbox, permission: "students.write", phase: "1b" },
     ],
   },
   {
@@ -110,10 +117,25 @@ export const INSTRUCTOR_NAV: NavSection[] = [
   {
     key: "teaching",
     items: [
-      { slug: "", key: "today", icon: CalendarDays, permission: "portal.instructor", phase: "1b" },
+      { slug: "", key: "today", icon: LayoutDashboard, permission: "portal.instructor", phase: "1b" },
       { slug: "groups", key: "myGroups", icon: Boxes, permission: "portal.instructor", phase: "1b" },
-      { slug: "homework", key: "homework", icon: NotebookPen, permission: "teaching.homework", phase: "1b" },
-      { slug: "warnings", key: "warnings", icon: MessageSquareWarning, permission: "teaching.warnings", phase: "1b" },
+    ],
+  },
+  {
+    key: "content",
+    items: [
+      { slug: "courses", key: "courses", icon: BookOpen, permission: "teaching.lessons", phase: "2" },
+      { slug: "assignments", key: "assignments", icon: NotebookPen, permission: "teaching.homework", phase: "2" },
+      { slug: "quizzes", key: "quizzes", icon: ListChecks, permission: "teaching.grades", phase: "3" },
+    ],
+  },
+  {
+    key: "mine",
+    items: [
+      { slug: "announcements", key: "announcements", icon: Megaphone, permission: "portal.instructor", phase: "2" },
+      { slug: "certificates", key: "certificates", icon: Award, permission: "portal.instructor", phase: "3" },
+      { slug: "payroll", key: "payroll", icon: Wallet, permission: "portal.instructor", phase: "2" },
+      { slug: "live", key: "liveClasses", icon: Video, permission: "portal.instructor", phase: "3" },
     ],
   },
 ];

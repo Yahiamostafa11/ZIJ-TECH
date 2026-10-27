@@ -12,6 +12,7 @@ import { GROUP_MODES, GROUP_STATUSES, classGroup, groupSlot, level, program } fr
 import { branch, userRole } from "@/lib/db/schema";
 import { field, parseForm, type ActionState } from "@/lib/forms";
 import { requireGroup } from "../scope";
+import { syncGroupSessions } from "../teaching";
 
 const BASE = "/admin/academy";
 
@@ -190,6 +191,7 @@ export async function saveGroup(_: ActionState, formData: FormData): Promise<Act
         slots.map((slot) => ({ ...slot, startTime: `${slot.startTime}:00`, groupId: savedId! })),
       );
     }
+    await syncGroupSessions(tx, savedId!);
     await audit(tx, user.id, id ? "group.update" : "group.create", "group", savedId!, { ...row, slots });
     return savedId!;
   });
