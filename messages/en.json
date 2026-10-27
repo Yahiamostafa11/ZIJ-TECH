@@ -15,7 +15,8 @@
     "search": "Search",
     "apply": "Apply",
     "toLight": "Switch to light theme",
-    "toDark": "Switch to dark theme"
+    "toDark": "Switch to dark theme",
+    "show": "Show"
   },
   "login": {
     "title": "Sign in",
@@ -119,7 +120,8 @@
     "certificates": "Certificates",
     "payroll": "My pay",
     "liveClasses": "Live classes",
-    "studentRequests": "Student requests"
+    "studentRequests": "Student requests",
+    "payrollAdmin": "Instructor pay"
   },
   "fields": {
     "name": "Name",
@@ -266,7 +268,8 @@
     "sessionPostponed": "Session moved.",
     "requestSent": "Request sent to the academy.",
     "requestApproved": "Approved. The student is now in the group.",
-    "requestRejected": "Request rejected."
+    "requestRejected": "Request rejected.",
+    "payrollPaid": "Transfer recorded. The receipt is ready."
   },
   "branches": {
     "description": "Physical branches. Online groups do not belong to a branch.",
@@ -643,7 +646,15 @@
       "noSessionsToday": "No sessions today.",
       "activity": "Recent activity",
       "noActivity": "Nothing new in the last 30 days.",
-      "reviewsSoon": "Parent and student reviews after each session arrive in the next update."
+      "reviewsSoon": "Parent and student reviews after each session arrive in the next update.",
+      "earnedSessions": "{count} sessions plus bonuses, minus deductions",
+      "lastTransfer": "Last transfer",
+      "noTransfer": "No transfers yet",
+      "owed": "Still owed to you",
+      "owedHint": "All months; paid on the 1st",
+      "bonus": "Bonus this month",
+      "deductions": "Deductions this month",
+      "none": "None"
     },
     "activity": {
       "held": "You saved session {number} of {group}",
@@ -722,5 +733,59 @@
     "rates": {
       "title": "Session rate (EGP)"
     }
+  },
+  "payroll": {
+    "myTitle": "My pay",
+    "myDescription": "Every session you were paid for, bonuses and deductions with their reasons, and your transfer receipts.",
+    "owedAll": "Still owed to you",
+    "lastTransfer": "Last transfer {amount} on {date}",
+    "sessionsAmount": "Sessions",
+    "sessionsBreakdown": "{offline} offline · {online} online",
+    "bonuses": "Bonuses",
+    "deductions": "Deductions",
+    "net": "Due",
+    "paid": "Transferred",
+    "remaining": "Remaining",
+    "sessionsTitle": "Sessions ({count})",
+    "noSessions": "No sessions held this month yet.",
+    "adjustmentsTitle": "Bonuses and deductions",
+    "noAdjustments": "None this month.",
+    "bonus": "Bonus",
+    "deduction": "Deduction",
+    "remove": "Remove",
+    "paymentsTitle": "Transfers",
+    "noPayments": "Nothing transferred for this month yet.",
+    "voided": "Voided",
+    "receipt": "Receipt {number}",
+    "void": "Void transfer",
+    "voidReason": "Why is it voided?",
+    "adminDescription": "Pay for {month}: sessions held at each instructor's rate, plus bonuses, minus deductions. Paid on the 1st of the next month.",
+    "month": "Month",
+    "noInstructors": "No instructors yet.",
+    "sessionsShort": "Sessions",
+    "settled": "Paid",
+    "total": "Total",
+    "adminHint": "Open an instructor to add a bonus or deduction or record a transfer.",
+    "statementFor": "Pay for {month}",
+    "recordPayment": "Record transfer",
+    "amount": "Amount (EGP)",
+    "remainingHint": "Remaining: {amount} EGP",
+    "paidOn": "Transfer date",
+    "method": "Method",
+    "reference": "Transfer reference",
+    "addAdjustment": "Add bonus or deduction",
+    "kind": "Type",
+    "reason": "Reason",
+    "back": "Back",
+    "downloadPdf": "Download PDF",
+    "academy": "Zij Academy · ZIJ Technologies",
+    "receiptTitle": "Payment receipt",
+    "paidTo": "Paid to",
+    "forMonth": "For",
+    "paidBefore": "Transferred before",
+    "thisTransfer": "This transfer",
+    "remainingAfter": "Remaining after this transfer",
+    "issuedBy": "Issued by {name}",
+    "signature": "Signature"
   }
 }

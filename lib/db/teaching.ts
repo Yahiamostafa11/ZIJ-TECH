@@ -11,7 +11,7 @@ import {
   varchar,
   date,
 } from "drizzle-orm/mysql-core";
-import { GROUP_MODES, classGroup, student } from "./academy";
+import { GROUP_MODES, PAYMENT_METHODS, classGroup, student } from "./academy";
 import { createdAt, updatedAt, user } from "./schema";
 
 /* -------------------------------------------------------------------------- */
@@ -155,3 +155,58 @@ export const instructorRate = mysqlTable("instructor_rate", {
   rateOnline: decimal("rate_online", { precision: 10, scale: 2 }).notNull(),
   updatedAt: updatedAt(),
 });
+
+/* -------------------------------------------------------------------------- */
+/* Payroll                                                                     */
+/* -------------------------------------------------------------------------- */
+
+export const ADJUSTMENT_KINDS = ["bonus", "deduction"] as const;
+
+/** A bonus or deduction for an instructor in a Cairo month (YYYY-MM). */
+export const payrollAdjustment = mysqlTable(
+  "payroll_adjustment",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    instructorId: varchar("instructor_id", { length: 36 })
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    month: varchar("month", { length: 7 }).notNull(),
+    kind: mysqlEnum("kind", ADJUSTMENT_KINDS).notNull(),
+    amount: decimal("amount", { precision: 10, scale: 2 }).notNull(),
+    reason: varchar("reason", { length: 255 }).notNull(),
+    createdBy: varchar("created_by", { length: 36 }).references(() => user.id, { onDelete: "set null" }),
+    createdAt: createdAt(),
+  },
+  (table) => [index("payroll_adjustment_month_idx").on(table.instructorId, table.month)],
+);
+
+/**
+ * Money transferred to an instructor for a month. Each transfer is a receipt;
+ * its id is the receipt number. Transfers are never deleted, only voided.
+ */
+export const payrollPayment = mysqlTable(
+  "payroll_payment",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    instructorId: varchar("instructor_id", { length: 36 })
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    month: varchar("month", { length: 7 }).notNull(),
+    amount: decimal("amount", { precision: 10, scale: 2 }).notNull(),
+    method: mysqlEnum("method", PAYMENT_METHODS).notNull(),
+    reference: varchar("reference", { length: 120 }),
+    paidOn: date("paid_on", { mode: "string" }).notNull(),
+    notes: varchar("notes", { length: 500 }),
+    /** Snapshot of the month's figures when this transfer was made. */
+    sessionsAmount: decimal("sessions_amount", { precision: 10, scale: 2 }).notNull(),
+    bonuses: decimal("bonuses", { precision: 10, scale: 2 }).notNull(),
+    deductions: decimal("deductions", { precision: 10, scale: 2 }).notNull(),
+    paidBefore: decimal("paid_before", { precision: 10, scale: 2 }).notNull(),
+    createdBy: varchar("created_by", { length: 36 }).references(() => user.id, { onDelete: "set null" }),
+    createdAt: createdAt(),
+    voidedAt: datetime("voided_at"),
+    voidedBy: varchar("voided_by", { length: 36 }).references(() => user.id, { onDelete: "set null" }),
+    voidReason: varchar("void_reason", { length: 255 }),
+  },
+  (table) => [index("payroll_payment_month_idx").on(table.instructorId, table.month)],
+);

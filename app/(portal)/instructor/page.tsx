@@ -1,12 +1,13 @@
 import React from "react";
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
-import { CalendarCheck, ClipboardList, Coins, Inbox, Users, Video } from "lucide-react";
+import { CalendarCheck, CircleCheck, CircleMinus, Coins, Gift, Hourglass, Video } from "lucide-react";
 import { buttonClass } from "@/components/portal/ui";
 import { AutoRefresh } from "@/components/teaching/AutoRefresh";
 import { EarningsChart } from "@/components/teaching/EarningsChart";
 import { GlassCard, Pill, StatTile } from "@/components/teaching/Glass";
-import { formatClock, formatMoney, formatMonth, formatSessionTime, localized } from "@/lib/academy/format";
+import { formatClock, formatDate, formatMoney, formatMonth, formatSessionTime, localized } from "@/lib/academy/format";
+import { getMonthStatement, getPayrollBalance } from "@/lib/academy/payroll";
 import { getInstructorActivity, getInstructorHome } from "@/lib/academy/teaching";
 import { cairoParts } from "@/lib/academy/time";
 import { requirePermission } from "@/lib/auth/session";
@@ -29,13 +30,17 @@ function relativeTime(at: Date, locale: Locale) {
 
 export default async function InstructorHomePage() {
   const user = await requirePermission("portal.instructor");
-  const [t, tAll, locale, home, activity] = await Promise.all([
+  const month = cairoParts(new Date()).month;
+  const [t, tAll, locale, home, activity, statement, balance] = await Promise.all([
     getTranslations("teaching"),
     getTranslations(),
     getLocale() as Promise<Locale>,
     getInstructorHome(user.id),
     getInstructorActivity(user.id),
+    getMonthStatement(user.id, month),
+    getPayrollBalance(user.id),
   ]);
+  const lastOf = (kind: "bonus" | "deduction") => statement.adjustments.filter((row) => row.kind === kind).at(-1)?.reason;
 
   const firstName = localized(locale, user.nameAr, user.nameEn).split(" ")[0] || user.name.split(" ")[0];
   const hour = Number(cairoParts(new Date()).time.slice(0, 2));
@@ -81,35 +86,47 @@ export default async function InstructorHomePage() {
         )}
       </section>
 
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-5">
+      <div className="flex flex-wrap gap-2 text-xs">
+        <Pill tone="green">
+          <CalendarCheck size={12} /> {t("home.sessionsThisMonth")}: {home.month.held} / {home.month.scheduled}
+        </Pill>
+        <Pill tone="online">
+          {t("home.students")}: {home.students}
+        </Pill>
+        <Pill tone="amber">
+          {t("home.attendanceRate")}: {percent(home.month.attendanceRate)}
+        </Pill>
+        {home.pendingRequests > 0 && (
+          <Pill tone="red">
+            {t("home.pendingRequests")}: {home.pendingRequests}
+          </Pill>
+        )}
+      </div>
+
+      <Link href="/instructor/payroll" className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-5" aria-label={tAll("nav.payroll")}>
         <StatTile
           icon={<Coins size={16} />}
-          label={t("home.earnedThisMonth", { month: formatMonth(home.month.key, locale, "long") })}
-          value={formatMoney(home.month.earnings, locale)}
-          sub={t("home.earnedHint")}
+          label={t("home.earnedThisMonth", { month: formatMonth(month, locale, "long") })}
+          value={formatMoney(statement.totals.net, locale)}
+          sub={t("home.earnedSessions", { count: statement.totals.sessions })}
         />
         <StatTile
           tone="green"
-          icon={<CalendarCheck size={16} />}
-          label={t("home.sessionsThisMonth")}
-          value={
-            <>
-              {home.month.held}
-              <span className="text-base text-text-secondary"> / {home.month.scheduled}</span>
-            </>
-          }
-          sub={t("home.sessionsHint")}
+          icon={<CircleCheck size={16} />}
+          label={t("home.lastTransfer")}
+          value={balance.lastPayment ? formatMoney(balance.lastPayment.amount, locale) : "—"}
+          sub={balance.lastPayment ? formatDate(balance.lastPayment.paidOn, locale) : t("home.noTransfer")}
         />
-        <StatTile tone="blue" icon={<Users size={16} />} label={t("home.students")} value={home.students} sub={t("home.studentsHint")} />
-        <StatTile tone="amber" icon={<ClipboardList size={16} />} label={t("home.attendanceRate")} value={percent(home.month.attendanceRate)} sub={t("home.attendanceHint")} />
         <StatTile
-          tone={home.pendingRequests ? "red" : "gold"}
-          icon={<Inbox size={16} />}
-          label={t("home.pendingRequests")}
-          value={home.pendingRequests}
-          sub={t("home.pendingHint")}
+          tone="blue"
+          icon={<Hourglass size={16} />}
+          label={t("home.owed")}
+          value={formatMoney(balance.owed, locale)}
+          sub={t("home.owedHint")}
         />
-      </div>
+        <StatTile tone="gold" icon={<Gift size={16} />} label={t("home.bonus")} value={formatMoney(statement.totals.bonuses, locale)} sub={lastOf("bonus") ?? t("home.none")} />
+        <StatTile tone="red" icon={<CircleMinus size={16} />} label={t("home.deductions")} value={formatMoney(statement.totals.deductions, locale)} sub={lastOf("deduction") ?? t("home.none")} />
+      </Link>
 
       <GlassCard title={t("home.chartTitle")}>
         <EarningsChart

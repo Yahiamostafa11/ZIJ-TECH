@@ -15,7 +15,8 @@
     "search": "بحث",
     "apply": "تطبيق",
     "toLight": "التبديل إلى الوضع الفاتح",
-    "toDark": "التبديل إلى الوضع الداكن"
+    "toDark": "التبديل إلى الوضع الداكن",
+    "show": "عرض"
   },
   "login": {
     "title": "تسجيل الدخول",
@@ -119,7 +120,8 @@
     "certificates": "الشهادات",
     "payroll": "مستحقاتي",
     "liveClasses": "الحصص المباشرة",
-    "studentRequests": "طلبات إضافة طلاب"
+    "studentRequests": "طلبات إضافة طلاب",
+    "payrollAdmin": "مستحقات المدرّسين"
   },
   "fields": {
     "name": "الاسم",
@@ -266,7 +268,8 @@
     "sessionPostponed": "تم تغيير موعد الحصة.",
     "requestSent": "تم إرسال الطلب للأكاديمية.",
     "requestApproved": "تمت الموافقة وأُضيف الطالب للمجموعة.",
-    "requestRejected": "تم رفض الطلب."
+    "requestRejected": "تم رفض الطلب.",
+    "payrollPaid": "تم تسجيل التحويل والإيصال جاهز."
   },
   "branches": {
     "description": "الفروع الفعلية. المجموعات الأونلاين لا تتبع فرعًا.",
@@ -643,7 +646,15 @@
       "noSessionsToday": "لا توجد حصص اليوم.",
       "activity": "آخر النشاط",
       "noActivity": "لا جديد خلال آخر 30 يومًا.",
-      "reviewsSoon": "تقييمات أولياء الأمور والطلاب بعد كل حصة تأتي في التحديث القادم."
+      "reviewsSoon": "تقييمات أولياء الأمور والطلاب بعد كل حصة تأتي في التحديث القادم.",
+      "earnedSessions": "{count} حصة مع البونص وبعد الخصومات",
+      "lastTransfer": "آخر تحويل",
+      "noTransfer": "لا توجد تحويلات بعد",
+      "owed": "المتبقي لك",
+      "owedHint": "لكل الشهور، ويُحوَّل يوم 1",
+      "bonus": "بونص الشهر",
+      "deductions": "خصومات الشهر",
+      "none": "لا يوجد"
     },
     "activity": {
       "held": "حفظت الحصة {number} لمجموعة {group}",
@@ -722,5 +733,59 @@
     "rates": {
       "title": "سعر الحصة (ج.م)"
     }
+  },
+  "payroll": {
+    "myTitle": "مستحقاتي",
+    "myDescription": "كل حصة اتحسبت لك، والبونص والخصومات بأسبابها، وإيصالات التحويل.",
+    "owedAll": "المتبقي لك",
+    "lastTransfer": "آخر تحويل {amount} يوم {date}",
+    "sessionsAmount": "الحصص",
+    "sessionsBreakdown": "{offline} أوفلاين · {online} أونلاين",
+    "bonuses": "البونص",
+    "deductions": "الخصومات",
+    "net": "المستحق",
+    "paid": "المحوَّل",
+    "remaining": "المتبقي",
+    "sessionsTitle": "الحصص ({count})",
+    "noSessions": "لا توجد حصص منفّذة هذا الشهر بعد.",
+    "adjustmentsTitle": "البونص والخصومات",
+    "noAdjustments": "لا يوجد هذا الشهر.",
+    "bonus": "بونص",
+    "deduction": "خصم",
+    "remove": "حذف",
+    "paymentsTitle": "التحويلات",
+    "noPayments": "لم يُحوَّل شيء عن هذا الشهر بعد.",
+    "voided": "ملغي",
+    "receipt": "إيصال {number}",
+    "void": "إلغاء التحويل",
+    "voidReason": "سبب الإلغاء",
+    "adminDescription": "مستحقات {month}: الحصص المنفّذة بسعر كل مدرّس، مع البونص وبعد الخصومات. تُدفع يوم 1 من الشهر التالي.",
+    "month": "الشهر",
+    "noInstructors": "لا يوجد مدرّسون بعد.",
+    "sessionsShort": "الحصص",
+    "settled": "تم الدفع",
+    "total": "الإجمالي",
+    "adminHint": "افتح أي مدرّس لإضافة بونص أو خصم أو تسجيل تحويل.",
+    "statementFor": "مستحقات {month}",
+    "recordPayment": "تسجيل تحويل",
+    "amount": "المبلغ (ج.م)",
+    "remainingHint": "المتبقي: {amount} ج.م",
+    "paidOn": "تاريخ التحويل",
+    "method": "طريقة الدفع",
+    "reference": "رقم العملية",
+    "addAdjustment": "إضافة بونص أو خصم",
+    "kind": "النوع",
+    "reason": "السبب",
+    "back": "رجوع",
+    "downloadPdf": "تحميل PDF",
+    "academy": "أكاديمية زيج · ZIJ Technologies",
+    "receiptTitle": "إيصال دفع",
+    "paidTo": "صُرف إلى",
+    "forMonth": "عن شهر",
+    "paidBefore": "المحوَّل قبل ذلك",
+    "thisTransfer": "قيمة هذا التحويل",
+    "remainingAfter": "المتبقي بعد هذا التحويل",
+    "issuedBy": "أصدره {name}",
+    "signature": "التوقيع"
   }
 }

@@ -1,5 +1,6 @@
 import {
   Award,
+  HandCoins,
   Banknote,
   BookOpen,
   ListChecks,
@@ -86,6 +87,7 @@ export const ACADEMY_NAV: NavSection[] = [
     items: [
       { slug: "payments", key: "payments", icon: Banknote, permission: "payments.read", phase: "1a" },
       { slug: "balances", key: "balances", icon: Wallet, permission: "payments.read", phase: "1a" },
+      { slug: "payroll", key: "payrollAdmin", icon: HandCoins, permission: "payroll.manage", phase: "1b" },
     ],
   },
   {

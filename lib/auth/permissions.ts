@@ -35,6 +35,7 @@ export const PERMISSIONS = [
   "payments.void",
   "pricing.manage",
   "finance.reports",
+  "payroll.manage",
   "followup.read",
   "followup.write",
   "reports.read",
@@ -66,6 +67,7 @@ export const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
     (permission) =>
       ![
         "finance.reports",
+        "payroll.manage",
         "users.manage",
         "branches.manage",
         "levels.manage",
