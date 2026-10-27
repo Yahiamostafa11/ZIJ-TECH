@@ -10,6 +10,7 @@ import {
   attendance,
   classSession,
   instructorRate,
+  remedialStudent,
   studentRequest,
 } from "@/lib/db/teaching";
 import type { CurrentUser } from "@/lib/auth/session";
@@ -241,12 +242,21 @@ export async function listGroupSessions(groupId: number) {
  * Students to mark in a session: those actively enrolled, plus anyone already
  * recorded (e.g. withdrawn since). Each comes with their saved record.
  */
-export async function getSessionRoster(sessionId: number, groupId: number) {
+export async function getSessionRoster(sessionId: number, groupId: number, kind: "regular" | "remedial" = "regular") {
+  // Remedial sessions are only for the students chosen for them.
   const enrolled = await db
     .select({ studentId: student.id, nameAr: student.nameAr, nameEn: student.nameEn, familyId: student.familyId })
     .from(enrollment)
     .innerJoin(student, eq(student.id, enrollment.studentId))
-    .where(and(eq(enrollment.groupId, groupId), eq(enrollment.status, "active")));
+    .where(
+      and(
+        eq(enrollment.groupId, groupId),
+        eq(enrollment.status, "active"),
+        kind === "remedial"
+          ? sql`exists (select 1 from ${remedialStudent} where ${remedialStudent.groupId} = ${groupId} and ${remedialStudent.studentId} = ${student.id})`
+          : undefined,
+      ),
+    );
 
   const records = await db
     .select({ record: attendance, nameAr: student.nameAr, nameEn: student.nameEn, familyId: student.familyId })

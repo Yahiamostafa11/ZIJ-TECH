@@ -59,6 +59,9 @@ export default async function InstructorGroupPage({ params }: { params: Promise<
           <Pill tone={group.mode === "online" ? "online" : "offline"}>
             {group.mode === "online" ? t("online") : localized(locale, detail.branchNameAr, detail.branchNameEn)}
           </Pill>
+          <Link href={`/instructor/groups/${group.id}/grades`} className="rounded-full bg-gold-gradient px-3.5 py-1 text-sm font-bold text-on-accent">
+            {t("groupPage.gradesLink")}
+          </Link>
           {group.meetingUrl && (
             <a href={group.meetingUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-sm font-semibold text-info hover:underline">
               <ExternalLink size={14} /> {t("meetingLink")}

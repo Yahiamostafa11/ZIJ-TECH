@@ -26,7 +26,7 @@ export default async function InstructorSessionPage({ params }: { params: Promis
   const [t, locale, roster, links] = await Promise.all([
     getTranslations("teaching"),
     getLocale() as Promise<Locale>,
-    getSessionRoster(session.id, group.id),
+    getSessionRoster(session.id, group.id, session.kind),
     getSessionFeedbackLinks(session.id),
   ]);
 

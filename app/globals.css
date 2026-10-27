@@ -327,3 +327,10 @@ body::before {
     background: #fff !important;
   }
 }
+
+@media print {
+  .certificate {
+    width: 297mm;
+    max-width: none;
+  }
+}

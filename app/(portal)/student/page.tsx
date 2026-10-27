@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { and, asc, eq, gte, inArray } from "drizzle-orm";
 import { getLocale, getTranslations } from "next-intl/server";
 import { ExternalLink, Video } from "lucide-react";
@@ -12,7 +13,7 @@ import { formatSessionTime, localized } from "@/lib/academy/format";
 import { requirePermission } from "@/lib/auth/session";
 import { db } from "@/lib/db";
 import { classGroup } from "@/lib/db/academy";
-import { classSession } from "@/lib/db/teaching";
+import { classSession, quiz, quizAttempt } from "@/lib/db/teaching";
 import type { Locale } from "@/lib/i18n/config";
 
 function hoursAgo(hours: number) {
@@ -35,7 +36,7 @@ export default async function StudentHomePage() {
 
   const groups = await getStudentGroups([self.id]);
   const groupIds = groups.map((group) => group.groupId);
-  const [upcoming, assignments, lessons] = await Promise.all([
+  const [upcoming, assignments, lessons, quizzes] = await Promise.all([
     groupIds.length
       ? db
           .select({ id: classSession.id, number: classSession.number, kind: classSession.kind, scheduledAt: classSession.scheduledAt, groupName: classGroup.name, mode: classGroup.mode, meetingUrl: classGroup.meetingUrl })
@@ -47,6 +48,14 @@ export default async function StudentHomePage() {
       : [],
     getStudentAssignments(self.id, groupIds),
     Promise.all(groups.map(async (group) => ({ group, lessons: await getReleasedLessons(group.groupId, group.levelId) }))),
+    groupIds.length
+      ? db
+          .select({ quiz, submittedAt: quizAttempt.submittedAt, score: quizAttempt.score })
+          .from(quiz)
+          .leftJoin(quizAttempt, and(eq(quizAttempt.quizId, quiz.id), eq(quizAttempt.studentId, self.id)))
+          .where(and(inArray(quiz.groupId, groupIds), gte(quiz.closesAt, hoursAgo(24 * 14))))
+          .orderBy(asc(quiz.opensAt))
+      : [],
   ]);
   const name = localized(locale, self.nameAr, self.nameEn).split(" ")[0];
   const open = assignments.filter((row) => !row.submission?.gradedAt);
@@ -144,6 +153,30 @@ export default async function StudentHomePage() {
           )}
         </GlassCard>
       </div>
+
+      {quizzes.length > 0 && (
+        <GlassCard title={t("quizzes")}>
+          <ul className="grid gap-2.5 md:grid-cols-2">
+            {quizzes.map((row) => (
+              <li key={row.quiz.id}>
+                <Link href={`/student/quiz/${row.quiz.id}`} className="glass-inset flex flex-wrap items-center justify-between gap-2 p-3 transition hover:bg-gold-primary/10">
+                  <span>
+                    <span className="block font-bold">{row.quiz.title}</span>
+                    <span className="text-xs text-text-secondary">{t("quizCloses", { date: formatSessionTime(row.quiz.closesAt, locale) })}</span>
+                  </span>
+                  {row.submittedAt ? (
+                    <Pill tone="green">{row.score !== null ? <span dir="ltr">{Number(row.score)}</span> : t("handedIn")}</Pill>
+                  ) : (
+                    <Pill tone="amber" live>
+                      {t("quizOpen")}
+                    </Pill>
+                  )}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </GlassCard>
+      )}
 
       {lessons.map(({ group, lessons: items }) => (
         <GlassCard key={group.groupId} title={t("lessonsOf", { level: localized(locale, group.levelNameAr, group.levelNameEn) })}>

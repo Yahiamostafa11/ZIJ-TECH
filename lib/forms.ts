@@ -10,6 +10,8 @@ export type ActionState = {
   message?: string;
   error?: string;
   fieldErrors?: Record<string, string>;
+  /** Row-level problems in an uploaded sheet. */
+  details?: { row: number; code: string }[];
 };
 
 function formDataToObject(formData: FormData) {

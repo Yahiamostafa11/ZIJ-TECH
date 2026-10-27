@@ -68,6 +68,7 @@ export const ACADEMY_NAV: NavSection[] = [
       { slug: "families", key: "families", icon: UsersRound, permission: "students.read", phase: "1a" },
       { slug: "instructors", key: "instructors", icon: Users, permission: "instructors.manage", phase: "1a" },
       { slug: "requests", key: "studentRequests", icon: Inbox, permission: "students.write", phase: "1b" },
+      { slug: "certificates", key: "certificatesAdmin", icon: Award, permission: "groups.read", phase: "1b" },
     ],
   },
   {

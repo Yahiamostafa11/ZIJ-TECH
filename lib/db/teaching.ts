@@ -391,3 +391,181 @@ export const announcementRead = mysqlTable(
   },
   (table) => [uniqueIndex("announcement_read_unique").on(table.announcementId, table.userId)],
 );
+
+/* -------------------------------------------------------------------------- */
+/* Quizzes                                                                     */
+/* -------------------------------------------------------------------------- */
+
+export const QUIZ_PURPOSES = ["homework", "inclass"] as const;
+export const QUESTION_KINDS = ["mcq", "essay"] as const;
+
+export const quiz = mysqlTable(
+  "quiz",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    groupId: int("group_id")
+      .notNull()
+      .references(() => classGroup.id, { onDelete: "cascade" }),
+    title: varchar("title", { length: 200 }).notNull(),
+    instructions: text("instructions"),
+    purpose: mysqlEnum("purpose", QUIZ_PURPOSES).notNull().default("homework"),
+    /** Minutes allowed from the moment a student starts; null means no limit. */
+    timeLimit: int("time_limit"),
+    opensAt: datetime("opens_at").notNull(),
+    closesAt: datetime("closes_at").notNull(),
+    shuffle: boolean("shuffle").notNull().default(true),
+    createdBy: varchar("created_by", { length: 36 }).references(() => user.id, { onDelete: "set null" }),
+    createdAt: createdAt(),
+  },
+  (table) => [index("quiz_group_idx").on(table.groupId)],
+);
+
+export const quizQuestion = mysqlTable(
+  "quiz_question",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    quizId: int("quiz_id")
+      .notNull()
+      .references(() => quiz.id, { onDelete: "cascade" }),
+    position: int("position").notNull(),
+    kind: mysqlEnum("kind", QUESTION_KINDS).notNull(),
+    text: text("text").notNull(),
+    /** JSON array of option texts for multiple choice. */
+    options: text("options"),
+    /** Index of the correct option (0-based) for multiple choice. */
+    correct: int("correct"),
+    points: decimal("points", { precision: 6, scale: 2 }).notNull(),
+  },
+  (table) => [index("quiz_question_quiz_idx").on(table.quizId, table.position)],
+);
+
+/**
+ * One attempt per student per quiz. Answers are saved as the student goes;
+ * leaving the page and copying or pasting are counted for the instructor.
+ */
+export const quizAttempt = mysqlTable(
+  "quiz_attempt",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    quizId: int("quiz_id")
+      .notNull()
+      .references(() => quiz.id, { onDelete: "cascade" }),
+    studentId: int("student_id")
+      .notNull()
+      .references(() => student.id),
+    /** JSON: question order and, per question, the option order shown. */
+    layout: text("layout").notNull(),
+    /** JSON: question id → chosen option index or essay text. */
+    answers: text("answers"),
+    startedAt: datetime("started_at").notNull(),
+    submittedAt: datetime("submitted_at"),
+    autoScore: decimal("auto_score", { precision: 7, scale: 2 }),
+    /** JSON: question id → points the instructor gave an essay answer. */
+    essayScores: text("essay_scores"),
+    score: decimal("score", { precision: 7, scale: 2 }),
+    focusLosses: int("focus_losses").notNull().default(0),
+    copyEvents: int("copy_events").notNull().default(0),
+    /** JSON array of [ISO time, event] pairs, capped. */
+    eventLog: text("event_log"),
+    instructorNote: varchar("instructor_note", { length: 1000 }),
+    gradedAt: datetime("graded_at"),
+    updatedAt: updatedAt(),
+  },
+  (table) => [uniqueIndex("quiz_attempt_quiz_student_unique").on(table.quizId, table.studentId)],
+);
+
+/* -------------------------------------------------------------------------- */
+/* Grading, remedial sessions and certificates                                 */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * How an instructor weighs a group's final result (percentages summing to
+ * 100) and the mark needed to pass, which defaults to the level's.
+ */
+export const groupGrading = mysqlTable("group_grading", {
+  groupId: int("group_id")
+    .primaryKey()
+    .references(() => classGroup.id, { onDelete: "cascade" }),
+  sessions: int("sessions").notNull().default(30),
+  attendance: int("attendance").notNull().default(10),
+  quizzes: int("quizzes").notNull().default(30),
+  assignments: int("assignments").notNull().default(10),
+  project: int("project").notNull().default(20),
+  passMark: int("pass_mark").notNull().default(65),
+  updatedBy: varchar("updated_by", { length: 36 }).references(() => user.id, { onDelete: "set null" }),
+  updatedAt: updatedAt(),
+});
+
+/** Final project score (0–100) per student in a group. */
+export const projectScore = mysqlTable(
+  "project_score",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    groupId: int("group_id")
+      .notNull()
+      .references(() => classGroup.id, { onDelete: "cascade" }),
+    studentId: int("student_id")
+      .notNull()
+      .references(() => student.id),
+    score: decimal("score", { precision: 5, scale: 2 }).notNull(),
+    note: varchar("note", { length: 500 }),
+    updatedAt: updatedAt(),
+  },
+  (table) => [uniqueIndex("project_score_group_student_unique").on(table.groupId, table.studentId)],
+);
+
+/** Students who take a group's remedial sessions. */
+export const remedialStudent = mysqlTable(
+  "remedial_student",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    groupId: int("group_id")
+      .notNull()
+      .references(() => classGroup.id, { onDelete: "cascade" }),
+    studentId: int("student_id")
+      .notNull()
+      .references(() => student.id),
+    createdAt: createdAt(),
+  },
+  (table) => [uniqueIndex("remedial_student_unique").on(table.groupId, table.studentId)],
+);
+
+/** A student's certificate for passing a level; the code verifies it publicly. */
+export const certificate = mysqlTable(
+  "certificate",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    code: varchar("code", { length: 16 }).notNull().unique(),
+    studentId: int("student_id")
+      .notNull()
+      .references(() => student.id),
+    groupId: int("group_id")
+      .notNull()
+      .references(() => classGroup.id),
+    levelId: int("level_id")
+      .notNull()
+      .references(() => level.id),
+    score: decimal("score", { precision: 5, scale: 2 }),
+    issuedAt: datetime("issued_at").notNull(),
+    issuedBy: varchar("issued_by", { length: 36 }).references(() => user.id, { onDelete: "set null" }),
+    revokedAt: datetime("revoked_at"),
+  },
+  (table) => [uniqueIndex("certificate_group_student_unique").on(table.groupId, table.studentId)],
+);
+
+/** Certificates the academy gave an instructor, stored as a link. */
+export const instructorCertificate = mysqlTable(
+  "instructor_certificate",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    userId: varchar("user_id", { length: 36 })
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    title: varchar("title", { length: 200 }).notNull(),
+    issuedOn: date("issued_on", { mode: "string" }).notNull(),
+    url: varchar("url", { length: 500 }).notNull(),
+    createdBy: varchar("created_by", { length: 36 }).references(() => user.id, { onDelete: "set null" }),
+    createdAt: createdAt(),
+  },
+  (table) => [index("instructor_certificate_user_idx").on(table.userId)],
+);
