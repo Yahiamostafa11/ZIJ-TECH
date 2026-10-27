@@ -9,6 +9,7 @@ import { GlassCard, Pill, StatTile } from "@/components/teaching/Glass";
 import { formatClock, formatDate, formatMoney, formatMonth, formatSessionTime, localized } from "@/lib/academy/format";
 import { getMonthStatement, getPayrollBalance } from "@/lib/academy/payroll";
 import { getRecentFeedback } from "@/lib/academy/feedback";
+import { countUnreadAnnouncements } from "@/lib/academy/content";
 import { getInstructorActivity, getInstructorHome } from "@/lib/academy/teaching";
 import { cairoParts } from "@/lib/academy/time";
 import { requirePermission } from "@/lib/auth/session";
@@ -41,7 +42,7 @@ export default async function InstructorHomePage() {
     getMonthStatement(user.id, month),
     getPayrollBalance(user.id),
   ]);
-  const reviews = await getRecentFeedback(user.id);
+  const [reviews, unread] = await Promise.all([getRecentFeedback(user.id), countUnreadAnnouncements(user.id)]);
   const lastOf = (kind: "bonus" | "deduction") => statement.adjustments.filter((row) => row.kind === kind).at(-1)?.reason;
 
   const firstName = localized(locale, user.nameAr, user.nameEn).split(" ")[0] || user.name.split(" ")[0];
@@ -98,6 +99,13 @@ export default async function InstructorHomePage() {
         <Pill tone="amber">
           {t("home.attendanceRate")}: {percent(home.month.attendanceRate)}
         </Pill>
+        {unread > 0 && (
+          <Link href="/instructor/announcements">
+            <Pill tone="amber" live>
+              {t("home.unreadAnnouncements", { count: unread })}
+            </Pill>
+          </Link>
+        )}
         {home.pendingRequests > 0 && (
           <Pill tone="red">
             {t("home.pendingRequests")}: {home.pendingRequests}

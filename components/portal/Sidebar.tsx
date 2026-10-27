@@ -5,11 +5,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Menu, X } from "lucide-react";
-import { ACADEMY_NAV, INSTRUCTOR_NAV, type NavSection } from "@/lib/portal/nav";
+import { ACADEMY_NAV, INSTRUCTOR_NAV, STUDENT_NAV, type NavSection } from "@/lib/portal/nav";
 
-const NAVS: Record<"academy" | "instructor", NavSection[]> = {
+const NAVS: Record<"academy" | "instructor" | "student", NavSection[]> = {
   academy: ACADEMY_NAV,
   instructor: INSTRUCTOR_NAV,
+  student: STUDENT_NAV,
 };
 
 type SidebarProps = {

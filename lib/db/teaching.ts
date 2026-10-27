@@ -1,4 +1,5 @@
 import {
+  boolean,
   datetime,
   decimal,
   index,
@@ -11,7 +12,7 @@ import {
   varchar,
   date,
 } from "drizzle-orm/mysql-core";
-import { GROUP_MODES, PAYMENT_METHODS, classGroup, student } from "./academy";
+import { GROUP_MODES, PAYMENT_METHODS, classGroup, level, student } from "./academy";
 import { createdAt, updatedAt, user } from "./schema";
 
 /* -------------------------------------------------------------------------- */
@@ -243,4 +244,150 @@ export const feedback = mysqlTable(
     uniqueIndex("feedback_session_student_respondent_unique").on(table.sessionId, table.studentId, table.respondent),
     index("feedback_student_idx").on(table.studentId),
   ],
+);
+
+/* -------------------------------------------------------------------------- */
+/* Curriculum content                                                          */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * The plan for one session of a level, shared by every group on that level.
+ * Instructors who teach the level and admins edit it; students see a lesson
+ * once their group has held that session.
+ */
+export const lesson = mysqlTable(
+  "lesson",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    levelId: int("level_id")
+      .notNull()
+      .references(() => level.id, { onDelete: "cascade" }),
+    number: int("number").notNull(),
+    title: varchar("title", { length: 200 }).notNull(),
+    summary: text("summary"),
+    updatedBy: varchar("updated_by", { length: 36 }).references(() => user.id, { onDelete: "set null" }),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (table) => [uniqueIndex("lesson_level_number_unique").on(table.levelId, table.number)],
+);
+
+export const RESOURCE_KINDS = ["drive", "youtube", "file", "image", "audio", "link"] as const;
+
+/** A link attached to a lesson: Drive folder or file, YouTube video, image, audio. */
+export const lessonResource = mysqlTable(
+  "lesson_resource",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    lessonId: int("lesson_id")
+      .notNull()
+      .references(() => lesson.id, { onDelete: "cascade" }),
+    kind: mysqlEnum("kind", RESOURCE_KINDS).notNull(),
+    title: varchar("title", { length: 200 }).notNull(),
+    url: varchar("url", { length: 500 }).notNull(),
+    /** Only instructors see teacher-only resources (answer keys, guides). */
+    teacherOnly: boolean("teacher_only").notNull().default(false),
+    createdBy: varchar("created_by", { length: 36 }).references(() => user.id, { onDelete: "set null" }),
+    createdAt: createdAt(),
+  },
+  (table) => [index("lesson_resource_lesson_idx").on(table.lessonId)],
+);
+
+/* -------------------------------------------------------------------------- */
+/* Assignments                                                                 */
+/* -------------------------------------------------------------------------- */
+
+export const assignment = mysqlTable(
+  "assignment",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    groupId: int("group_id")
+      .notNull()
+      .references(() => classGroup.id, { onDelete: "cascade" }),
+    sessionId: int("session_id").references(() => classSession.id, { onDelete: "set null" }),
+    title: varchar("title", { length: 200 }).notNull(),
+    instructions: text("instructions"),
+    link: varchar("link", { length: 500 }),
+    dueAt: datetime("due_at").notNull(),
+    maxScore: int("max_score").notNull().default(10),
+    createdBy: varchar("created_by", { length: 36 }).references(() => user.id, { onDelete: "set null" }),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (table) => [index("assignment_group_idx").on(table.groupId, table.dueAt)],
+);
+
+/** A student's hand-in: a Drive (or other) link, graded by the instructor. */
+export const submission = mysqlTable(
+  "submission",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    assignmentId: int("assignment_id")
+      .notNull()
+      .references(() => assignment.id, { onDelete: "cascade" }),
+    studentId: int("student_id")
+      .notNull()
+      .references(() => student.id),
+    url: varchar("url", { length: 500 }),
+    note: varchar("note", { length: 1000 }),
+    submittedAt: datetime("submitted_at"),
+    score: decimal("score", { precision: 5, scale: 2 }),
+    feedback: varchar("feedback", { length: 1000 }),
+    gradedAt: datetime("graded_at"),
+    gradedBy: varchar("graded_by", { length: 36 }).references(() => user.id, { onDelete: "set null" }),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (table) => [uniqueIndex("submission_assignment_student_unique").on(table.assignmentId, table.studentId)],
+);
+
+/* -------------------------------------------------------------------------- */
+/* Announcements                                                               */
+/* -------------------------------------------------------------------------- */
+
+export const ANNOUNCEMENT_KINDS = ["notice", "mention", "post"] as const;
+
+/**
+ * A message from the academy to instructors: a notice, a social media video
+ * that mentions them, or an academy post to engage with. Sent to everyone or
+ * to selected instructors.
+ */
+export const announcement = mysqlTable("announcement", {
+  id: int("id").autoincrement().primaryKey(),
+  kind: mysqlEnum("kind", ANNOUNCEMENT_KINDS).notNull(),
+  title: varchar("title", { length: 200 }).notNull(),
+  body: text("body"),
+  link: varchar("link", { length: 500 }),
+  toAll: boolean("to_all").notNull().default(true),
+  createdBy: varchar("created_by", { length: 36 }).references(() => user.id, { onDelete: "set null" }),
+  createdAt: createdAt(),
+});
+
+export const announcementTarget = mysqlTable(
+  "announcement_target",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    announcementId: int("announcement_id")
+      .notNull()
+      .references(() => announcement.id, { onDelete: "cascade" }),
+    userId: varchar("user_id", { length: 36 })
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+  },
+  (table) => [uniqueIndex("announcement_target_unique").on(table.announcementId, table.userId)],
+);
+
+export const announcementRead = mysqlTable(
+  "announcement_read",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    announcementId: int("announcement_id")
+      .notNull()
+      .references(() => announcement.id, { onDelete: "cascade" }),
+    userId: varchar("user_id", { length: 36 })
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    readAt: datetime("read_at").notNull(),
+  },
+  (table) => [uniqueIndex("announcement_read_unique").on(table.announcementId, table.userId)],
 );

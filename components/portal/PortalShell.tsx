@@ -17,7 +17,7 @@ type PortalShellProps = {
   /** Key under the `portal` messages namespace. */
   title: string;
   basePath: string;
-  sidebar?: { nav: "academy" | "instructor"; sections: NavSection[] };
+  sidebar?: { nav: "academy" | "instructor" | "student"; sections: NavSection[] };
   children: React.ReactNode;
 };
 

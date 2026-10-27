@@ -93,6 +93,7 @@ export const ACADEMY_NAV: NavSection[] = [
   {
     key: "followup",
     items: [
+      { slug: "announcements", key: "announcementsAdmin", icon: Megaphone, permission: "announcements.manage", phase: "1b" },
       { slug: "calls", key: "calls", icon: PhoneCall, permission: "followup.read", phase: "1b" },
       { slug: "notes", key: "notes", icon: StickyNote, permission: "followup.read", phase: "1b" },
     ],
@@ -139,6 +140,13 @@ export const INSTRUCTOR_NAV: NavSection[] = [
       { slug: "payroll", key: "payroll", icon: Wallet, permission: "portal.instructor", phase: "2" },
       { slug: "live", key: "liveClasses", icon: Video, permission: "portal.instructor", phase: "3" },
     ],
+  },
+];
+
+export const STUDENT_NAV: NavSection[] = [
+  {
+    key: "learning",
+    items: [{ slug: "", key: "myLearning", icon: GraduationCap, permission: "portal.student", phase: "1b" }],
   },
 ];
 

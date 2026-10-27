@@ -50,7 +50,8 @@
     "instructor": "Instructor",
     "software": "Software",
     "iot": "IoT & Robotics",
-    "account": "My account"
+    "account": "My account",
+    "student": "Student"
   },
   "placeholder": {
     "title": "Coming soon",
@@ -86,7 +87,8 @@
       "settings": "Settings",
       "teaching": "Teaching",
       "content": "Content",
-      "mine": "My account"
+      "mine": "My account",
+      "learning": "Learning"
     },
     "overview": "Dashboard",
     "leads": "Leads",
@@ -121,7 +123,9 @@
     "payroll": "My pay",
     "liveClasses": "Live classes",
     "studentRequests": "Student requests",
-    "payrollAdmin": "Instructor pay"
+    "payrollAdmin": "Instructor pay",
+    "announcementsAdmin": "Announcements",
+    "myLearning": "My learning"
   },
   "fields": {
     "name": "Name",
@@ -249,7 +253,9 @@
     "sessionNotStarted": "Attendance opens on the day of the session.",
     "sessionAlreadyHeld": "This session was already held; it can't be postponed.",
     "dateInPast": "Choose today or a later date.",
-    "alreadyReviewed": "Someone already reviewed this request."
+    "alreadyReviewed": "Someone already reviewed this request.",
+    "alreadyGraded": "This work was already graded; ask your instructor to reopen it.",
+    "chooseInstructor": "Choose at least one instructor."
   },
   "messages": {
     "saved": "Saved.",
@@ -269,7 +275,9 @@
     "requestSent": "Request sent to the academy.",
     "requestApproved": "Approved. The student is now in the group.",
     "requestRejected": "Request rejected.",
-    "payrollPaid": "Transfer recorded. The receipt is ready."
+    "payrollPaid": "Transfer recorded. The receipt is ready.",
+    "submitted": "Handed in.",
+    "announcementSent": "Announcement sent."
   },
   "branches": {
     "description": "Physical branches. Online groups do not belong to a branch.",
@@ -657,7 +665,8 @@
       "reviews": "Reviews after sessions",
       "noReviews": "Reviews appear here when parents and students answer the forms you send after each session.",
       "fromParent": "Parent",
-      "fromStudent": "Student"
+      "fromStudent": "Student",
+      "unreadAnnouncements": "New announcements: {count}"
     },
     "activity": {
       "held": "You saved session {number} of {group}",
@@ -914,5 +923,123 @@
     "noAnswers": "No answers yet.",
     "notes": "Instructor notes",
     "sessionShort": "Session {number}"
+  },
+  "content": {
+    "coursesTitle": "Courses & content",
+    "coursesDescription": "The plan for every session of the levels you teach: notes and Drive, YouTube, image and audio links. Students see a lesson after their group holds that session.",
+    "noCourses": "No levels yet. The academy assigns groups to you.",
+    "sessions": "{count} sessions",
+    "levelHint": "Shared by every group on this level. Students see each lesson once their group has held that session; teacher-only links stay hidden from them.",
+    "curriculum": "Session plan and content",
+    "untitled": "No title yet",
+    "resourceCount": "{count} links",
+    "title": "Session title",
+    "summary": "What happens in this session",
+    "summaryPlaceholder": "Goals, steps, and what students should be able to do by the end.",
+    "save": "Save",
+    "teacherOnly": "Teachers only",
+    "remove": "Remove",
+    "noResources": "No links yet.",
+    "kind": "Type",
+    "resourceTitle": "Link name",
+    "url": "Link",
+    "teacherOnlyHint": "Teachers only (answer keys, guides)",
+    "addResource": "Add link",
+    "kinds": {
+      "drive": "Drive",
+      "youtube": "YouTube",
+      "file": "File",
+      "image": "Image",
+      "audio": "Audio recording",
+      "link": "Other link"
+    }
+  },
+  "assignments": {
+    "title": "Assignments",
+    "description": "Every assignment you set, with the day, date and time it was published, and each student's hand-in and grade.",
+    "all": "Your assignments",
+    "none": "No assignments yet.",
+    "open": "Open",
+    "closed": "Closed",
+    "published": "Published {date}",
+    "due": "Due {date}",
+    "progress": "Handed in {submitted} of {students} · graded {graded}",
+    "new": "New assignment",
+    "noGroups": "You need a current group first.",
+    "group": "Group",
+    "titleField": "Title",
+    "instructions": "Instructions",
+    "link": "Link (optional)",
+    "linkHint": "A Drive file or folder with the task.",
+    "dueDate": "Due date",
+    "dueTime": "Due time",
+    "maxScore": "Out of",
+    "publish": "Publish",
+    "delete": "Delete",
+    "outOf": "out of {max}",
+    "openLink": "Open the task",
+    "submissions": "Hand-ins",
+    "late": "Late",
+    "submitted": "Handed in",
+    "missing": "Not handed in",
+    "graded": "Graded",
+    "openWork": "Open the work",
+    "score": "Score",
+    "feedback": "Feedback for the student",
+    "saveGrade": "Save grade"
+  },
+  "announcements": {
+    "title": "Announcements",
+    "description": "Messages from the academy, social media videos that mention you, and academy posts to engage with.",
+    "none": "No announcements yet.",
+    "new": "New",
+    "kinds": {
+      "notice": "Notice",
+      "mention": "You were mentioned",
+      "post": "Academy post"
+    },
+    "open": {
+      "notice": "Open link",
+      "mention": "Watch and react",
+      "post": "Open the post"
+    },
+    "adminDescription": "Send notices to instructors, tell them when a video mentions them, or ask them to engage with an academy post.",
+    "newTitle": "New announcement",
+    "kind": "Type",
+    "titleField": "Title",
+    "body": "Message",
+    "link": "Link",
+    "linkHint": "The video or post, if any.",
+    "audience": "Send to",
+    "toAll": "All instructors",
+    "toSelected": "Selected instructors",
+    "toCount": "{count} instructors",
+    "send": "Send",
+    "sent": "Sent",
+    "reads": "Read by {count}",
+    "delete": "Delete"
+  },
+  "studentPortal": {
+    "notLinked": "Your account isn't linked to a student yet. Ask the academy.",
+    "hello": "Hi {name}!",
+    "summary": "Assignments to do: {open}",
+    "assignments": "Your assignments",
+    "noAssignments": "Nothing to hand in right now.",
+    "handedIn": "Handed in",
+    "due": "Due {date}",
+    "outOf": "out of {max}",
+    "openLink": "Open the task",
+    "workLink": "Link to your work",
+    "workLinkPlaceholder": "Drive link to your work",
+    "submit": "Hand in",
+    "resubmit": "Update",
+    "note": "Note to your instructor (optional)",
+    "graded": "Graded",
+    "nextSessions": "Next sessions",
+    "noSessions": "No sessions scheduled.",
+    "session": "Session {number}",
+    "join": "Join the session",
+    "lessonsOf": "Lessons · {level}",
+    "noLessons": "Lessons appear here after each session."
   }
 }

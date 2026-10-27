@@ -36,6 +36,7 @@ export const PERMISSIONS = [
   "pricing.manage",
   "finance.reports",
   "payroll.manage",
+  "announcements.manage",
   "followup.read",
   "followup.write",
   "reports.read",
@@ -92,6 +93,7 @@ export const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
     "payments.write",
     "followup.read",
     "followup.write",
+    "announcements.manage",
   ],
   student: ["portal.student"],
   parent: ["portal.parent"],
@@ -138,7 +140,8 @@ export function homePathFor(grants: readonly RoleGrant[]) {
   if (can(grants, "portal.software")) return "/admin/software";
   if (can(grants, "portal.iot")) return "/admin/iot";
   if (can(grants, "portal.instructor")) return "/instructor";
-  // Student and parent dashboards come later; until then they manage their profile.
-  if (can(grants, "portal.student") || can(grants, "portal.parent")) return "/account";
+  if (can(grants, "portal.student")) return "/student";
+  // The parent dashboard comes later; until then parents manage their profile.
+  if (can(grants, "portal.parent")) return "/account";
   return null;
 }

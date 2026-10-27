@@ -1,4 +1,6 @@
 import React from "react";
+import { LessonsEditor } from "@/components/teaching/LessonsEditor";
+import { getLevelLessons } from "@/lib/academy/content";
 import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
@@ -16,10 +18,11 @@ export default async function EditLevelPage({ params }: { params: Promise<{ id: 
   const [row] = Number.isInteger(id) ? await db.select().from(level).where(eq(level.id, id)) : [];
   if (!row) notFound();
 
-  const [t, locale, programs] = await Promise.all([
+  const [t, locale, programs, lessons] = await Promise.all([
     getTranslations(),
     getLocale() as Promise<Locale>,
     db.select().from(program),
+    getLevelLessons(row.id),
   ]);
 
   return (
@@ -31,6 +34,9 @@ export default async function EditLevelPage({ params }: { params: Promise<{ id: 
           programs={programs.map((item) => ({ id: item.id, name: localized(locale, item.nameAr, item.nameEn) }))}
         />
       </Card>
+      <h2 className="mb-2 mt-10 text-xl font-semibold text-text-primary">{t("content.curriculum")}</h2>
+      <p className="mb-4 text-sm text-text-secondary">{t("content.levelHint")}</p>
+      <LessonsEditor levelId={row.id} sessionCount={row.sessionCount} lessons={lessons} />
     </div>
   );
 }
